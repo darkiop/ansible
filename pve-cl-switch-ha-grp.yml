@@ -1,0 +1,18 @@
+---
+### PROXMOX: CLUSTER ###
+- hosts: pve_cluster
+  become: true
+  become_user: root
+  vars_prompt:
+  - name: "search"
+    prompt: "search"
+    private: no
+  - name: "replace"
+    prompt: "replace"
+    private: no
+  tasks:
+    - name: Test
+      replace:
+        path: /tmp/resources.cfg
+        regexp: 'group ""{{ search }}""'
+        replace: 'group ""{{ replace }}""'

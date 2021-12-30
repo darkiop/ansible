@@ -1,0 +1,5 @@
+- name: generate the locale
+  when: ansible_os_family == 'Debian'
+  locale_gen:
+    name: "{{ locale }}"
+    state: present

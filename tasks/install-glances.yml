@@ -1,0 +1,5 @@
+# https://github.com/nicolargo/glances
+
+- name: Install glances python package
+  pip:
+    name: glances

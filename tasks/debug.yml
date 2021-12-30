@@ -1,0 +1,27 @@
+- name: show vars
+  debug:
+    var: ansible_architecture
+
+- name: show vars
+  debug:
+    var: timezone
+
+- name: show vars
+  debug:
+    var: inventory_hostname
+
+- name: show vars
+  debug:
+    var: ansible_hostname
+
+- name: show vars
+  debug:
+    var: username
+
+- name: show vars
+  debug:
+    var: ansible_env.HOME
+
+- name: show vars
+  debug:
+    var: debugtest

@@ -1,0 +1,37 @@
+# ESSENTIALS
+enable_dotfiles: true
+enable_lsd: true
+enable_navi: true
+enable_bat: true
+enable_btop: true
+enable_dategrep: true
+enable_glances: true
+
+# UFW
+ufw_allowed_ports_tcp: 1111,2222
+ufw_allowed_ports_udp: 3333,4444
+
+# PROXMOX
+pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
+pve_remove_subscription_warning: true
+
+# SUDO
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/pct, /usr/sbin/qm
+
+# SAMBA
+samba_shares:
+  - name: vz-dump
+    guest_ok: no
+    public: yes
+    read_only: no
+    writable: yes
+    browseable: yes
+    owner: "{{ username }}"
+    path: "/var/lib/vz/dump"
+    valid_users: "{{ username }}"
+    write_list: "{{ username }}"
+    group: "{{ username }}"
+
+# SOFTWARE
+default_software:
+  - systemd-timesyncd

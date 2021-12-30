@@ -1,0 +1,7 @@
+[pve_ct]
+ansible-2:22
+pve-ct-heimdall:22
+
+[pve_cluster]
+pve01:22
+pve02:22

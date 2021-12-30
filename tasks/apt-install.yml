@@ -1,0 +1,6 @@
+- name: apt-install - install default software
+  apt: 
+    name: "{{ default_software }}"
+    state: present
+    update_cache: true
+  become: true

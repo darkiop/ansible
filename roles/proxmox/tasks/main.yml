@@ -1,0 +1,65 @@
+# GLUSTERFS gstatus > json
+- name: glusterf-gstatus-json - install nginx
+  apt: 
+    name: nginx
+    state: present
+    update_cache: true
+  become: true
+
+- name: glusterf-gstatus-json - copy gstatus-status-to-json.service
+  copy:
+    src: files/gstatus-status-to-json.service
+    dest: /etc/systemd/system/gstatus-status-to-json.service
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: yes
+
+- name: glusterf-gstatus-json - copy gstatus-status-to-json.timer
+  copy:
+    src: files/gstatus-status-to-json.timer
+    dest: /etc/systemd/system/gstatus-status-to-json.timer
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: yes
+
+- name: glusterf-gstatus-json - start gstatus-status-to-json.timer
+  ansible.builtin.systemd:
+    state: started
+    name: gstatus-status-to-json.timer
+
+# VZDUMP
+- name: set temp-dir in vzdump.conf for nfs backups
+  lineinfile:
+    path: /etc/vzdump.conf
+    regexp: '^#tmpdir: DIR'
+    line: 'tmpdir: /tmp'
+
+# WATCHDOG
+- name: Unload Kernel-Module softdog
+  modprobe:
+    name: softdog
+    state: absent
+
+- name: Load Kernel-Module iTCO_wdt
+  modprobe:
+    name: iTCO_wdt
+    state: present
+
+- name: Configure PVE HA Manager to use iTCO_wdt
+  copy:
+    content: "WATCHDOG_MODULE=iTCO_wdt"
+    dest: /etc/default/pve-ha-manager
+    mode: 0640
+
+- name: Restart watchdog-mux.service
+  ansible.builtin.systemd:
+    state: restarted
+    name: watchdog-muxx 
+
+# TODO
+# auf pve01 mit Mac-Adresse von pve01-cl (= interner LAN-Port)
+#pvenode config set -wakeonlan 1c:69:7a:02:5e:3f
+# auf pve02 mit Mac-Adresse von pve02-cl (= interner LAN-Port)
+#pvenode config set -wakeonlan 1c:69:7a:62:9b:95

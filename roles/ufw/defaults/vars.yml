@@ -1,0 +1,2 @@
+ufw_allowed_ports_tcp: 1111,2222
+ufw_allowed_ports_udp: 3333,4444

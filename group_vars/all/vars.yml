@@ -1,0 +1,121 @@
+# SOFTWARE
+default_software:
+  # DEV / SYSTEM / TOOLS
+  - git
+  - curl
+  - vim
+  - python3-pip
+  - sudo
+  - build-essential
+  - bash-completion
+  - unattended-upgrades
+  - hddtemp
+  - parted
+  - exa # ls/lsd alternative
+  - ncdu
+  - cifs-utils
+  - toilet
+  - byobu
+  - unzip
+  - rsync
+  - mlocate
+  - powerline
+  - html2text
+  - lsof
+  - procps
+  - man
+  - neofetch
+  - needrestart
+  - tree
+  - lshw
+  - lm-sensors
+  - inxi
+  # NETWORK
+  - nmap
+  - dnsutils
+  - net-tools
+  - fping
+  - sshfs
+  - nfs-common
+  - iproute2
+  - curl
+  # MONITORING
+  - bmon
+  - htop
+  - lnav
+  - iperf3
+  - lnav
+  - tcpdump
+  - wakeonlan
+  - speedtest-cli
+  - telnet
+
+# USER
+username: darkiop
+password: 
+shell: /usr/bin/bash
+dotfiles_repo: https://github.com/darkiop/dotfiles
+timezone: Europe/Berlin
+locale: en_US.UTF-8
+keyboard_layout: de
+email: 
+email_password: 
+
+# NTP
+# https://github.com/geerlingguy/ansible-role-ntp
+ntp_enabled: true
+ntp_manage_config: True
+ntp_config_file: /etc/ntp.conf
+ntp_timezone: "{{ timezone }}"
+ntp_servers:
+  - "192.168.10.1"
+ntp_restrict:
+  - "127.0.0.1"
+  - "::1"
+
+# SAMBA
+# https://github.com/bertvv/ansible-role-samba
+samba_users:
+  - name: darkiop
+    password: 
+samba_server_string: "{{ inventory_hostname }}"
+samba_workgroup: "HOME"
+samba_map_to_guest: bad user
+samba_log_size: 1000
+samba_load_homes: true
+samba_apple_extensions: yes 
+samba_server_max_protocol: "SMB3"
+samba_server_min_protocol: "SMB3"
+samba_mitigate_cve_2017_7494: false
+samba_global_include: samba-global-include.conf
+samba_homes_include: samba-homes-include.conf
+
+# SECURITY
+# https://github.com/geerlingguy/ansible-role-security
+security_ssh_port: 22
+security_ssh_permit_root_login: "yes"
+security_autoupdate_enabled: true
+security_autoupdate_reboot: "true"
+security_autoupdate_mail_to: "{{ email }}"
+security_autoupdate_mail_on_error: false
+
+# SMARTD
+# https://github.com/stuvusIT/smartd
+smartd_default_mail_recipients: [ "{{ email }}" ]
+
+# MSMTP
+# https://github.com/chriswayg/ansible-msmtp-mailer
+msmtp_accounts:
+- account:   gmail
+  host:      smtp.gmail.com
+  port:      587
+  auth:      "on"
+  from:      "{{ email }}"
+  user:      "{{ email }}"
+  password:  "{{ email_password }}"
+msmtp_default_account: "gmail"
+msmtp_alias_default : "{{ email }}"
+msmtp_log : "syslog"
+
+# SUDO
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot

@@ -1,0 +1,7 @@
+enable_dotfiles: true
+enable_lsd: true
+enable_navi: true
+enable_bat: true
+enable_btop: true
+enable_dategrep: true
+enable_glances: true

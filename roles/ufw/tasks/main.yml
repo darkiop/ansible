@@ -1,0 +1,33 @@
+- name: enable
+  ufw:
+    state: enabled
+
+- name: allow SSH
+  ufw:
+    direction: in
+    rule: allow
+    port: "{{ security_ssh_port }}"
+
+- name: allow outgoing traffic
+  ufw:
+    direction: out
+    rule: allow
+
+- name: deny incoming traffic
+  ufw:
+    direction: in
+    rule: deny
+
+- name: allow incoming tcp traffic
+  ufw:
+    direction: in
+    rule: allow
+    port: "{{ ufw_allowed_ports_tcp }}"
+    proto: tcp
+
+- name: allow incoming udp traffic
+  ufw:
+    direction: in
+    rule: allow
+    port: "{{ ufw_allowed_ports_udp }}"
+    proto: udp

@@ -1,0 +1,28 @@
+- name: install github3 module
+  pip:
+    name: github3.py
+
+- name: install fzf
+  become: true
+  become_user: root
+  apt: 
+    name: fzf
+    state: present
+    update_cache: true
+
+- name: get the latest release version
+  github_release:
+    user: denisidoro
+    repo: navi
+    action: latest_release
+  register: release
+
+- name: show version
+  debug:
+    var: release
+
+- name: download & unarchive the latest version
+  ansible.builtin.unarchive:
+    src: https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-x86_64-unknown-linux-musl.tar.gz
+    dest: /usr/local/bin
+    remote_src: yes

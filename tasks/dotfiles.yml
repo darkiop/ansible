@@ -1,0 +1,27 @@
+- name: clone the latest dotfiles repo to "{{ username }}/dotfiles"
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: /home/{{ item }}/dotfiles
+    recursive: no
+    force: yes
+  with_items: "{{ username }}"
+
+- name: clone the latest dotfiles repo to /root/dotfiles
+  git:
+    repo: "{{ dotfiles_repo }}"
+    dest: /root/dotfiles
+    recursive: no
+    force: yes
+  with_items: "{{ username }}"
+
+- name: copy dotfiles-install.sh to remote host
+  copy:
+    src: files/scripts/dotfiles/dotfiles-install.sh
+    dest: /tmp/dotfiles-install.sh
+    mode: 0777
+
+- name: install dotfiles for "{{ username }}"
+  command: sudo -u "{{ username }}" bash /tmp/dotfiles-install.sh
+
+- name: install dotfiles for root
+  command: bash /tmp/dotfiles-install.sh

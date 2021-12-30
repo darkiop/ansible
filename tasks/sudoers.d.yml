@@ -1,0 +1,8 @@
+- name: Create a sudoers file for {{ username }} 
+  template:
+    src: sudoers.d.j2
+    dest: /etc/sudoers.d/{{ username }}
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: yes
