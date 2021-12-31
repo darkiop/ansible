@@ -6,10 +6,10 @@
     state: present
     update_cache: true
 
-- name: apt-install - install additional software
+- name: apt-install - install aditional software
   become: true
   become_user: root
   apt: 
-    name: "{{ additional_software }}"
+    name: "{{ aditional_software }}"
     state: present
     update_cache: true

@@ -51,13 +51,13 @@ default_software:
   - wakeonlan
   - speedtest-cli
   - telnet
-additional_software:
+aditional_software:
 
 # USER
 # Ansible Vault: https://docs.ansible.com/ansible/latest/user_guide/vault.html
 user_username: darkiop
 user_password: "{{ vault_user_password }}"
-user_shell: /usr/bin/bash
+user_shell: /bin/bash
 user_dotfiles_repo: https://github.com/darkiop/dotfiles
 user_timezone: Europe/Berlin
 user_locale: en_US.UTF-8

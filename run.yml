@@ -8,9 +8,6 @@
 #  -l = limit host
 #  -e = define a variable
 
-# TODO:
-# create proxmox lxc https://github.com/reminec/ansible-role-proxmox
-
 ---
 ### PROXMOX: CLUSTER
 - hosts: pve_cluster
