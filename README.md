@@ -31,4 +31,4 @@ ansible-vault encrypt group_vars/all/vault
 ansible-vault decrypt group_vars/all/vault
 ```
 ## SSH Public Keys
-files/ssh/<username>.key.pub
+files/ssh/[username].key.pub
