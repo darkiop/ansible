@@ -2,25 +2,25 @@
 #  set_fact:
 #    sudo_group: sudo
   
-- name: create login user "{{ username }}"
+- name: create login user "{{ user_username }}"
   become: yes
   user:
     name: "{{ item }}"
-    password: "{{ password | password_hash('sha512') }}"
+    password: "{{ user_password | password_hash('sha512') }}"
     groups: 
       - sudo
       - users
     state: present
     append: true
     update_password: on_create
-  with_items: "{{ username }}"
+  with_items: "{{ user_username }}"
 
-- name: ensure group "{{ username }}" exists
+- name: ensure group "{{ user_username }}" exists
   become: yes
   group:
     name: "{{ item }}"
     state: present
-  with_items: "{{ username }}"
+  with_items: "{{ user_username }}"
 
 #- name: allow 'sudo' group to have passwordless sudo
 #  become: yes
@@ -34,14 +34,14 @@
 - name: set the default shell
   user: 
     name: "{{ item }}"
-    shell: "{{ shell }}"
-  with_items: "{{ username }}"
+    shell: "{{ user_shell }}"
+  with_items: "{{ user_username }}"
 
 - name: add SSH public key
   authorized_key:
     user: "{{ item }}"
     key: "{{ lookup('file', 'files/ssh/'+ item + '.key.pub') }}"
-  with_items: "{{ username }}"
+  with_items: "{{ user_username }}"
 
 - name: ensure group "sambashare" exists
   when: enable_samba | default(False) 
@@ -54,7 +54,7 @@
   when: enable_samba | default(False) 
   become: yes
   user:
-    name: "{{ username }}"
+    name: "{{ user_username }}"
     groups: 
       - sambashare
     append: true

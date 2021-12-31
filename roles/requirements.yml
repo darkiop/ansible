@@ -1,9 +1,11 @@
 # ansible-galaxy install -r roles/requirements.yml
-# https://galaxy.ansible.com/home
+# https://galaxy.ansible.com
+
 roles:
-  - name: bertvv.samba
-  - name: chriswayg.msmtp-mailer
-  - name: stuvusit.smartd
-  - name: geerlingguy.security
-  - name: geerlingguy.ntp
-  - name: lae.proxmox
+  - name: bertvv.samba                  # https://galaxy.ansible.com/bertvv/samba
+  - name: chriswayg.msmtp-mailer        # https://galaxy.ansible.com/chriswayg/msmtp-mailer
+  - name: stuvusit.smartd               # https://galaxy.ansible.com/stuvusit/smartd
+  - name: geerlingguy.security          # https://galaxy.ansible.com/geerlingguy/security
+  - name: geerlingguy.ntp               # https://galaxy.ansible.com/geerlingguy/ntp
+  - name: lae.proxmox                   # https://galaxy.ansible.com/lae/proxmox
+  - name: djarbz.pvediscorddark_theme   # https://galaxy.ansible.com/djarbz/pvediscorddark_theme

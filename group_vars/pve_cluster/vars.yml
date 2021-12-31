@@ -7,13 +7,10 @@ enable_btop: true
 enable_dategrep: true
 enable_glances: true
 
-# UFW
-ufw_allowed_ports_tcp: 1111,2222
-ufw_allowed_ports_udp: 3333,4444
-
 # PROXMOX
 pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
 pve_remove_subscription_warning: true
+pve_watchdog: none
 
 # SUDO
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/pct, /usr/sbin/qm
@@ -26,11 +23,11 @@ samba_shares:
     read_only: no
     writable: yes
     browseable: yes
-    owner: "{{ username }}"
+    owner: "{{ user_username }}"
     path: "/var/lib/vz/dump"
-    valid_users: "{{ username }}"
-    write_list: "{{ username }}"
-    group: "{{ username }}"
+    valid_users: "{{ user_username }}"
+    write_list: "{{ user_username }}"
+    group: "{{ user_username }}"
 
 # SOFTWARE
 default_software:

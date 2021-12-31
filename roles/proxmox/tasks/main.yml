@@ -57,7 +57,13 @@
   ansible.builtin.systemd:
     state: restarted
     name: watchdog-muxx 
+    # TODO: wenn watchdog-muxx = failed, reboot erforderlich
 
+# DARK-THEME (https://github.com/Weilbyte/PVEDiscordDark)
+# TODO
+#bash <(curl -s https://raw.githubusercontent.com/Weilbyte/PVEDiscordDark/master/PVEDiscordDark.sh ) install
+
+# WAKE-ON-LAN
 # TODO
 # auf pve01 mit Mac-Adresse von pve01-cl (= interner LAN-Port)
 #pvenode config set -wakeonlan 1c:69:7a:02:5e:3f

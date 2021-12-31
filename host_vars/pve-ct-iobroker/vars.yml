@@ -1,16 +1,3 @@
-# ESSENTIALS
-enable_dotfiles: true
-enable_lsd: true
-enable_navi: true
-enable_bat: true
-enable_btop: true
-enable_dategrep: true
-enable_glances: true
-
-# UFW
-ufw_allowed_ports_tcp: 1111,2222
-ufw_allowed_ports_udp: 3333,4444
-
 # SAMBA
 samba_shares:
   - name: opt-iobroker
@@ -19,8 +6,8 @@ samba_shares:
     read_only: no
     writable: yes
     browseable: yes
-    owner: "{{ username }}"
+    owner: "{{ user_username }}"
     path: "/opt/iobroker"
-    valid_users: "{{ username }}"
-    write_list: "{{ username }}"
-    group: "{{ username }}"
+    valid_users: "{{ user_username }}"
+    write_list: "{{ user_username }}"
+    group: "{{ user_username }}"

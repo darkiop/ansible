@@ -12,33 +12,37 @@
 # create proxmox lxc https://github.com/reminec/ansible-role-proxmox
 
 ---
-### PROXMOX: CLUSTER ###
+### PROXMOX: CLUSTER
 - hosts: pve_cluster
   become: true
   become_user: root
 
   roles:
 
-    # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: essentials
       tags: essentials
 
-    # NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
       tags: ntp
 
-    # SAMBA (https://github.com/bertvv/ansible-role-samba)
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
       tags: samba
     
-    # PROXMOX (https://github.com/lae/ansible-role-proxmox)
-    # TODO
+    ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
+    # TODO: descripe
     - role: lae.proxmox
       tags: lae.proxmox
+    # Install Proxmox-Dark-Theme (uninstall with: python3 /opt/xxxxxxxxxx/PVEDiscordDark.py -a uninstall)
+    - role: djarbz.pvediscorddark_theme
+      tags: proxmox-dark-theme
+    # TODO: descripe
     - role: proxmox
       tags: proxmox
     
-    # SMART (https://github.com/stuvusIT/smartd)
+    ## SMART (https://github.com/stuvusIT/smartd)
     - role: stuvusit.smartd
       smartd_devices:
         /dev/nvme0n1:
@@ -46,7 +50,7 @@
           temperature_report_crit: 60
       tags: smartd
     
-    # MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
       tags: msmtp
     - role: msmtp
@@ -54,36 +58,38 @@
   
   tasks:
   
-  # SUDO
+  ## SUDO
   - import_tasks: tasks/sudoers.d.yml
     tags: sudoers
 
-### PROXMOX: CONTAINER ###
+### PROXMOX: CONTAINER
 - hosts: pve_ct
   become: true
   become_user: root
 
   roles:
     
-    # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: essentials
       tags: essentials
     
-    # NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
       tags: ntp
     
-    # SAMBA (https://github.com/bertvv/ansible-role-samba)
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
       tags: samba
     
-    # SECURITY (https://github.com/geerlingguy/ansible-role-security)
+    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
       tags: security
-    
-    # FIREWALL
-    - role: ufw
-      tags: firewall
+
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
+    - role: msmtp
+      tags: msmtp
 
   # DEBUG
   #vars_prompt:

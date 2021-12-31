@@ -1,7 +1,7 @@
-- name: Create a sudoers file for {{ username }} 
+- name: Create a sudoers file for {{ user_username }} 
   template:
     src: sudoers.d.j2
-    dest: /etc/sudoers.d/{{ username }}
+    dest: /etc/sudoers.d/{{ user_username }}
     owner: root
     group: root
     mode: ug+rwX,o=

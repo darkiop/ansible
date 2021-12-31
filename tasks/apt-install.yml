@@ -1,6 +1,15 @@
 - name: apt-install - install default software
+  become: true
+  become_user: root
   apt: 
     name: "{{ default_software }}"
     state: present
     update_cache: true
+
+- name: apt-install - install additional software
   become: true
+  become_user: root
+  apt: 
+    name: "{{ additional_software }}"
+    state: present
+    update_cache: true

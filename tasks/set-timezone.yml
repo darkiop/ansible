@@ -1,3 +1,3 @@
-- name: set-timezone to "{{ timezone }}"
+- name: set-timezone to "{{ user_timezone }}"
   timezone:
-    name: "{{ timezone }}"
+    name: "{{ user_timezone }}"

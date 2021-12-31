@@ -1,6 +1,6 @@
 - name: lsd - install github3 module
   pip:
-    name: lsd - github3.py
+    name: github3.py
 
 - name: lsd - get the latest release version
   github_release:
@@ -22,20 +22,28 @@
   shell:
     cmd: dpkg -i /tmp/lsd_{{ release['tag'] }}_amd64.deb && rm /tmp/lsd_{{ release['tag'] }}_amd64.deb
 
-- name: lsd - create .config directory for "{{ username }}"
+#- name: lsd - create .config directory for "{{ user_username }}"
+#  become: true
+#  become_user: "{{ user_username }}"
+#  shell:
+#    cmd: mkdir -p ~/.config/lsd
+
+- name: lsd - create .config directory for "{{ user_username }}"
   become: true
-  become_user: "{{ username }}"
-  shell:
-    cmd: mkdir -p ~/.config/lsd
+  become_user: "{{ user_username }}"
+  file:
+    path: ~/.config/lsd
+    state: directory
+    mode: '0755'
 
 - name: lsd - copy config.yaml to .config directory
   become: true
-  become_user: "{{ username }}"
+  become_user: "{{ user_username }}"
   copy: 
     src: files/config/lsd/config.yaml
     dest: ~/.config/lsd/config.yaml
-    owner: "{{ username }}"
-    group: "{{ username }}"
+    owner: "{{ user_username }}"
+    group: "{{ user_username }}"
     mode: "0644"
 
 - name: lsd - create .config directory for root
