@@ -1,10 +1,12 @@
-- name: dotfiles - recursively remove old dotfiles directory ("{{ user_username }}")
+# user_username
+
+- name: dotfiles - recursively remove old dotfiles directory - {{ user_username }}
   ansible.builtin.file:
     path: /home/{{ item }}/dotfiles
     state: absent
   with_items: "{{ user_username }}"
 
-- name: dotfiles - clone the latest dotfiles repo to "{{ user_username }}/dotfiles"
+- name: dotfiles - clone the latest dotfiles repo to {{ user_username }}/dotfiles
   become: true
   become_user: "{{ user_username }}"
   git:
@@ -14,7 +16,34 @@
     force: yes
   with_items: "{{ user_username }}"
 
-- name: dotfiles - recursively remove old dotfiles directory (root)
+- name: dotfiles - copy dotfiles-install.sh - {{ user_username }}
+  become: true
+  become_user: "{{ user_username }}"
+  copy:
+    src: files/scripts/dotfiles/dotfiles-install.sh
+    dest: ~/dotfiles-install.sh
+    mode: 0777
+
+- name: dotfiles - install dotfiles for {{ user_username }}
+  become: true
+  become_user: "{{ user_username }}"
+  command: bash ~/dotfiles-install.sh
+
+- name: dotfiles - git config pull.rebase false - {{ user_username }}
+  become: true
+  become_user: "{{ user_username }}"
+  command: chdir=~/dotfiles git config pull.rebase false
+
+- name: dotfiles - remove dotfiles-install.sh - {{ user_username }}
+  become: true
+  become_user: "{{ user_username }}"
+  file:
+    path: ~/dotfiles-install.sh
+    state: absent
+
+# root
+
+- name: dotfiles - recursively remove old dotfiles directory - root
   ansible.builtin.file:
     path: /root/dotfiles
     state: absent
@@ -25,19 +54,6 @@
     dest: /root/dotfiles
     recursive: no
     force: yes
-
-- name: dotfiles - copy dotfiles-install.sh - "{{ user_username }}"
-  become: true
-  become_user: "{{ user_username }}"
-  copy:
-    src: files/scripts/dotfiles/dotfiles-install.sh
-    dest: ~/dotfiles-install.sh
-    mode: 0777
-
-- name: dotfiles - install dotfiles for "{{ user_username }}"
-  become: true
-  become_user: "{{ user_username }}"
-  command: bash ~/dotfiles-install.sh
 
 - name: dotfiles - copy dotfiles-install.sh - root
   become: true
@@ -52,12 +68,10 @@
   become_user: root
   command: bash ~/dotfiles-install.sh
 
-- name: dotfiles - remove dotfiles-install.sh - "{{ user_username }}"
+- name: dotfiles - git config pull.rebase false - root
   become: true
-  become_user: "{{ user_username }}"
-  file:
-    path: ~/dotfiles-install.sh
-    state: absent
+  become_user: root
+  command: chdir=~/dotfiles git config pull.rebase false
 
 - name: dotfiles - remove dotfiles-install.sh - root
   become: true
