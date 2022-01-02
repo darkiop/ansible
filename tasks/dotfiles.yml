@@ -1,10 +1,10 @@
-# TODO
-#TASK [essentials : clone the latest dotfiles repo to "darkiop/dotfiles"] ****************************************************************************************************************************
-#changed: [ansible-2] => (item=darkiop)
-#[WARNING]: Module remote_tmp /home/darkiop/.ansible/tmp did not exist and was created with a mode of 0700, this may cause issues when running as another user. To avoid this, create the remote_tmp
-#dir with the correct permissions manually
+- name: dotfiles - recursively remove old dotfiles directory ("{{ user_username }}")
+  ansible.builtin.file:
+    path: /home/{{ item }}/dotfiles
+    state: absent
+  with_items: "{{ user_username }}"
 
-- name: clone the latest dotfiles repo to "{{ user_username }}/dotfiles"
+- name: dotfiles - clone the latest dotfiles repo to "{{ user_username }}/dotfiles"
   become: true
   become_user: "{{ user_username }}"
   git:
@@ -14,15 +14,19 @@
     force: yes
   with_items: "{{ user_username }}"
 
-- name: clone the latest dotfiles repo to /root/dotfiles
+- name: dotfiles - recursively remove old dotfiles directory (root)
+  ansible.builtin.file:
+    path: /root/dotfiles
+    state: absent
+
+- name: dotfiles - clone the latest dotfiles repo to /root/dotfiles
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /root/dotfiles
     recursive: no
     force: yes
-  with_items: "{{ user_username }}"
 
-- name: copy dotfiles-install.sh - "{{ user_username }}"
+- name: dotfiles - copy dotfiles-install.sh - "{{ user_username }}"
   become: true
   become_user: "{{ user_username }}"
   copy:
@@ -30,12 +34,12 @@
     dest: ~/dotfiles-install.sh
     mode: 0777
 
-- name: install dotfiles for "{{ user_username }}"
+- name: dotfiles - install dotfiles for "{{ user_username }}"
   become: true
   become_user: "{{ user_username }}"
   command: bash ~/dotfiles-install.sh
 
-- name: copy dotfiles-install.sh - root
+- name: dotfiles - copy dotfiles-install.sh - root
   become: true
   become_user: root
   copy:
@@ -43,19 +47,19 @@
     dest: ~/dotfiles-install.sh
     mode: 0777
 
-- name: install dotfiles for root
+- name: dotfiles - install dotfiles for root
   become: true
   become_user: root
   command: bash ~/dotfiles-install.sh
 
-- name: remove dotfiles-install.sh - "{{ user_username }}"
+- name: dotfiles - remove dotfiles-install.sh - "{{ user_username }}"
   become: true
   become_user: "{{ user_username }}"
   file:
     path: ~/dotfiles-install.sh
     state: absent
 
-- name: remove dotfiles-install.sh - root
+- name: dotfiles - remove dotfiles-install.sh - root
   become: true
   become_user: root
   file:

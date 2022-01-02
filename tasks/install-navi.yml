@@ -1,8 +1,8 @@
-- name: install github3 module
+- name: navi - install github3 module
   pip:
     name: github3.py
 
-- name: install fzf
+- name: navi - install fzf
   become: true
   become_user: root
   apt: 
@@ -10,19 +10,26 @@
     state: present
     update_cache: true
 
-- name: get the latest release version
+- name: navi - get the latest release version
   github_release:
     user: denisidoro
     repo: navi
     action: latest_release
   register: release
 
-- name: show version
+- name: navi - show version
   debug:
     var: release
 
-- name: download & unarchive the latest version
-  ansible.builtin.unarchive:
+- name: navi - download & unarchive the latest version
+  unarchive:
     src: https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-x86_64-unknown-linux-musl.tar.gz
     dest: /usr/local/bin
     remote_src: yes
+
+- name: navi - Change file ownership, group and permissions
+  file:
+    path: /usr/local/bin/navi
+    owner: root
+    group: root
+    mode: '0755'

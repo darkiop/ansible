@@ -1,24 +1,24 @@
-- name: install github3 module
+- name: bat - install github3 module
   pip:
     name: github3.py
 
-- name: get the latest release version
+- name: bat - get the latest release version
   github_release:
     user: sharkdp
     repo: bat
     action: latest_release
   register: release
 
-- name: show version
+- name: bat - show version
   debug:
     var: release
 
-- name: get the latest amd64 deb package
+- name: bat - get the latest amd64 deb package
   get_url: 
     url: "https://github.com/sharkdp/bat/releases/download/{{ release['tag'] }}/bat_{{ release['tag'] | regex_replace('^v','') }}_amd64.deb"
     dest: /tmp
   when: '"x86_64" in ansible_architecture'
 
-- name: install the deb package 
+- name: bat - install the deb package 
   shell:
     cmd: dpkg -i /tmp/bat_{{ release['tag'] | regex_replace('^v','') }}_amd64.deb && rm /tmp/bat_{{ release['tag'] | regex_replace('^v','') }}_amd64.deb

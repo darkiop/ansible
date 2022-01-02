@@ -4,4 +4,5 @@
     cache_valid_time: 3600
     upgrade: safe
   register: apt
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - debug: msg={{ apt.stdout.split('\n')[:-1] }}

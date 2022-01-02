@@ -3,6 +3,7 @@ enable_dotfiles: true
 enable_lsd: true
 enable_navi: true
 enable_bat: true
+enable_fd: true
 enable_btop: true
 enable_dategrep: true
 enable_glances: true
@@ -30,5 +31,5 @@ samba_shares:
     group: "{{ user_username }}"
 
 # SOFTWARE
-default_software:
+apt_aditional_software:
   - systemd-timesyncd

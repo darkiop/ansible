@@ -1,49 +1,72 @@
 # apt-update
 - import_tasks: tasks/apt-update.yml
   tags: apt-update
+
 # apt-upgrade
 - import_tasks: tasks/apt-upgrade.yml
   tags: apt-upgrade
+
 # apt-install
 - import_tasks: tasks/apt-install.yml
   tags: apt-install
+
 # locales
 - import_tasks: tasks/set-locales.yml
   tags: locales
+
 # timezone
 - import_tasks: tasks/set-timezone.yml
   tags: timezone
+
 # adduser
 - import_tasks: tasks/adduser.yml
   tags: adduser
+
 # sudo
 - import_tasks: tasks/sudoers.d.yml
   tags: sudo
+
 # dotfiles
 - import_tasks: tasks/dotfiles.yml
   tags: dotfiles
   when: enable_dotfiles | default(False)
+
 # lsd
 - import_tasks: tasks/install-lsd.yml
   tags: install-lsd
   when: enable_lsd | default(False)
+
 # navi
 - import_tasks: tasks/install-navi.yml
   tags: install-navi
   when: enable_navi | default(False)
+
 # bat
 - import_tasks: tasks/install-bat.yml
   tags: install-bat
   when: enable_bat | default(False)
+
+# fd
+- import_tasks: tasks/install-fd.yml
+  tags: install-fd
+  when: enable_fd | default(False)
+
 # btop
 - import_tasks: tasks/install-btop.yml
   tags: install-btop
   when: enable_btop | default(False)
+
 # dategrep
 - import_tasks: tasks/install-dategrep.yml
   tags: install-dategrep
   when: enable_dategrep | default(False)
+
 # glances
 - import_tasks: tasks/install-glances.yml
   tags: install-glances
+  when: enable_glances | default(False)
+
+# cht.sh
+- import_tasks: tasks/install-cht.sh.yml
+  tags: install-chtsh
   when: enable_glances | default(False)

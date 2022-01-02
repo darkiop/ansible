@@ -1,23 +1,23 @@
-- name: install github3 module
+- name: dategrep - install github3 module
   pip:
     name: github3.py
 
-- name: get the latest release version
+- name: dategrep - get the latest release version
   github_release:
     user: mdom
     repo: dategrep
     action: latest_release
   register: release
 
-- name: show version
+- name: dategrep - show version
   debug:
     var: release
 
-- name: get the latest deb package
+- name: dategrep - get the latest deb package
   get_url: 
     url: "https://github.com/mdom/dategrep/releases/download/{{ release['tag'] }}/dategrep_{{ release['tag'] | regex_replace('^v','') }}+nmu5_all.deb"
     dest: /tmp
 
-- name: install the deb package 
+- name: dategrep - install the deb package 
   shell:
     cmd: dpkg -i /tmp/dategrep_{{ release['tag'] | regex_replace('^v','') }}+nmu5_all.deb && rm /tmp/dategrep_{{ release['tag'] | regex_replace('^v','') }}+nmu5_all.deb

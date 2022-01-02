@@ -22,12 +22,6 @@
   shell:
     cmd: dpkg -i /tmp/lsd_{{ release['tag'] }}_amd64.deb && rm /tmp/lsd_{{ release['tag'] }}_amd64.deb
 
-#- name: lsd - create .config directory for "{{ user_username }}"
-#  become: true
-#  become_user: "{{ user_username }}"
-#  shell:
-#    cmd: mkdir -p ~/.config/lsd
-
 - name: lsd - create .config directory for "{{ user_username }}"
   become: true
   become_user: "{{ user_username }}"

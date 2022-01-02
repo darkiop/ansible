@@ -2,14 +2,16 @@
   become: true
   become_user: root
   apt: 
-    name: "{{ default_software }}"
+    name: "{{ apt_default_software }}"
     state: present
     update_cache: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 
 - name: apt-install - install aditional software
   become: true
   become_user: root
   apt: 
-    name: "{{ aditional_software }}"
+    name: "{{ apt_aditional_software }}"
     state: present
     update_cache: true
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

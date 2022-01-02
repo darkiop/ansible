@@ -1,5 +1,6 @@
 [pve_ct]
 ansible-2:22 ansible_user=root ansible_connection=ssh ansible_ssh_private_key_file=/home/darkiop/.ssh/id_rsa
+pve-ct-heimdall:22 ansible_user=darkiop
 
 [pve_cluster]
 pve01:22 ansible_user=root ansible_connection=ssh ansible_ssh_private_key_file=/home/darkiop/.ssh/id_rsa

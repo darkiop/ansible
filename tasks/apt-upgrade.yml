@@ -1,15 +1,10 @@
-#- name: apt-upgrade - upgrade all packages on servers
-#  apt: 
-#    upgrade: dist
-#    force_apt_get: yes
-#    debug: msg={{ apt.stdout.split('\n')[:-1] }}
-
 - name: apt update / upgrade
   apt:
     update_cache: yes
     cache_valid_time: 3600
     upgrade: safe
   register: apt
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - debug: msg={{ apt.stdout.split('\n')[:-1] }}
 
 - name: check if a reboot is needed on all servers
