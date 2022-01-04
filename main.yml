@@ -1,4 +1,4 @@
-# ssh-copy-id -i id_rsa.pub root@host
+# ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
 #
 # ansible-playbook main.yml -i hosts
 # ansible-playbook main.yml -i hosts --tags <tag1>,<tag2>
@@ -32,7 +32,7 @@
     # TODO: descripe
     - role: lae.proxmox
       tags: lae.proxmox
-    # Install Proxmox-Dark-Theme (uninstall with: python3 /opt/xxxxxxxxxx/PVEDiscordDark.py -a uninstall)
+    # Install Proxmox-Dark-Theme (uninstall with: python3 PVEDiscordDark.py -a uninstall)
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
     # TODO: descripe
@@ -53,11 +53,11 @@
     - role: msmtp
       tags: msmtp
   
-  tasks:
-  
+  #tasks:
+  #
   ## SUDO
-  - import_tasks: tasks/sudoers.d.yml
-    tags: sudoers
+  #- import_tasks: tasks/sudoers.d.yml
+  #  tags: sudoers
 
 ### PROXMOX: CONTAINER
 - hosts: pve_ct
@@ -78,15 +78,15 @@
     - role: bertvv.samba
       tags: samba
     
-    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
-    - role: geerlingguy.security
-      tags: security
-
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
       tags: msmtp
     - role: msmtp
       tags: msmtp
+
+    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
+    - role: geerlingguy.security
+      tags: security
 
   # DEBUG
   #vars_prompt:
