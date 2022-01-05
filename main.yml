@@ -1,9 +1,9 @@
 # ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
 #
-# ansible-playbook main.yml -i hosts
-# ansible-playbook main.yml -i hosts --tags <tag1>,<tag2>
-# ansible-playbook main.yml -i hosts -l <host>
-# ansible-playbook main.yml -i hosts -e <variable>=<value>
+# ansible-playbook main.yml -i hosts.yml
+# ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
+# ansible-playbook main.yml -i hosts.yml -l <host>
+# ansible-playbook main.yml -i hosts.yml -e <variable>=<value>
 #  -i = inventory file
 #  -l = limit host
 #  -e = define a variable
@@ -60,7 +60,7 @@
   #  tags: sudoers
 
 ### PROXMOX: CONTAINER
-- hosts: pve_ct
+- hosts: pve_ct_vm
   become: true
   become_user: root
 

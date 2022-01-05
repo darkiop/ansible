@@ -34,39 +34,47 @@
 # lsd
 - import_tasks: tasks/install-lsd.yml
   tags: install-lsd
+  ignore_errors: yes
   when: enable_lsd | default(False)
 
 # navi
 - import_tasks: tasks/install-navi.yml
   tags: install-navi
+  ignore_errors: yes
   when: enable_navi | default(False)
 
 # bat
 - import_tasks: tasks/install-bat.yml
   tags: install-bat
+  ignore_errors: yes
   when: enable_bat | default(False)
 
 # fd
 - import_tasks: tasks/install-fd.yml
   tags: install-fd
+  ignore_errors: yes
   when: enable_fd | default(False)
 
 # btop
 - import_tasks: tasks/install-btop.yml
   tags: install-btop
+  ignore_errors: yes
   when: enable_btop | default(False)
 
 # dategrep
 - import_tasks: tasks/install-dategrep.yml
   tags: install-dategrep
+  ignore_errors: yes
   when: enable_dategrep | default(False)
 
 # glances
 - import_tasks: tasks/install-glances.yml
   tags: install-glances
+  ignore_errors: yes
   when: enable_glances | default(False)
 
 # cht.sh
 - import_tasks: tasks/install-cht.sh.yml
   tags: install-chtsh
+  ignore_errors: yes
   when: enable_glances | default(False)

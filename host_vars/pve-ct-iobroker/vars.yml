@@ -10,4 +10,5 @@ samba_shares:
     path: "/opt/iobroker"
     valid_users: "{{ user_username }}"
     write_list: "{{ user_username }}"
-    group: "{{ user_username }}"
+    group: iobroker
+    user: iobroker

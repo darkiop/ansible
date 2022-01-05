@@ -11,4 +11,4 @@ samba_shares:
     valid_users: "{{ user_username }}"
     write_list: "{{ user_username }}"
     group: www-data
-    #user: www-data
+    user: www-data
