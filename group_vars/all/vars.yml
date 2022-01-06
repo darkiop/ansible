@@ -80,7 +80,7 @@ ntp_restrict:
 
 # SAMBA
 # https://github.com/bertvv/ansible-role-samba
-samba_users.name:
+samba_users:
   - name: darkiop
     password: "{{ vault_user_samba_password }}"
 samba_server_string: "{{ inventory_hostname }}"

@@ -1,7 +1,4 @@
-#- name: set the name of a sudo group
-#  set_fact:
-#    sudo_group: sudo
-  
+---
 - name: create login user "{{ user_username }}"
   become: yes
   user:
@@ -21,15 +18,6 @@
     name: "{{ item }}"
     state: present
   with_items: "{{ user_username }}"
-
-#- name: allow 'sudo' group to have passwordless sudo
-#  become: yes
-#  lineinfile:
-#    path: /etc/sudoers
-#    state: present
-#    regexp: '^%{{ sudo_group }}'
-#    line: '%{{ sudo_group }} ALL=(ALL) NOPASSWD: ALL'
-#    validate: '/usr/sbin/visudo -cf %s'
 
 - name: set the default shell
   user: 

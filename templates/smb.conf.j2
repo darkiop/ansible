@@ -1,3 +1,5 @@
+# smb.conf template, based on https://github.com/bertvv/ansible-role-samba/blob/master/templates/smb.conf.j2
+#
 # {{ ansible_managed }}
 
 [global]
@@ -139,6 +141,9 @@
   create mode = {{ share.create_mode|default('0664') }}
   force create mode = {{ share.force_create_mode|default('0664') }}
   directory mode = {{ share.directory_mode|default('0775') }}
+{% if share.allow_hosts is defined %}
+  allow hosts = {% for entry in share.allow_hosts %}{{ entry }}{% if not loop.last %}, {% endif %}{% endfor %}
+{% endif %}
   force directory mode = {{ share.force_directory_mode|default('0775') }}
 {% if share.include_file is defined %}
   include = {{ samba_configuration_dir }}/{{ share.include_file }}

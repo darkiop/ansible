@@ -1,3 +1,5 @@
+# https://github.com/Peltoche/lsd/
+
 - name: lsd - install github3 module
   pip:
     name: github3.py
@@ -13,15 +15,54 @@
   debug:
     var: release
 
+# x86_64
 - name: lsd - get the latest amd64 deb package
   get_url: 
     url: "https://github.com/Peltoche/lsd/releases/download/{{ release['tag'] }}/lsd_{{ release['tag'] }}_amd64.deb"
     dest: /tmp
+  when: ansible_architecture == "x86_64"
 
-- name: lsd - install the deb package 
+- name: lsd - install the amd64 deb package 
   shell:
     cmd: dpkg -i /tmp/lsd_{{ release['tag'] }}_amd64.deb && rm /tmp/lsd_{{ release['tag'] }}_amd64.deb
+  when: ansible_architecture == "x86_64"
 
+# ARM64
+- name: lsd - mkdir temp directory
+  shell:
+    cmd: mkdir -p /tmp/lsd
+  when: ansible_architecture == "armv7l"
+
+- name: lsd - extract tar.gz
+  unarchive:
+    src: https://github.com/Peltoche/lsd/releases/download/{{ release['tag'] }}/lsd-{{ release['tag'] }}-arm-unknown-linux-gnueabihf.tar.gz
+    dest: /tmp
+    remote_src: yes
+  when: ansible_architecture == "armv7l"
+
+- name: lsd - copy to /usr/local/bin
+  become: true
+  become_user: root
+  copy:
+    src: /tmp/lsd-{{ release['tag'] }}-arm-unknown-linux-gnueabihf/lsd
+    dest: /usr/local/bin/lsd
+    mode: 0755
+    remote_src: yes
+  when: ansible_architecture == "armv7l"
+
+- name: lsd - delete tmp files
+  file:
+    state: absent
+    path: /tmp/lsd
+  when: ansible_architecture == "armv7l"
+
+- name: lsd - delete tmp files
+  file:
+    state: absent
+    path: /tmp/lsd-{{ release['tag'] }}-arm-unknown-linux-gnueabihf.tar.gz
+  when: ansible_architecture == "armv7l"
+
+# USER CONFIG
 - name: lsd - create .config directory for "{{ user_username }}"
   become: true
   become_user: "{{ user_username }}"
@@ -43,8 +84,10 @@
 - name: lsd - create .config directory for root
   become: true
   become_user: root
-  shell:
-    cmd: mkdir -p /root/.config/lsd
+  file:
+    path: /root/.config/lsd
+    state: directory
+    mode: '0755'
 
 - name: lsd - copy config.yaml to .config directory
   become: true

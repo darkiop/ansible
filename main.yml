@@ -7,6 +7,8 @@
 #  -i = inventory file
 #  -l = limit host
 #  -e = define a variable
+#
+# ansible loki -i hosts.yml -m setup -a 'filter=ansible_architecture'
 
 ---
 ### PROXMOX: CLUSTER
@@ -52,12 +54,6 @@
       tags: msmtp
     - role: msmtp
       tags: msmtp
-  
-  #tasks:
-  #
-  ## SUDO
-  #- import_tasks: tasks/sudoers.d.yml
-  #  tags: sudoers
 
 ### PROXMOX: CONTAINER
 - hosts: pve_ct_vm
@@ -87,6 +83,21 @@
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
       tags: security
+
+### RASPBERRY PIs
+- hosts: rpi
+  become: true
+  become_user: root
+
+  roles:
+    
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: essentials
+      tags: essentials
+  
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: ntp
 
   # DEBUG
   #vars_prompt:
