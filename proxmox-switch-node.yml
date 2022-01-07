@@ -1,0 +1,35 @@
+# ansible-playbook proxmox-switch-node.yml -l pve01
+# Example:
+#  search: group pve01
+#  replace: group pve02
+---
+- hosts: pve_cluster
+  become: true
+  become_user: root
+
+  vars_prompt:
+  
+  - name: "search"
+    prompt: "search (e.g. 'group pve01')"
+    private: no
+  
+  - name: "replace"
+    prompt: "replace"
+    private: no
+  
+  tasks:
+    - name: Print the gateway for each host when defined
+      debug:
+        msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
+
+    - name: Backup resources.cfg
+      copy:
+        src: /tmp/resources.cfg
+        dest: /tmp/resources.cfg.bak
+        remote_src: yes
+
+    - name: Edit resources.cfg
+      replace:
+        path: /tmp/resources.cfg
+        regexp: "{{ search }}"
+        replace: "{{ replace }}"
