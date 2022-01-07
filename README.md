@@ -24,10 +24,9 @@ apt_default_software:
 # aditional software, defined in host_vars/<host>/vars.yml
 apt_aditional_software:
 ```
-## Passwords
+## Vault
 
-group_vars/all/vault
-
+**group_vars/all/vault**
 ```
 vault_user_password: <password>
 vault_user_email_password: <password>
@@ -35,9 +34,16 @@ vault_user_samba_password: <password>
 ansible_sudo_pass: <password>
 ```
 
+**encrypt**
 ```
 ansible-vault encrypt group_vars/all/vault
+```
+
+**decrypt**
+```
 ansible-vault decrypt group_vars/all/vault
 ```
 ## SSH Public Keys
+```
 files/ssh/[username].key.pub
+```
