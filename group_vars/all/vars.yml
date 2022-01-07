@@ -41,7 +41,6 @@ apt_default_software:
   - iproute2
   - curl
   # MONITORING
-  - bmon
   - htop
   - lnav
   - iperf3
@@ -52,6 +51,7 @@ apt_default_software:
   - telnet
 apt_aditional_software:
   # - exa
+  # - bmon
 
 # USER 
 # Ansible Vault: - https://docs.ansible.com/ansible/latest/user_guide/vault.html
