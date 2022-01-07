@@ -1,0 +1,24 @@
+# user_username
+
+- name: dotfiles - clone the latest dotfiles repo to {{ user_username }}/dotfiles
+  become: true
+  become_user: "{{ user_username }}"
+  git:
+    repo: "{{ user_dotfiles_repo }}"
+    dest: /home/{{ item }}/dotfiles
+    recursive: no
+    force: yes
+    update: yes
+    version: master
+  with_items: "{{ user_username }}"
+
+# root
+
+- name: dotfiles - clone the latest dotfiles repo to /root/dotfiles
+  git:
+    repo: "{{ user_dotfiles_repo }}"
+    dest: /root/dotfiles
+    recursive: no
+    force: yes
+    update: yes
+    version: master

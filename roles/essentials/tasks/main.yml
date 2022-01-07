@@ -27,7 +27,7 @@
   tags: sudo
 
 # dotfiles
-- import_tasks: tasks/dotfiles.yml
+- import_tasks: tasks/dotfiles-install.yml
   tags: dotfiles
   when: enable_dotfiles | default(False)
 
