@@ -6,7 +6,7 @@
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /home/{{ item }}/dotfiles
-    recursive: no
+    recursive: yes # yes = incl. submodules
     force: yes
     update: yes
     version: master
@@ -18,7 +18,7 @@
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /root/dotfiles
-    recursive: no
+    recursive: yes # yes = incl. submodules
     force: yes
     update: yes
     version: master
