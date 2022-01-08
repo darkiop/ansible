@@ -33,4 +33,8 @@ else
   echo "create: ~/.byobu"
   ln -s ~/dotfiles/config/byobu ~/.byobu
 fi
+
+# install vimrc
+bash $HOME/dotfiles/modules/vimrc/install_awesome_parameterized.sh $HOME/dotfiles/modules/vimrc $USER
+
 echo

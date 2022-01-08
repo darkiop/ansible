@@ -12,7 +12,7 @@
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /home/{{ item }}/dotfiles
-    recursive: no
+    recursive: yes # yes = incl. submodules
     force: yes
   with_items: "{{ user_username }}"
 
@@ -52,7 +52,7 @@
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /root/dotfiles
-    recursive: no
+    recursive: yes # yes = incl. submodules
     force: yes
 
 - name: dotfiles - copy dotfiles-install.sh - root

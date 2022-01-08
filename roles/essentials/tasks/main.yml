@@ -28,7 +28,7 @@
 
 # dotfiles
 - import_tasks: tasks/dotfiles-install.yml
-  tags: dotfiles
+  tags: install-dotfiles
   when: enable_dotfiles | default(False)
 
 # lsd
