@@ -45,8 +45,8 @@
     - role: stuvusit.smartd
       smartd_devices:
         /dev/nvme0n1:
-          temperature_report_info: 50
-          temperature_report_crit: 60
+          temperature_report_info: 55
+          temperature_report_crit: 65
       tags: smartd
     
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
