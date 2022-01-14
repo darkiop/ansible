@@ -1,3 +1,4 @@
+# ansible-playbook print-host-architectures.yml
 ---
 - hosts: all
   become: true
