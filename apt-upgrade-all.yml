@@ -1,0 +1,7 @@
+# ansible-playbook apt-upgrade-all.yml
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - import_tasks: tasks/apt-upgrade.yml
