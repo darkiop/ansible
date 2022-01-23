@@ -10,3 +10,4 @@ roles:
   - name: lae.proxmox                   # https://galaxy.ansible.com/lae/proxmox
   - name: djarbz.pvediscorddark_theme   # https://galaxy.ansible.com/djarbz/pvediscorddark_theme
   - name: djarbz.proxmox_backup_client  # https://galaxy.ansible.com/djarbz/proxmox_backup_client
+  - name: jnv.unattended-upgrades       # https://galaxy.ansible.com/jnv/unattended-upgrades
