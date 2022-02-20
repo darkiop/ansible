@@ -1,7 +1,16 @@
 {
-  "folders": [
-    {
-      "path": "."
-    }
-  ]
+	"folders": [
+		{
+			"name": "ansible",
+			"path": "."
+		}
+	],
+	"settings": {
+		"ansible.ansibleLint.path": "/usr/bin/ansible-lint"
+	},
+	"extensions": {
+		"recommendations": [
+			"zhuangtongfa.material-theme"
+		]
+	}
 }

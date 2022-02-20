@@ -127,4 +127,4 @@ ufw_allowed_ports_tcp: "{{security_ssh_port}}"
 ufw_allowed_ports_udp: 
 
 # SUDO
-sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
