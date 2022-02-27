@@ -1,6 +1,6 @@
 # https://github.com/sharkdp/fd
 
-- name: fd -install github3 module
+- name: fd - install github3 module
   pip:
     name: github3.py
 

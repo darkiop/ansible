@@ -7,6 +7,7 @@ enable_fd: true
 enable_btop: true
 enable_dategrep: true
 enable_glances: true
+enable_lfs: true
 
 # PROXMOX
 pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
