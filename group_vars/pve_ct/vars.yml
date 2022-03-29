@@ -1,3 +1,4 @@
+# ESSENTIALS
 enable_dotfiles: true
 enable_lsd: true
 enable_navi: true

@@ -1,4 +1,5 @@
 # ansible-playbook update-dotfiles.yml
+# ansible-playbook update-dotfiles.yml -l <host>
 ---
 - hosts: all
   become: true

@@ -1,0 +1,32 @@
+# https://github.com/Canop/lfs
+
+- name: lfs - install github3 module
+  pip:
+    name: github3.py
+
+- name: lfs - get the latest release version
+  github_release:
+    user: Canop
+    repo: lfs
+    action: latest_release
+  register: release
+
+- name: lfs - show version
+  debug:
+    var: release
+
+# x86_64
+- name: lfs - download latest release as zip file
+  get_url: 
+    url: https://dystroy.org/lfs/download/x86_64-linux/lfs
+    dest: /usr/local/bin
+    mode: 0755
+  when: ansible_architecture == "x86_64"
+
+# armv7
+- name: lfs - download latest release as zip file
+  get_url: 
+    url: https://dystroy.org/lfs/download/armv7-unknown-linux-gnueabihf/lfs
+    dest: /usr/local/bin
+    mode: 0755
+  when: ansible_architecture == "armv7l"
