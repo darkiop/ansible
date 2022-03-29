@@ -31,6 +31,8 @@ apt_default_software:
   - lshw
   - lm-sensors
   - inxi
+  - nvme-cli
+  - shellcheck
   # NETWORK
   - nmap
   - dnsutils

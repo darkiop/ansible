@@ -14,7 +14,7 @@ pve_remove_subscription_warning: true
 pve_watchdog: none
 
 # SUDO
-sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme
 
 # SAMBA
 samba_shares:
