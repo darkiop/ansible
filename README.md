@@ -1,7 +1,8 @@
 # iac-ansible
-ansible-playbook2
+my ansible-playbook
 
 ## TODO
+* Move most of dotfiles/bin to ansible/files
 * Proxmox Storage (https://galaxy.ansible.com/lae/proxmox)
 * Proxmox Network (https://galaxy.ansible.com/lae/proxmox)
 * Proxmox Backup Server (https://github.com/djarbz/ansible-proxmox-backup-client)
