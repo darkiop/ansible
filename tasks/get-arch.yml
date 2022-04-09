@@ -1,2 +1,0 @@
-  - name: print out hosts architectures
-    debug: var= ansible_architecture
