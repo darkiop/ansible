@@ -8,7 +8,9 @@
 #  -l = limit host
 #  -e = define a variable
 #
-# ansible loki -i hosts.yml -m setup -a 'filter=ansible_architecture'
+# Get a list of facts:
+# ansible -m setup 
+# ansible loki -m setup -a 'filter=ansible_architecture'
 
 ---
 ### PROXMOX: CLUSTER
