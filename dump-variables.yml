@@ -10,4 +10,4 @@
       dest: /tmp/ansible_variables
   - fetch:
       src: /tmp/ansible_variables
-      dest: "./tmp/{{inventory_hostname}}_ansible_variables"
+      dest: "./tmp/ansible_variables/{{inventory_hostname}}"
