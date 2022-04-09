@@ -3,6 +3,7 @@ my ansible-playbook
 
 ## TODO
 * Move most of dotfiles/bin to ansible/files
+* Role my.proxmox: wake-on-lan config
 * Proxmox Storage (https://galaxy.ansible.com/lae/proxmox)
 * Proxmox Network (https://galaxy.ansible.com/lae/proxmox)
 * Proxmox Backup Server (https://github.com/djarbz/ansible-proxmox-backup-client)
@@ -48,3 +49,9 @@ ansible-vault decrypt group_vars/all/vault
 ```
 files/ssh/[username].key.pub
 ```
+
+## Playbooks
+main.yml
+update-dotfiles.yml
+dump-variables.yml
+apt-upgrade-all.yml
