@@ -31,6 +31,5 @@
     - name: Edit resources.cfg
       replace:
         path: /etc/pve/ha/resources.cfg
-        #path: /tmp/resources.cfg
         regexp: "{{ search }}"
         replace: "{{ replace }}"
