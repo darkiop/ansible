@@ -12,7 +12,7 @@ enable_lfs: true
 # PROXMOX
 pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
 pve_remove_subscription_warning: true
-pve_watchdog: iTCO_wdt  # iTCO_wdt, softdog
+pve_watchdog: softdog  # iTCO_wdt, softdog
 pve_reboot_on_kernel_update: false
 pve_remove_old_kernels: false
 
