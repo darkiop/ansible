@@ -1,5 +1,10 @@
-# ansible-galaxy install -r roles/requirements.yml
 # https://galaxy.ansible.com
+#
+# Install:
+# ansible-galaxy install -r roles/requirements.yml
+#
+# Update:
+# ansible-galaxy install -r roles/requirements.yml --force
 
 roles:
   - name: bertvv.samba                  # https://galaxy.ansible.com/bertvv/samba

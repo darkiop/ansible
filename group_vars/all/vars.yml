@@ -1,5 +1,16 @@
 # debug: ansible -m debug -a 'var=hostvars[inventory_hostname]' all
 
+# ESSENTIALS
+enable_dotfiles: true
+enable_lsd: true
+enable_navi: true
+enable_bat: true
+enable_fd: true
+enable_btop: true
+enable_dategrep: true
+enable_glances: true
+enable_lfs: true
+
 # SOFTWARE
 apt_default_software:
   # DEV / SYSTEM / TOOLS
@@ -31,6 +42,8 @@ apt_default_software:
   - lshw
   - lm-sensors
   - inxi
+  - nvme-cli
+  - shellcheck
   # NETWORK
   - nmap
   - dnsutils

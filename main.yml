@@ -8,7 +8,9 @@
 #  -l = limit host
 #  -e = define a variable
 #
-# ansible loki -i hosts.yml -m setup -a 'filter=ansible_architecture'
+# Get a list of facts:
+# ansible -m setup 
+# ansible loki -m setup -a 'filter=ansible_architecture'
 
 ---
 ### PROXMOX: CLUSTER
@@ -19,8 +21,8 @@
   roles:
 
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: essentials
-      tags: essentials
+    - role: my.essentials
+      tags: my.essentials
 
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
@@ -31,15 +33,14 @@
       tags: samba
     
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
-    # TODO: descripe
     - role: lae.proxmox
       tags: lae.proxmox
-    # Install Proxmox-Dark-Theme (uninstall with: python3 PVEDiscordDark.py -a uninstall)
+    # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
+    # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh installl)
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
-    # TODO: descripe
-    - role: proxmox
-      tags: proxmox
+    - role: my.proxmox
+      tags: my.proxmox
     
     ## SMART (https://github.com/stuvusIT/smartd)
     - role: stuvusit.smartd
@@ -52,8 +53,8 @@
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
       tags: msmtp
-    - role: msmtp
-      tags: msmtp
+    #- role: msmtp
+    #  tags: msmtp
 
 ### PROXMOX: CONTAINER
 - hosts: pve_ct_vm
@@ -63,8 +64,8 @@
   roles:
     
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: essentials
-      tags: essentials
+    - role: my.essentials
+      tags: my.essentials
     
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
@@ -77,8 +78,8 @@
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
       tags: msmtp
-    - role: msmtp
-      tags: msmtp
+    #- role: msmtp
+    #  tags: msmtp
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
@@ -92,12 +93,16 @@
   roles:
     
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: essentials
-      tags: essentials
+    - role: my.essentials
+      tags: my.essentials
   
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
       tags: ntp
+
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
 
   # DEBUG
   #vars_prompt:

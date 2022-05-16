@@ -2,6 +2,7 @@
 # Example:
 #  search: group pve01
 #  replace: group pve02
+# TODO: Fix: if /etc/pve/ha/resources.cfg.bak does not exist > auth error before copying
 ---
 - hosts: pve_cluster
   become: true
@@ -14,22 +15,21 @@
     private: no
   
   - name: "replace"
-    prompt: "replace"
+    prompt: "replace (e.g. 'group pve02')"
     private: no
   
   tasks:
-    - name: Print the gateway for each host when defined
-      debug:
-        msg: System {{ inventory_hostname }} has gateway {{ ansible_default_ipv4.gateway }}
 
     - name: Backup resources.cfg
+      become: true
+      become_user: root
       copy:
-        src: /tmp/resources.cfg
-        dest: /tmp/resources.cfg.bak
+        src: /etc/pve/ha/resources.cfg
+        dest: /etc/pve/ha/resources.cfg.bak
         remote_src: yes
 
     - name: Edit resources.cfg
       replace:
-        path: /tmp/resources.cfg
+        path: /etc/pve/ha/resources.cfg
         regexp: "{{ search }}"
         replace: "{{ replace }}"

@@ -1,0 +1,13 @@
+# https://stackoverflow.com/questions/18839509/where-can-i-get-a-list-of-ansible-pre-defined-variables
+#
+# ansible-playbook dump-variables.yml
+# ansible-playbook dump-variables.yml -l <host>
+---
+- hosts: all
+  tasks:
+  - template:
+      src: templates/dump_variables
+      dest: /tmp/ansible_variables
+  - fetch:
+      src: /tmp/ansible_variables
+      dest: "./tmp/ansible_variables/{{inventory_hostname}}"

@@ -1,4 +1,4 @@
-# GLUSTERFS gstatus > json
+# installs a systemd timer which use gstatus to generate /var/www/html/gstatus.json
 - name: glusterf-gstatus-json - install nginx
   apt: 
     name: nginx
@@ -29,37 +29,32 @@
     state: started
     name: gstatus-status-to-json.timer
 
-# VZDUMP
-- name: set temp-dir in vzdump.conf for nfs backups
+# vzdump nfs fix
+- name: vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups
   lineinfile:
     path: /etc/vzdump.conf
     regexp: '^#tmpdir: DIR'
     line: 'tmpdir: /tmp'
 
-# WATCHDOG
-- name: Unload Kernel-Module softdog
-  modprobe:
-    name: softdog
-    state: absent
-
-- name: Load Kernel-Module iTCO_wdt
-  modprobe:
-    name: iTCO_wdt
-    state: present
-
-- name: Configure PVE HA Manager to use iTCO_wdt
+# watchdog config
+- name: watchdog-config - setup
   copy:
-    content: "WATCHDOG_MODULE=iTCO_wdt"
+    content: "WATCHDOG_MODULE={{ pve_watchdog }}"
     dest: /etc/default/pve-ha-manager
     mode: 0640
+  register: watchdog
 
-- name: Restart watchdog-mux.service
-  ansible.builtin.systemd:
-    state: restarted
-    name: watchdog-muxx 
-    # TODO: wenn watchdog-muxx = failed, reboot erforderlich
+- name: watchdog-config - reboot
+  reboot:
+    msg: "Reboot initiated by Ansible - watchdog changed"
+    connect_timeout: 5
+    reboot_timeout: 420
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: watchdog.changed
 
-# WAKE-ON-LAN
+# wake-on-lan config
 # TODO
 # auf pve01 mit Mac-Adresse von pve01-cl (= interner LAN-Port)
 #pvenode config set -wakeonlan 1c:69:7a:02:5e:3f

@@ -3,10 +3,15 @@
 		{
 			"name": "ansible",
 			"path": "."
+		},
+		{
+			"path": "../../.ansible"
 		}
 	],
 	"settings": {
-		"ansible.ansibleLint.path": "/usr/bin/ansible-lint"
+		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
+		"editor.tabSize": 2,
+		"workbench.colorTheme": "Hydroxy"
 	},
 	"extensions": {
 		"recommendations": [
