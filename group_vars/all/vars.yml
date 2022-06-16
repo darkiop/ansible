@@ -22,12 +22,12 @@ apt_default_software:
   - build-essential
   - bash-completion
   - unattended-upgrades
-  - hddtemp
   - parted
   - ncdu
   - cifs-utils
   - toilet
   - byobu
+  - zsh
   - unzip
   - rsync
   - mlocate
@@ -44,7 +44,6 @@ apt_default_software:
   - inxi
   - nvme-cli
   - shellcheck
-  # NETWORK
   - nmap
   - dnsutils
   - net-tools
@@ -53,7 +52,6 @@ apt_default_software:
   - nfs-common
   - iproute2
   - curl
-  # MONITORING
   - htop
   - lnav
   - iperf3
