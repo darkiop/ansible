@@ -36,7 +36,7 @@
     - role: lae.proxmox
       tags: lae.proxmox
     # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
-    # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh installl)
+    # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
     - role: my.proxmox
