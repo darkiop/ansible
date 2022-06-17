@@ -13,7 +13,6 @@ enable_lfs: true
 
 # SOFTWARE
 apt_default_software:
-  # DEV / SYSTEM / TOOLS
   - git
   - curl
   - vim
@@ -60,6 +59,7 @@ apt_default_software:
   - wakeonlan
   - speedtest-cli
   - telnet
+    tmux
 apt_aditional_software:
   # - exa
   # - bmon
