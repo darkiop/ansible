@@ -18,24 +18,16 @@ for file in $files; do
   ln -s $dir/$file ~/.$file
 done
 
-# byobu config
-if [ -L ~/.byobu ] ; then
-  if [ ! -e ~/.byobu ] ; then
-      # remove > broken
-      rm ~/.byobu
-      echo -e $COLOR_GREEN"create"$COLOR_CLOSE$COLOR_YELLOW" .byobu "$COLOR_GREEN"symlink ..."$COLOR_CLOSE
-      echo "create: ~/.byobu"
-      ln -s ~/dotfiles/config/byobu ~/.byobu
-  fi
-else
-  # link not exist
-  echo -e $COLOR_GREEN"create"$COLOR_CLOSE$COLOR_YELLOW" .byobu "$COLOR_GREEN"symlink ..."$COLOR_CLOSE
-  echo "create: ~/.byobu"
-  ln -s ~/dotfiles/config/byobu ~/.byobu
-fi
-
 # install vimrc
 bash $HOME/dotfiles/modules/vimrc/install_awesome_parameterized.sh $HOME/dotfiles/modules/vimrc $USER
 ln -s $HOME/dotfiles/config/my_configs.vim $HOME/dotfiles/modules/vimrc/my_configs.vim
+
+# install tmux config
+if [ -f "$HOME"/dotfiles/modules/oh-my-tmux/.tmux.conf ]; then
+  ln -s "$HOME"/dotfiles/modules/oh-my-tmux/.tmux.conf "$HOME"/.tmux.conf
+fi
+if [ -f "$HOME"/dotfiles/config/tmux.conf.local ]; then
+  ln -s "$HOME"/dotfiles/config/tmux.conf.local "$HOME"/.tmux.conf.local
+fi
 
 echo
