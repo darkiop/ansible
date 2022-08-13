@@ -104,6 +104,17 @@
     - role: chriswayg.msmtp-mailer
       tags: msmtp
 
+### VPN
+- hosts: vpn_gateways
+  become: true
+  become_user: root
+
+  roles:
+  
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: my.essentials
+
   # DEBUG
   #vars_prompt:
   #- name: "debugtest"
