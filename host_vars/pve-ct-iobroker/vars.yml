@@ -1,3 +1,6 @@
+# sudo
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/bin/systemctl
+
 # SAMBA
 samba_shares:
   - name: opt-iobroker
