@@ -1,0 +1,14 @@
+# SAMBA
+samba_shares:
+  - name: lets-encrypt-ro
+    guest_ok: no
+    public: yes
+    read_only: yes
+    writable: no
+    browseable: yes
+    owner: "root"
+    path: "/etc/letsencrypt/archive/birkenweg.walk-steinweiler.de"
+    valid_users: "{{ user_username }}"
+    write_list: "{{ user_username }}"
+    group: root
+    user: root
