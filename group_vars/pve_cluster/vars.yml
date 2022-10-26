@@ -17,7 +17,7 @@ pve_reboot_on_kernel_update: false
 pve_remove_old_kernels: false
 
 # SUDO
-sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme, /usr/sbin/pvesm
 
 # SAMBA
 samba_shares:
