@@ -1,5 +1,11 @@
 # debug: ansible -m debug -a 'var=hostvars[inventory_hostname]' all
 
+# ANSIBLE CONNECTION 
+ansible_connection: ssh
+ansible_user: "{{ vault_ansible_user }}"
+ansible_sudo_pass: "{{ vault_ansible_sudo_pass }}"
+ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}"
+
 # ESSENTIALS
 enable_dotfiles: true
 enable_lsd: true
@@ -60,6 +66,8 @@ apt_default_software:
   - speedtest-cli
   - telnet
   - tmux
+  - atop
+
 apt_aditional_software:
   # - exa
   # - bmon
