@@ -1,4 +1,5 @@
 # ansible-playbook apt-upgrade-all.yml
+# ansible-playbook apt-upgrade-all.yml -l pve_ct_vm
 ---
 - hosts: all
   become: true
