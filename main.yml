@@ -22,7 +22,7 @@
 
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
-      tags: my.essentials
+      tags: essentials
 
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
@@ -34,14 +34,14 @@
     
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
     - role: lae.proxmox
-      tags: lae.proxmox
+      tags: proxmox
     # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
     # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
+    - role: my.proxmox
+      tags: proxmox
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
-    - role: my.proxmox
-      tags: my.proxmox
-    
+
     ## SMART (https://github.com/stuvusIT/smartd)
     - role: stuvusit.smartd
       smartd_devices:
@@ -65,7 +65,7 @@
     
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
-      tags: my.essentials
+      tags: essentials
     
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
@@ -94,7 +94,7 @@
     
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
-      tags: my.essentials
+      tags: essentials
   
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
@@ -113,7 +113,7 @@
   
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
-      tags: my.essentials
+      tags: essentials
 
   # DEBUG
   #vars_prompt:
