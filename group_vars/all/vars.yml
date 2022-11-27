@@ -67,6 +67,7 @@ apt_default_software:
   - telnet
   - tmux
   - atop
+  - mtr
 
 apt_aditional_software:
   # - exa
