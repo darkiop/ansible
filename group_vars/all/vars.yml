@@ -6,16 +6,17 @@ ansible_user: "{{ vault_ansible_user }}"
 ansible_sudo_pass: "{{ vault_ansible_sudo_pass }}"
 ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}"
 
-# ESSENTIALS
-enable_dotfiles: true
-enable_lsd: true
-enable_navi: true
-enable_bat: true
-enable_fd: true
-enable_btop: true
-enable_dategrep: true
-enable_glances: true
-enable_lfs: true
+# Role: my.essentials
+install_dotfiles: true
+install_lsd: true
+install_navi: true
+install_bat: true
+install_fd: true
+install_btop: true
+install_dategrep: true
+install_glances: true
+install_chtsh: true
+install_lfs: true
 
 # SOFTWARE
 apt_default_software:
@@ -31,7 +32,6 @@ apt_default_software:
   - ncdu
   - cifs-utils
   - toilet
-  - byobu
   - zsh
   - unzip
   - rsync
@@ -56,9 +56,7 @@ apt_default_software:
   - sshfs
   - nfs-common
   - iproute2
-  - curl
   - htop
-  - lnav
   - iperf3
   - lnav
   - tcpdump
