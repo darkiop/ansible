@@ -13,6 +13,7 @@ roles:
   - name: stuvusit.smartd               # https://galaxy.ansible.com/stuvusit/smartd
   - name: geerlingguy.security          # https://galaxy.ansible.com/geerlingguy/security
   - name: geerlingguy.ntp               # https://galaxy.ansible.com/geerlingguy/ntp
+  - name: geerlingguy.nodejs            # https://galaxy.ansible.com/geerlingguy/nodejs
   - name: lae.proxmox                   # https://galaxy.ansible.com/lae/proxmox
   - name: djarbz.pvediscorddark_theme   # https://galaxy.ansible.com/djarbz/pvediscorddark_theme
   - name: djarbz.proxmox_backup_client  # https://galaxy.ansible.com/djarbz/proxmox_backup_client
