@@ -19,3 +19,4 @@ roles:
   - name: djarbz.proxmox_backup_client  # https://galaxy.ansible.com/djarbz/proxmox_backup_client
   - name: jnv.unattended-upgrades       # https://galaxy.ansible.com/jnv/unattended-upgrades
   - name: sbaerlocher.snmp              # https://galaxy.ansible.com/sbaerlocher/snmp
+  - name: simoncaron.pve_addons         # https://galaxy.ansible.com/simoncaron/pve_addons
