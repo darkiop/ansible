@@ -76,7 +76,7 @@ pip_install:
   # - name
 
 # Role my.essentials - user 
-user_username: darkiop
+user_username: "{{ vault_user_username }}"
 user_password: "{{ vault_user_password }}"
 user_shell: /bin/bash
 user_dotfiles_repo: https://github.com/darkiop/dotfiles
@@ -104,8 +104,8 @@ ntp_restrict:
 # Role: bertvv.samba
 # https://github.com/bertvv/ansible-role-samba
 samba_users:
-  - name: darkiop
-    password: "{{ vault_user_samba_password }}"
+  - name: "{{ vault_samba_user }}"
+    password: "{{ vault_samba_password }}"
 samba_server_string: "{{ inventory_hostname }}"
 samba_workgroup: "HOME"
 samba_map_to_guest: bad user
@@ -121,9 +121,11 @@ samba_homes_include: samba-homes-include.conf
 # Role: geerlingguy.security
 # https://github.com/geerlingguy/ansible-role-security
 security_ssh_port: 22
-security_ssh_permit_root_login: "yes"
+security_ssh_permit_root_login: "no"
+security_ssh_allowed_users:
+  - "{{ user_username }}"
 security_autoupdate_enabled: true
-security_autoupdate_reboot: "true"
+security_autoupdate_reboot: false
 security_autoupdate_mail_to: "{{ user_email }}"
 security_autoupdate_mail_on_error: false
 

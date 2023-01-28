@@ -19,6 +19,13 @@ apt_aditional_software:
 # Role: my.essentials - pip install
 pip_install:
 
+# Role: geerlingguy.security
+# https://github.com/geerlingguy/ansible-role-security
+security_ssh_permit_root_login: "yes"
+security_ssh_allowed_users:
+  - root
+  - "{{ user_username }}"
+
 # Role: bertvv.samba
 samba_shares:
   - name: vz-dump
