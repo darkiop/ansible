@@ -86,6 +86,9 @@ user_keyboard_layout: de
 user_email: darkiop@gmail.com
 user_email_password: "{{ vault_user_email_password }}"
 
+# Local FQDN
+local_fqdn: "{{ vault_local_fqdn }}"
+
 # Role: my.essentials - sudo
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
 

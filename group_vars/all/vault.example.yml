@@ -11,6 +11,9 @@ vault_user_password:
 vault_user_email: 
 vault_user_email_password: 
 
+# local domain
+vault_local_fqdn: 
+
 # samba
 vault_samba_user: 
 vault_samba_password: 
