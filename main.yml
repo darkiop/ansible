@@ -106,63 +106,31 @@
   become: true
   become_user: root
 
+  tasks:
+
+    - name: Create custom.list (local dns records)
+      template:
+        src: pihole/custom.list.j2
+        dest: "/etc/pihole/custom.list"
+        owner: root
+        group: root
+        mode: 0644
+      become: true
+      tags: custom
+
   roles:
   
     ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
       tags: essentials
-
-    - role: 'r_pufky.pihole'
+    
+    ## pihole (https://github.com/r-pufky/ansible_pihole)
+    - role: r_pufky.pihole
       tags: pihole
 
-### PROXMOX TEST
-  # https://github.com/Dilden/Ansible-Proxmox-Automation
-  #       #import_tasks: ./tasks/check-and-install-git.yml
-- hosts: pve_test
+  post_tasks: 
 
-  become: true
-  become_user: root
-
-  pre_tasks:
-    - name: force install of git
-
-      apt: 
-        name: git
-        state: present
-        update_cache: true
-      ignore_errors: true
-      when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-
-  vars:
-
-    pve_addons_enable_dark_theme: true
-    pve_addons_remove_subscription_nag: false
-    pve_addons_remove_enterprise_repo: false
-    pve_addons_add_no_subscription_repo: false
-
-  roles:
-
-    - role: my.proxmox
-      tags: my.proxmox
-
-    - role: my.essentials
-      tags: my.essentials
-
-    - role: lae.proxmox
-      tags: lae.proxmox
-
-    - role: simoncaron.pve_addons
-      tags: simon
-
-  #tasks:
-    #- import_tasks: ./tasks/proxmox-create-ct.yml
-    #  tags: ct
-
-  # DEBUG
-  #vars_prompt:
-  #- name: "debugtest"
-  #  prompt: "debugtest: "
-  #  private: no
-  #tasks:
-  #  - import_tasks: tasks/debug.yml
-  #    tags: debug
+    - name: 'Update pi-hole DB'
+      ansible.builtin.command: 'pihole -g'
+      register: myoutput
+      changed_when: myoutput.rc != 0

@@ -1,9 +1,5 @@
-pihole_webpassword: '{{ vault_pihole_webpassword }}'
-
-pihole_pihole_interface: 'eth0'
-
+# Role: r_pufky.pihole
 pihole_ipv4_address: '192.168.20.2/24'
 pihole_ipv6_address: ''
-
 pihole_pihole_dns_1: '192.168.20.1#53'
 pihole_pihole_dns_2: ''
