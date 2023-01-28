@@ -17,3 +17,6 @@ vault_samba_password:
 
 # proxmox
 vault_pve_password: 
+
+# pihole
+vault_pihole_webpassword: 

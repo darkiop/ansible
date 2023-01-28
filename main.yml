@@ -1,6 +1,3 @@
-# ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
-#
-# ansible-playbook main.yml -i hosts.yml
 # ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
 # ansible-playbook main.yml -i hosts.yml -l <host>
 # ansible-playbook main.yml -i hosts.yml -e <variable>=<value>
@@ -103,7 +100,7 @@
     - role: chriswayg.msmtp-mailer
       tags: msmtp
 
-### VPN
+### VPN-GATEWAYS
 - hosts: vpn_gateways
 
   become: true
@@ -115,23 +112,20 @@
     - role: my.essentials
       tags: essentials
 
-  # DEBUG
-  #vars_prompt:
-  #- name: "debugtest"
-  #  prompt: "debugtest: "
-  #  private: no
-  #tasks:
-  #  - import_tasks: tasks/debug.yml
-  #    tags: debug
+    - role: 'r_pufky.pihole'
+      tags: pihole
 
 ### PROXMOX TEST
-- hosts: pve_test      # ansible-playbook main.yml -l pve_test
+  # https://github.com/Dilden/Ansible-Proxmox-Automation
+  #       #import_tasks: ./tasks/check-and-install-git.yml
+- hosts: pve_test
 
   become: true
   become_user: root
 
   pre_tasks:
     - name: force install of git
+
       apt: 
         name: git
         state: present
@@ -164,4 +158,11 @@
     #- import_tasks: ./tasks/proxmox-create-ct.yml
     #  tags: ct
 
-  # https://github.com/Dilden/Ansible-Proxmox-Automation
+  # DEBUG
+  #vars_prompt:
+  #- name: "debugtest"
+  #  prompt: "debugtest: "
+  #  private: no
+  #tasks:
+  #  - import_tasks: tasks/debug.yml
+  #    tags: debug
