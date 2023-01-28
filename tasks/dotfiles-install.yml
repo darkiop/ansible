@@ -1,4 +1,15 @@
-# user_username
+# Install for user_username
+
+- name: force install of git
+  apt: 
+    name: git
+    state: present
+    update_cache: true
+  ignore_errors: true
+  when: 
+    ansible_distribution == 'Debian' or 
+    ansible_distribution == 'Ubuntu' and 
+    "git" not in ansible_facts.packages
 
 - name: dotfiles - recursively remove old dotfiles directory - {{ user_username }}
   ansible.builtin.file:
@@ -41,7 +52,7 @@
     path: ~/dotfiles-install.sh
     state: absent
 
-# root
+# Install for root
 
 - name: dotfiles - recursively remove old dotfiles directory - root
   ansible.builtin.file:
