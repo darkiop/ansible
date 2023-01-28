@@ -1,4 +1,4 @@
-# ESSENTIALS
+# Role: my.essentials - install tasks
 install_dotfiles: true
 install_lsd: true
 install_navi: true

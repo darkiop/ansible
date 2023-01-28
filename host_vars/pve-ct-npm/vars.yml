@@ -1,7 +1,7 @@
-# SAMBA
+# Role: bertvv.samba
 samba_shares:
   - name: lets-encrypt-ro
-    guest_ok: no
+    guest_ok: yes
     public: yes
     read_only: yes
     writable: no

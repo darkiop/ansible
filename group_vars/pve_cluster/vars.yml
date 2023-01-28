@@ -1,4 +1,4 @@
-# ESSENTIALS
+# Role: my.essentials - install tasks
 install_dotfiles: true
 install_lsd: true
 install_navi: true
@@ -9,17 +9,17 @@ install_dategrep: true
 install_glances: true
 install_lfs: true
 
-# PROXMOX
-pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
-pve_remove_subscription_warning: true
-pve_watchdog: softdog  # iTCO_wdt, softdog
-pve_reboot_on_kernel_update: false
-pve_remove_old_kernels: false
-
-# SUDO
+# Role: my.essentials - sudo
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme, /usr/sbin/pvesm
 
-# SAMBA
+# Role: my.essentials - apt install aditional_software task
+apt_aditional_software:
+  - systemd-timesyncd
+
+# Role: my.essentials - pip install
+pip_install:
+
+# Role: bertvv.samba
 samba_shares:
   - name: vz-dump
     guest_ok: no
@@ -33,6 +33,9 @@ samba_shares:
     write_list: "{{ user_username }}"
     group: "{{ user_username }}"
 
-# SOFTWARE
-apt_aditional_software:
-  - systemd-timesyncd
+# Role: lae.proxmox
+pve_repository_line: "deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription"
+pve_remove_subscription_warning: true
+pve_watchdog: softdog  # iTCO_wdt, softdog
+pve_reboot_on_kernel_update: false
+pve_remove_old_kernels: false

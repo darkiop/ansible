@@ -1,4 +1,4 @@
-# SAMBA
+# Role: bertvv.samba
 samba_shares:
   - name: opt-heimdall
     guest_ok: no
