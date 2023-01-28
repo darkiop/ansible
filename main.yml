@@ -10,6 +10,26 @@
 # ansible loki -m setup -a 'filter=ansible_architecture'
 
 ---
+### ALL
+- hosts: all
+
+  become: true
+  become_user: root
+
+  roles: 
+    
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: essentials
+
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
+
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: ntp
+
 ### PROXMOX: CLUSTER
 - hosts: pve_cluster
 
@@ -17,14 +37,6 @@
   become_user: root
 
   roles:
-
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: essentials
-
-    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
-    - role: geerlingguy.ntp
-      tags: ntp
 
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
@@ -47,10 +59,6 @@
           temperature_report_info: 55
           temperature_report_crit: 70
       tags: smartd
-    
-    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
-    - role: chriswayg.msmtp-mailer
-      tags: msmtp
 
 ### PROXMOX: CT & VMs
 - hosts: pve_ct_vm
@@ -59,46 +67,14 @@
   become_user: root
 
   roles:
-    
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: essentials
-    
-    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
-    - role: geerlingguy.ntp
-      tags: ntp
-    
+
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
       tags: samba
-    
-    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
-    - role: chriswayg.msmtp-mailer
-      tags: msmtp
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
       tags: security
-
-### RASPBERRY PIs
-- hosts: rpi
-
-  become: true
-  become_user: root
-
-  roles:
-    
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: essentials
-  
-    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
-    - role: geerlingguy.ntp
-      tags: ntp
-
-    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
-    - role: chriswayg.msmtp-mailer
-      tags: msmtp
 
 ### VPN-GATEWAYS
 - hosts: vpn_gateways
@@ -106,9 +82,13 @@
   become: true
   become_user: root
 
+  vars:
+
+    pihole_update_enable: true
+
   tasks:
 
-    - name: Create custom.list (local dns records)
+    - name: Create custom.list (local dns records for pihole)
       template:
         src: pihole/custom.list.j2
         dest: "/etc/pihole/custom.list"
@@ -116,13 +96,8 @@
         group: root
         mode: 0644
       become: true
-      tags: custom
 
   roles:
-  
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: essentials
     
     ## pihole (https://github.com/r-pufky/ansible_pihole)
     - role: r_pufky.pihole
@@ -130,7 +105,7 @@
 
   post_tasks: 
 
-    - name: 'Update pi-hole DB'
+    - name: 'Update pihole gravity database'
       ansible.builtin.command: 'pihole -g'
       register: myoutput
       changed_when: myoutput.rc != 0
