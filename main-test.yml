@@ -1,0 +1,47 @@
+---
+### PROXMOX TEST
+  # https://github.com/Dilden/Ansible-Proxmox-Automation
+  # 
+- hosts: pve_test
+
+  become: true
+  become_user: root
+
+  pre_tasks:
+    
+    - name: force install of git
+      import_tasks: ./tasks/check-and-install-git.yml
+
+  vars:
+
+    pve_addons_enable_dark_theme: true
+    pve_addons_remove_subscription_nag: false
+    pve_addons_remove_enterprise_repo: false
+    pve_addons_add_no_subscription_repo: false
+
+  roles:
+
+    - role: my.proxmox
+      tags: my.proxmox
+
+    - role: my.essentials
+      tags: my.essentials
+
+    - role: lae.proxmox
+      tags: lae.proxmox
+
+    - role: simoncaron.pve_addons
+      tags: simon
+
+  #tasks:
+    #- import_tasks: ./tasks/proxmox-create-ct.yml
+    #  tags: ct
+
+  # DEBUG
+  #vars_prompt:
+  #- name: "debugtest"
+  #  prompt: "debugtest: "
+  #  private: no
+  #tasks:
+  #  - import_tasks: tasks/debug.yml
+  #    tags: debug
