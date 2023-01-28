@@ -1,15 +1,9 @@
-# Install for user_username
+# Check if git is installed
 
 - name: force install of git
-  apt: 
-    name: git
-    state: present
-    update_cache: true
-  ignore_errors: true
-  when: 
-    ansible_distribution == 'Debian' or 
-    ansible_distribution == 'Ubuntu' and 
-    "git" not in ansible_facts.packages
+  import_tasks: ./check-and-install-git.yml
+
+# Install for user_username
 
 - name: dotfiles - recursively remove old dotfiles directory - {{ user_username }}
   ansible.builtin.file:
