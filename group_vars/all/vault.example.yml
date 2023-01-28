@@ -1,18 +1,4 @@
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
-#
-# Keep vaulted variables safely visible
-# You should encrypt sensitive or secret variables with Ansible Vault. However,
-# encrypting the variable names as well as the variable values makes it hard to 
-# find the source of the values. You can keep the names of your variables accessible 
-# (by grep, for example) without exposing any secrets by adding a layer of indirection:
-#
-# 1   Create a group_vars/ subdirectory named after the group.
-# 2   Inside this subdirectory, create two files named vars and vault.
-# 3   In the vars file, define all of the variables needed, including any sensitive ones.
-# 4   Copy all of the sensitive variables over to the vault file and prefix these variables with vault_.
-# 5   Adjust the variables in the vars file to point to the matching vault_ variables using jinja2 syntax: db_password: {{ vault_db_password }}.
-# 6   Encrypt the vault file to protect its contents.
-# 7   Use the variable name from the vars file in your playbooks.
 
 # inventory
 vault_ansible_user: 
@@ -23,3 +9,6 @@ vault_ansible_ssh_private_key_file:
 vault_user_password: 
 vault_user_email_password: 
 vault_user_samba_password: 
+
+# proxmox
+vault_pve_password: 
