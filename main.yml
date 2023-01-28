@@ -15,6 +15,7 @@
 ---
 ### PROXMOX: CLUSTER
 - hosts: pve_cluster
+
   become: true
   become_user: root
 
@@ -35,10 +36,10 @@
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
     - role: lae.proxmox
       tags: proxmox
-      # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
-      # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
     - role: my.proxmox
       tags: proxmox
+      # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
+      # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
 
@@ -54,8 +55,9 @@
     - role: chriswayg.msmtp-mailer
       tags: msmtp
 
-### PROXMOX: CONTAINER
+### PROXMOX: CT & VMs
 - hosts: pve_ct_vm
+
   become: true
   become_user: root
 
@@ -76,8 +78,6 @@
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
       tags: msmtp
-    #- role: msmtp
-    #  tags: msmtp
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
@@ -85,6 +85,7 @@
 
 ### RASPBERRY PIs
 - hosts: rpi
+
   become: true
   become_user: root
 
