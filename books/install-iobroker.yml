@@ -1,0 +1,10 @@
+# https://github.com/Low-Frequency/ansible-role-iobroker
+
+- name: Install ioBroker
+  hosts: iobroker
+  become: true
+  become_user: root
+
+  roles:
+    - geerlingguy.nodejs
+    - ../roles/ansible-role-iobroker
