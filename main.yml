@@ -85,6 +85,12 @@
     - role: geerlingguy.security
       tags: security
 
+  tasks:
+
+    - import_tasks: tasks/install-webmin.yml
+      tags: webmin
+      when: enable_webmin | default(False)
+
 ### RASPBERRY PIs
 - hosts: rpi
   become: true
