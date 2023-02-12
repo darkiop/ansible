@@ -8,3 +8,4 @@ enable_btop: true
 enable_dategrep: true
 enable_glances: true
 enable_lfs: true
+enable_webmin: false
