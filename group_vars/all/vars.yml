@@ -17,6 +17,7 @@ install_dategrep: true
 install_glances: true
 install_chtsh: true
 install_lfs: true
+apt_upgrade_auto_reboot: false
 
 # Role: my.essentials - apt install default_software task
 apt_default_software:
