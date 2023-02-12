@@ -1,4 +1,4 @@
-# ansible-playbook pve-migrate-all-nodes -l pve01
+# ansible-playbook proxmox-ha-switch-node.yml -l pve01
 # Example:
 #  search: group pve01
 #  replace: group pve02

@@ -1,27 +1,21 @@
 {
 	"folders": [
 		{
-			"name": "ansible-repo",
-			"path": "/home/darkiop/Github/ansible"
+			"name": "ansible",
+			"path": "."
 		},
 		{
-			"name": "terraform-repo",
-			"path": "/home/darkiop/Github/terraform"
-		},
-		{
-			"name": "home-.ansible",
-			"path": "/home/darkiop/.ansible"
+			"path": "../../.ansible"
 		}
 	],
 	"settings": {
 		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
 		"editor.tabSize": 2,
-		"workbench.colorTheme": "Sapphire"
+		"workbench.colorTheme": "Hydroxy"
 	},
 	"extensions": {
 		"recommendations": [
-			"zhuangtongfa.material-theme",
-			"redhat.ansible"
+			"zhuangtongfa.material-theme"
 		]
 	}
 }

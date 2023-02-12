@@ -1,3 +1,6 @@
+# ssh-copy-id -i ~/.ssh/id_rsa.pub user@host
+#
+# ansible-playbook main.yml -i hosts.yml
 # ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
 # ansible-playbook main.yml -i hosts.yml -l <host>
 # ansible-playbook main.yml -i hosts.yml -e <variable>=<value>
@@ -10,33 +13,20 @@
 # ansible loki -m setup -a 'filter=ansible_architecture'
 
 ---
-### ALL
-- hosts: all
-
-  become: true
-  become_user: root
-
-  roles: 
-    
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: essentials
-
-    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
-    - role: chriswayg.msmtp-mailer
-      tags: msmtp
-
-    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
-    - role: geerlingguy.ntp
-      tags: ntp
-
 ### PROXMOX: CLUSTER
 - hosts: pve_cluster
-
   become: true
   become_user: root
 
   roles:
+
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: my.essentials
+
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: ntp
 
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
@@ -44,14 +34,14 @@
     
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
     - role: lae.proxmox
-      tags: proxmox
-    - role: my.proxmox
-      tags: proxmox
-      # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
-      # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
+      tags: lae.proxmox
+    # Install Proxmox-Dark-Theme (https://galaxy.ansible.com/djarbz/pvediscorddark_theme
+    # (uninstall with: sudo bash /opt/PVEDiscordDark/PVEDiscordDark.sh uninstall)
     - role: djarbz.pvediscorddark_theme
       tags: proxmox-dark-theme
-
+    - role: my.proxmox
+      tags: my.proxmox
+    
     ## SMART (https://github.com/stuvusIT/smartd)
     - role: stuvusit.smartd
       smartd_devices:
@@ -59,53 +49,83 @@
           temperature_report_info: 55
           temperature_report_crit: 70
       tags: smartd
+    
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
+    #- role: msmtp
+    #  tags: msmtp
 
-### PROXMOX: CT & VMs
+### PROXMOX: CONTAINER
 - hosts: pve_ct_vm
-
   become: true
   become_user: root
 
   roles:
-
+    
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: my.essentials
+    
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: ntp
+    
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: bertvv.samba
       tags: samba
+    
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
+    #- role: msmtp
+    #  tags: msmtp
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
       tags: security
 
-### VPN-GATEWAYS
-- hosts: vpn_gateways
+  tasks:
 
+    - import_tasks: tasks/install-webmin.yml
+      tags: webmin
+      when: enable_webmin | default(False)
+
+### RASPBERRY PIs
+- hosts: rpi
   become: true
   become_user: root
 
-  vars:
-
-    pihole_update_enable: true
-
-  tasks:
-
-    - name: Create custom.list (local dns records for pihole)
-      template:
-        src: pihole/custom.list.j2
-        dest: "/etc/pihole/custom.list"
-        owner: root
-        group: root
-        mode: 0644
-      become: true
-
   roles:
     
-    ## pihole (https://github.com/r-pufky/ansible_pihole)
-    - role: r_pufky.pihole
-      tags: pihole
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: my.essentials
+  
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: ntp
 
-  post_tasks: 
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: msmtp
 
-    - name: 'Update pihole gravity database'
-      ansible.builtin.command: 'pihole -g'
-      register: myoutput
-      changed_when: myoutput.rc != 0
+### VPN
+- hosts: vpn_gateways
+  become: true
+  become_user: root
+
+  roles:
+  
+    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: my.essentials
+
+  # DEBUG
+  #vars_prompt:
+  #- name: "debugtest"
+  #  prompt: "debugtest: "
+  #  private: no
+  #tasks:
+  #  - import_tasks: tasks/debug.yml
+  #    tags: debug

@@ -1,5 +1,4 @@
 .DS_Store
 vault.yml
 files/ssh/*.key.pub
-tmp/*
-trash/*
+tmp/ansible_variables

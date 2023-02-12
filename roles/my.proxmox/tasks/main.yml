@@ -1,19 +1,62 @@
----
-- name: my.proxmox - GlusterFS
-  include_tasks: ./glusterfs.yml
-  when: my_proxmox_glusterfs | default(False)
+# installs a systemd timer which use gstatus to generate /var/www/html/gstatus.json
+- name: glusterf-gstatus-json - install nginx
+  apt: 
+    name: nginx
+    state: present
+    update_cache: true
+  become: true
 
-- name: my.proxmox - Setup Proxmox Repositorys
-  include_tasks: ./tasks/proxmox-enable-community-repo.yml
-  when: my_proxmox_community_repo | default(False)
+- name: glusterf-gstatus-json - copy gstatus-status-to-json.service
+  copy:
+    src: files/gstatus-status-to-json.service
+    dest: /etc/systemd/system/gstatus-status-to-json.service
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: yes
 
-- name: my.proxmox - Setup Watchdog
-  include_tasks: ./tasks/watchdog.yml
-  when: my_proxmox_watchdog | default(False)
+- name: glusterf-gstatus-json - copy gstatus-status-to-json.timer
+  copy:
+    src: files/gstatus-status-to-json.timer
+    dest: /etc/systemd/system/gstatus-status-to-json.timer
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: yes
+
+- name: glusterf-gstatus-json - start gstatus-status-to-json.timer
+  ansible.builtin.systemd:
+    state: started
+    name: gstatus-status-to-json.timer
+
+# vzdump nfs fix
+- name: vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups
+  lineinfile:
+    path: /etc/vzdump.conf
+    regexp: '^#tmpdir: DIR'
+    line: 'tmpdir: /tmp'
+
+# watchdog config
+- name: watchdog-config - setup
+  copy:
+    content: "WATCHDOG_MODULE={{ pve_watchdog }}"
+    dest: /etc/default/pve-ha-manager
+    mode: 0640
+  register: watchdog
+
+- name: watchdog-config - reboot
+  reboot:
+    msg: "Reboot initiated by Ansible - watchdog changed"
+    connect_timeout: 5
+    reboot_timeout: 420
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: watchdog.changed
 
 # wake-on-lan config
 # TODO
 # auf pve01 mit Mac-Adresse von pve01-cl (= interner LAN-Port)
 #pvenode config set -wakeonlan 1c:69:7a:02:5e:3f
 # auf pve02 mit Mac-Adresse von pve02-cl (= interner LAN-Port)
-#pvenode config set -wakeonlan 1c:69:7a:62:9b:957
+#pvenode config set -wakeonlan 1c:69:7a:62:9b:95

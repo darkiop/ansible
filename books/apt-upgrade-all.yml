@@ -1,8 +1,0 @@
-# ansible-playbook books/apt-upgrade-all.yml -i hosts.yml
-# ansible-playbook books/apt-upgrade-all.yml -i hosts.yml -l pve_ct_vm
----
-- hosts: all
-  become: true
-  become_user: root
-  tasks:
-    - import_tasks: ../tasks/apt-upgrade.yml

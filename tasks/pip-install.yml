@@ -1,7 +1,0 @@
----
-- name: pip-install
-  become: true
-  become_user: root
-  pip: 
-    name: "{{ pip_install }}"
-    state: present

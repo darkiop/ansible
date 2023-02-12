@@ -1,3 +1,7 @@
+- name: debugtest
+  ansible.builtin.debug:
+    msg: InventoryHostname {{ inventory_hostname }}
+
 - name: apt update / upgrade
   apt:
     update_cache: yes

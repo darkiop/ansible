@@ -1,4 +1,4 @@
-# Role: bertvv.samba
+# SAMBA
 samba_shares:
   - name: etc-bind
     guest_ok: no
