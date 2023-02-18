@@ -2,12 +2,17 @@
 #
 # ansible-playbook dump-variables.yml
 # ansible-playbook dump-variables.yml -l <host>
+#
+# 
 ---
 - hosts: all
+
   tasks:
+
   - template:
-      src: templates/dump_variables
-      dest: /tmp/ansible_variables
+      src: ../templates/dump_variables
+      dest: /tmp/dump_variables
+
   - fetch:
       src: /tmp/ansible_variables
-      dest: "./tmp/ansible_variables/{{inventory_hostname}}"
+      dest: "../tmp/ansible_variables/{{inventory_hostname}}"

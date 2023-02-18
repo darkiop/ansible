@@ -1,0 +1,17 @@
+# Role: r_pufky.pihole
+pihole_webpassword: '{{ vault_pihole_webpassword }}'
+pihole_pihole_interface: 'eth0'
+
+pihole_ad_sources:
+  - id: 1
+    address: 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts'
+    enabled: true
+    comment: 'ansible adlist'
+  - id: 2
+    address: 'https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist'
+    enabled: true
+    comment: 'ansible adlist'
+  - id: 3
+    address: 'https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe'
+    enabled: true
+    comment: 'ansible adlist'

@@ -1,4 +1,9 @@
-# user_username
+# Check if git is installed
+
+- name: force install of git
+  import_tasks: ./check-and-install-git.yml
+
+# Install for user_username
 
 - name: dotfiles - recursively remove old dotfiles directory - {{ user_username }}
   ansible.builtin.file:
@@ -41,7 +46,7 @@
     path: ~/dotfiles-install.sh
     state: absent
 
-# root
+# Install for root
 
 - name: dotfiles - recursively remove old dotfiles directory - root
   ansible.builtin.file:

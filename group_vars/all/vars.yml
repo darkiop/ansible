@@ -1,23 +1,24 @@
 # debug: ansible -m debug -a 'var=hostvars[inventory_hostname]' all
 
-# ANSIBLE CONNECTION 
+# Host Connection Setup
 ansible_connection: ssh
 ansible_user: "{{ vault_ansible_user }}"
 ansible_sudo_pass: "{{ vault_ansible_sudo_pass }}"
 ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}"
 
-# ESSENTIALS
-enable_dotfiles: true
-enable_lsd: true
-enable_navi: true
-enable_bat: true
-enable_fd: true
-enable_btop: true
-enable_dategrep: true
-enable_glances: true
-enable_lfs: true
+# Role: my.essentials - install tasks
+install_dotfiles: true
+install_lsd: true
+install_navi: true
+install_bat: true
+install_fd: true
+install_btop: true
+install_dategrep: true
+install_glances: true
+install_chtsh: true
+install_lfs: true
 
-# SOFTWARE
+# Role: my.essentials - apt install default_software task
 apt_default_software:
   - git
   - curl
@@ -31,7 +32,6 @@ apt_default_software:
   - ncdu
   - cifs-utils
   - toilet
-  - byobu
   - zsh
   - unzip
   - rsync
@@ -56,9 +56,7 @@ apt_default_software:
   - sshfs
   - nfs-common
   - iproute2
-  - curl
   - htop
-  - lnav
   - iperf3
   - lnav
   - tcpdump
@@ -67,15 +65,18 @@ apt_default_software:
   - telnet
   - tmux
   - atop
+  - mtr
 
+# Role: my.essentials - apt install aditional_software task
 apt_aditional_software:
-  # - exa
-  # - bmon
+  # - name
 
-# USER 
-# Ansible Vault: - https://docs.ansible.com/ansible/latest/user_guide/vault.html
-#                - https://www.digitalocean.com/community/tutorials/how-to-use-vault-to-protect-sensitive-ansible-data-on-ubuntu-16-04
-user_username: darkiop
+# Role: my.essentials - pip install
+pip_install:
+  # - name
+
+# Role my.essentials - user 
+user_username: "{{ vault_user_username }}"
 user_password: "{{ vault_user_password }}"
 user_shell: /bin/bash
 user_dotfiles_repo: https://github.com/darkiop/dotfiles
@@ -85,7 +86,13 @@ user_keyboard_layout: de
 user_email: darkiop@gmail.com
 user_email_password: "{{ vault_user_email_password }}"
 
-# NTP
+# Local FQDN
+local_fqdn: "{{ vault_local_fqdn }}"
+
+# Role: my.essentials - sudo
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
+
+# Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp
 ntp_enabled: true
 ntp_manage_config: True
@@ -97,11 +104,11 @@ ntp_restrict:
   - "127.0.0.1"
   - "::1"
 
-# SAMBA
+# Role: bertvv.samba
 # https://github.com/bertvv/ansible-role-samba
 samba_users:
-  - name: darkiop
-    password: "{{ vault_user_samba_password }}"
+  - name: "{{ vault_samba_user }}"
+    password: "{{ vault_samba_password }}"
 samba_server_string: "{{ inventory_hostname }}"
 samba_workgroup: "HOME"
 samba_map_to_guest: bad user
@@ -114,20 +121,22 @@ samba_mitigate_cve_2017_7494: false
 samba_global_include: samba-global-include.conf
 samba_homes_include: samba-homes-include.conf
 
-# SECURITY
+# Role: geerlingguy.security
 # https://github.com/geerlingguy/ansible-role-security
 security_ssh_port: 22
-security_ssh_permit_root_login: "yes"
+security_ssh_permit_root_login: "no"
+security_ssh_allowed_users:
+  - "{{ user_username }}"
 security_autoupdate_enabled: true
-security_autoupdate_reboot: "true"
+security_autoupdate_reboot: false
 security_autoupdate_mail_to: "{{ user_email }}"
 security_autoupdate_mail_on_error: false
 
-# SMARTD
+# Role: stuvusit.smartd
 # https://github.com/stuvusIT/smartd
 smartd_default_mail_recipients: [ "{{ user_email }}" ]
 
-# MSMTP
+# Role: chriswayg.msmtp-mailer
 # https://github.com/chriswayg/ansible-msmtp-mailer
 msmtp_accounts:
 - account:   gmail
@@ -140,10 +149,3 @@ msmtp_accounts:
 msmtp_default_account: "gmail"
 msmtp_alias_default : "{{ user_email }}"
 msmtp_log : "syslog"
-
-# UFW
-ufw_allowed_ports_tcp: "{{security_ssh_port}}"
-ufw_allowed_ports_udp: 
-
-# SUDO
-sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
