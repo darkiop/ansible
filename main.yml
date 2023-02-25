@@ -30,8 +30,8 @@
     - role: geerlingguy.ntp
       tags: ntp
 
-### PROXMOX: CLUSTER
-- hosts: pve_cluster
+### PROXMOX: HOSTS
+- hosts: pve_hosts
 
   become: true
   become_user: root
