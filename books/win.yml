@@ -1,6 +1,6 @@
 # Test Ansible with Windows
 
-- hosts: pve-win11
+- hosts: pve-vm-win11
 
   tasks:
 
