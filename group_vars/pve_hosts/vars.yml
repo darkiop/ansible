@@ -7,6 +7,7 @@ install_fd: true
 install_btop: true
 install_dategrep: true
 install_glances: true
+install_chtsh: true
 install_lfs: true
 
 # Role: my.essentials - sudo
