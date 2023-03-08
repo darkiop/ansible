@@ -1,7 +1,10 @@
 # ansible-playbook update-dotfiles.yml
 # ansible-playbook update-dotfiles.yml -l <host>
 ---
-- hosts: all
+- hosts:
+    - pve_hosts
+    - pve_ct_vm
+    - vpn_gateways
   become: true
   become_user: root
   tasks:
