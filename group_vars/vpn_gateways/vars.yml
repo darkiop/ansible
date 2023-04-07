@@ -11,6 +11,7 @@ install_chtsh: false
 install_lfs: false
 
 # Role: r_pufky.pihole
+pihole_update_enable: true
 pihole_webpassword: '{{ vault_pihole_webpassword }}'
 pihole_pihole_interface: 'eth0'
 

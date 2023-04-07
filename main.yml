@@ -78,10 +78,6 @@
   become: true
   become_user: root
 
-  vars:
-
-    pihole_update_enable: true
-
   tasks:
 
     - name: Create custom.list (local dns records for pihole)
