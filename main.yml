@@ -122,45 +122,45 @@
 
   tasks:
 
-    - name: Creates directory
+    - name: "create backup-scripts directory"
       become: true
       become_user: "{{ user_username }}"
       file:
         path: ~/backup-scripts
         state: directory
 
-    - name: dotfiles - copy dotfiles-install.sh - {{ user_username }}
+    - name: "copy backup-scripts"
       become: true
       become_user: "{{ user_username }}"
       copy:
-        src: files/hosts/pve-ct-iobroker/*.sh
+        src: files/hosts/pve-ct-iobroker/
         dest: ~/backup-scripts/
         mode: 0777
 
-    - name: "cronjob for Backup: ioBroker"
+    - name: "create cronjob for Backup: ioBroker"
       ansible.builtin.cron:
         name: "Backup: ioBroker"
         minute: "30"
         hour: "8"
-        job: "/home/darkiop/dotfiles/bin/iobroker/backup/iobroker-backup-sync-iobroker.sh >/dev/null 2>&1"
+        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-iobroker.sh >/dev/null 2>&1"
 
-    - name: "cronjob for Backup: mariadb"
+    - name: "create cronjob for Backup: mariadb"
       ansible.builtin.cron:
         name: "Backup: mariadb"
         minute: "35"
         hour: "8"
-        job: "/home/darkiop/dotfiles/bin/iobroker/backup/iobroker-backup-sync-mariadb.sh >/dev/null 2>&1"
+        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-mariadb.sh >/dev/null 2>&1"
 
-    - name: "cronjob for Backup: CCU"
+    - name: "create cronjob for Backup: CCU"
       ansible.builtin.cron:
         name: "Backup: CCU"
         minute: "40"
         hour: "8"
-        job: "/home/darkiop/dotfiles/bin/iobroker/backup/iobroker-backup-sync-ccu.sh >/dev/null 2>&1"
+        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-ccu.sh >/dev/null 2>&1"
 
-    - name: "cronjob for Backup: Grafana"
+    - name: "create cronjob for Backup: Grafana"
       ansible.builtin.cron:
         name: "Backup: Grafana"
         minute: "45"
         hour: "8"
-        job: "/home/darkiop/dotfiles/bin/iobroker/backup/iobroker-backup-sync-grafana.sh >/dev/null 2>&1"
+        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-grafana.sh >/dev/null 2>&1"
