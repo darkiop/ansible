@@ -101,3 +101,13 @@
       ansible.builtin.command: 'pihole -g'
       register: myoutput
       changed_when: myoutput.rc != 0
+
+### pve-ct-evcc
+- hosts: pve-ct-evcc
+
+  become: true
+  become_user: root
+  
+  roles:
+  - role: my.evcc
+    tags: evcc
