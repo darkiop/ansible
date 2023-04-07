@@ -1,0 +1,11 @@
+- name: Register journalctl installation status
+  command: which journalctl
+  changed_when: false
+  failed_when: false
+  register: journalctl_installed
+  
+- name: run journalctl log cleanup
+  become: true
+  become_user: root
+  command: journalctl --vacuum-time=2d
+  when: journalctl_installed

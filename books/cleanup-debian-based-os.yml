@@ -1,0 +1,12 @@
+# ansible-playbook books/cleanup-debian-based-os.yml -i hosts.yml
+---
+- hosts:
+    - pve_hosts
+    - pve_ct_vm
+    - vpn_gateways
+  become: true
+  become_user: root
+  tasks:
+    - import_tasks: ../tasks/clear-systemctl-log.yml
+    - import_tasks: ../tasks/apt-autoremove.yml
+    - import_tasks: ../tasks/apt-autoclean.yml
