@@ -118,8 +118,6 @@
   become: true
   become_user: root
 
-  tags: iobtest
-
   tasks:
 
     ### backup-scripts
@@ -168,9 +166,7 @@
 
     ### copy restart-smartmeter.sh
     - name: "copy restart-smartmeter.sh"
-      become: true
-      become_user: "{{ user_username }}"
       copy:
         src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
-        dest: ~/restart-smartmeter.sh
+        dest: /usr/bin/restart-smartmeter.sh
         mode: 0777
