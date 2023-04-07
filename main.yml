@@ -122,6 +122,7 @@
 
   tasks:
 
+    ### backup-scripts
     - name: "create backup-scripts directory"
       become: true
       become_user: "{{ user_username }}"
@@ -164,3 +165,12 @@
         minute: "45"
         hour: "8"
         job: "/home/darkiop/backup-scripts/iobroker-backup-sync-grafana.sh >/dev/null 2>&1"
+
+    ### copy restart-smartmeter.sh
+    - name: "copy restart-smartmeter.sh"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
+        dest: ~/restart-smartmeter.sh
+        mode: 0777
