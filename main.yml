@@ -108,6 +108,8 @@
   become: true
   become_user: root
 
+  tags: pve-ct-evcc
+
   roles:
   - role: my.evcc
     tags: evcc
@@ -117,6 +119,8 @@
 
   become: true
   become_user: root
+
+  tags: pve-ct-iobroker
 
   tasks:
 
@@ -170,3 +174,19 @@
         src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
         dest: /usr/bin/restart-smartmeter.sh
         mode: 0777
+
+### loki
+- hosts: loki
+
+  become: true
+  become_user: root
+
+  tags: loki
+
+  tasks:
+
+    - name: "copy ser2net.yaml to /etc/ser2net.yaml"
+      copy:
+        src: files/hosts/loki/ser2net.yaml
+        dest: /etc/ser2net.yaml
+        mode: 0644
