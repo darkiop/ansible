@@ -1,12 +1,8 @@
 {
 	"folders": [
 		{
-			"name": "ansible-repo",
+			"name": "ansible",
 			"path": "/home/darkiop/Github/ansible"
-		},
-		{
-			"name": "terraform-repo",
-			"path": "/home/darkiop/Github/terraform"
 		},
 		{
 			"name": "home-.ansible",
@@ -16,11 +12,10 @@
 	"settings": {
 		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
 		"editor.tabSize": 2,
-		"workbench.colorTheme": "Sapphire"
+		"workbench.colorTheme": "Sapphire (Dim)"
 	},
 	"extensions": {
 		"recommendations": [
-			"zhuangtongfa.material-theme",
 			"redhat.ansible"
 		]
 	}
