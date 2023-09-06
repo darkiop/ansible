@@ -16,6 +16,13 @@
       win_reboot:
       when: update_result.reboot_required
 
+    - name: Install chocolatey
+      win_chocolatey:
+        name:
+        - chocolatey
+        - chocolatey-core.extension
+        state: present
+
     - name: Install multiple packages
       win_chocolatey:
         name:
@@ -24,3 +31,9 @@
         - windirstat
         - geekuninstaller
         state: present
+
+    - name: update
+      win_chocolatey:
+        name: all
+        state: latest
+        ignore_checksums: yes
