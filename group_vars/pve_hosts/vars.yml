@@ -15,10 +15,11 @@ sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbi
 
 # Role: my.essentials - apt install aditional_software task
 apt_aditional_software:
-  - systemd-timesyncd
+  # - name
 
 # Role: my.essentials - pip install
 pip_install:
+  # - name
 
 # Role: geerlingguy.security
 # https://github.com/geerlingguy/ansible-role-security
