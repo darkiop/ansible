@@ -1,0 +1,7 @@
+# ansible-playbook books/apt-purge.yml -i hosts.yml -l <hostname> -e purge_package=<package_name>
+---
+- hosts: all
+  become: true
+  become_user: root
+  tasks:
+    - import_tasks: ../tasks/apt-purge.yml

@@ -1,0 +1,5 @@
+  - name: Purge package
+    ansible.builtin.apt:
+      name:  "{{ purge_package }}"
+      purge: true
+      state: absent
