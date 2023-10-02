@@ -66,6 +66,7 @@ apt_default_software:
   - tmux
   - atop
   - mtr
+  - fzf
 
 # Role: my.essentials - apt install aditional_software task
 apt_aditional_software:
@@ -95,7 +96,7 @@ sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbi
 # Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp
 ntp_enabled: true
-ntp_manage_config: True
+ntp_manage_config: true
 ntp_config_file: /etc/ntp.conf
 ntp_timezone: "{{ user_timezone }}"
 ntp_servers:
@@ -127,10 +128,7 @@ security_ssh_port: 22
 security_ssh_permit_root_login: "no"
 security_ssh_allowed_users:
   - "{{ user_username }}"
-security_autoupdate_enabled: true
-security_autoupdate_reboot: false
-security_autoupdate_mail_to: "{{ user_email }}"
-security_autoupdate_mail_on_error: false
+security_autoupdate_enabled: false # handled by https://github.com/hifis-net/ansible-role-unattended-upgrades
 
 # Role: stuvusit.smartd
 # https://github.com/stuvusIT/smartd
@@ -149,3 +147,14 @@ msmtp_accounts:
 msmtp_default_account: "gmail"
 msmtp_alias_default : "{{ user_email }}"
 msmtp_log : "syslog"
+
+# Role: hifis.unattended_upgrades
+# https://github.com/hifis-net/ansible-role-unattended-upgrades
+unattended_mail_report: true
+unattended_mail_sender: 
+unattended_remove_unused_dependencies: true
+unattended_remove_new_unused_dependencies: true
+unattended_remove_unused_kernel_packages: true
+unattended_automatic_reboot: false
+unattended_update_days: 7
+unattended_clean_interval: 7
