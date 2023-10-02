@@ -1,0 +1,10 @@
+- name: content example
+  copy:
+    dest: /tmp/example
+    owner: root
+    group: root
+    mode: 0664
+    content: |
+      line-1
+      line-2
+      line-3
