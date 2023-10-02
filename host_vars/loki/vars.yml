@@ -4,3 +4,9 @@ sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbi
 # Role: my.essentials - apt install aditional_software task
 apt_aditional_software:
   - ser2net
+
+dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}"
+dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}"
+dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}"
+dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}"
+dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}"
