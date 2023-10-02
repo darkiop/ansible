@@ -28,3 +28,11 @@ pihole_ad_sources:
     address: 'https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe'
     enabled: true
     comment: 'ansible adlist'
+  - id: 4
+    address: 'https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt'
+    enabled: true
+    comment: 'ansible adlist'
+  - id: 5
+    address: 'https://v.firebog.net/hosts/Easyprivacy.txt'
+    enabled: true
+    comment: 'ansible adlist'
