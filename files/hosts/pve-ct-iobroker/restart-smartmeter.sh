@@ -14,6 +14,20 @@ if [ "$HOSTNAME" = pve-ct-iobroker ]; then
   iobroker restart smartmeter.0
   iobroker restart smartmeter.1
 
+elif [ "$HOSTNAME" = loki ]; then
+
+  echo "hostname = loki"
+
+  sudo systemctl restart ser2net.service
+
+  ssh darkiop@pve-ct-iobroker bash -c "'sudo systemctl restart socat-loki-usb0.service'"
+  ssh darkiop@pve-ct-iobroker bash -c "'sudo systemctl restart socat-loki-usb1.service'"
+
+  sleep 5
+
+  ssh darkiop@pve-ct-iobroker bash -c "'iobroker restart smartmeter.0'"
+  ssh darkiop@pve-ct-iobroker bash -c "'iobroker restart smartmeter.1'"
+
 else
 
   echo "hostname != pve-ct-iobroker"
