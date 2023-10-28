@@ -10,6 +10,9 @@ install_glances: false
 install_chtsh: false
 install_lfs: false
 
+# Role: my.essentials - sudo
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/bin/systemctl
+
 # Role: r_pufky.pihole
 pihole_update_enable: true
 pihole_webpassword: '{{ vault_pihole_webpassword }}'
