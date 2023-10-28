@@ -1,5 +1,5 @@
-# ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
 # ansible-playbook main.yml -i hosts.yml -l <host>
+# ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
 # ansible-playbook main.yml -i hosts.yml -e <variable>=<value>
 #  -i = inventory file
 #  -l = limit host
@@ -30,7 +30,37 @@
     - role: geerlingguy.ntp
       tags: ntp
 
-### PROXMOX: HOSTS
+    ## UNATTENDED-UPGRADES (https://github.com/hifis-net/ansible-role-unattended-upgrades)
+    - role: hifis.unattended_upgrades
+      unattended_origins_patterns:
+        - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
+        - 'o=Debian,codename=${distro_codename},label=Debian'
+      when: 
+        - ansible_lsb.id == "Debian"
+      tags: unattended_upgrades
+
+    - role: hifis.unattended_upgrades
+      unattended_origins_patterns:
+        - 'origin=Raspbian,codename=${distro_codename},label=Raspbian'
+      when: 
+        - ansible_distribution == "Debian"
+        - ansible_lsb.id == "Raspbian"
+      tags: unattended_upgrades
+
+    - role: hifis.unattended_upgrades
+      unattended_origins_patterns:
+        - 'origin=Ubuntu,archive=${distro_codename}-security'
+        - 'o=Ubuntu,a=${distro_codename}'
+        - 'o=Ubuntu,a=${distro_codename}-updates'
+      when: 
+        - ansible_distribution == "Ubuntu"
+      tags: unattended_upgrades
+
+####################################################
+# GROUP SPECIFIC CONFIGURATIONS
+####################################################
+
+## PROXMOX: HOSTS
 - hosts: pve_hosts
 
   become: true
@@ -56,7 +86,7 @@
           temperature_report_crit: 70
       tags: smartd
 
-### PROXMOX: CT & VMs
+## PROXMOX: CT & VMs
 - hosts: pve_ct_vm
 
   become: true
@@ -72,13 +102,22 @@
     - role: geerlingguy.security
       tags: security
 
-### VPN-GATEWAYS
+## VPN-GATEWAYS
 - hosts: vpn_gateways
 
   become: true
   become_user: root
 
   tasks:
+
+    - name: Setup static ip address configuration
+      template:
+        src: dhcpcd.conf-static-ip.j2
+        dest: "/etc/dhcpcd.conf"
+        owner: root
+        group: root
+        mode: 0644
+      tags: setup-static-ip-address
 
     - name: Create custom.list (local dns records for pihole)
       template:
@@ -101,26 +140,21 @@
       ansible.builtin.command: 'pihole -g'
       register: myoutput
       changed_when: myoutput.rc != 0
+      tags: pihole
 
-### pve-ct-evcc
-- hosts: pve-ct-evcc
+####################################################
+# CLIENT SPECIFIC CONFIGURATIONS
+####################################################
 
-  become: true
-  become_user: root
-
-  tags: pve-ct-evcc
-
-  roles:
-  - role: my.evcc
-    tags: evcc
-
-### pve-ct-iobroker
+## pve-ct-iobroker (Ubuntu)
 - hosts: pve-ct-iobroker
 
   become: true
   become_user: root
 
   tags: pve-ct-iobroker
+
+  roles:
 
   tasks:
 
@@ -131,6 +165,7 @@
       file:
         path: ~/backup-scripts
         state: directory
+        mode: 0777
 
     - name: "copy backup-scripts"
       become: true
@@ -146,6 +181,7 @@
         minute: "30"
         hour: "8"
         job: "/home/darkiop/backup-scripts/iobroker-backup-sync-iobroker.sh >/dev/null 2>&1"
+      tags: crontab
 
     - name: "create cronjob for Backup: mariadb"
       ansible.builtin.cron:
@@ -153,6 +189,7 @@
         minute: "35"
         hour: "8"
         job: "/home/darkiop/backup-scripts/iobroker-backup-sync-mariadb.sh >/dev/null 2>&1"
+      tags: crontab
 
     - name: "create cronjob for Backup: CCU"
       ansible.builtin.cron:
@@ -160,6 +197,7 @@
         minute: "40"
         hour: "8"
         job: "/home/darkiop/backup-scripts/iobroker-backup-sync-ccu.sh >/dev/null 2>&1"
+      tags: crontab
 
     - name: "create cronjob for Backup: Grafana"
       ansible.builtin.cron:
@@ -167,6 +205,14 @@
         minute: "45"
         hour: "8"
         job: "/home/darkiop/backup-scripts/iobroker-backup-sync-grafana.sh >/dev/null 2>&1"
+      tags: crontab
+
+    - name: "create cronjob for iface metric @ reboot"
+      ansible.builtin.cron:
+        name: "iface metric"
+        special_time: reboot
+        job: "ifmetric eth0 100 && ifmetric eth1 200"
+      tags: crontab
 
     ### copy restart-smartmeter.sh
     - name: "copy restart-smartmeter.sh"
@@ -175,7 +221,12 @@
         dest: /usr/bin/restart-smartmeter.sh
         mode: 0777
 
-### loki
+    # Restart SmartMeter 
+    - name: Restart SmartMeter restarts ser2net@loki, socat@pve-ct-iobroker and smartmeter.0/1@ioBroker
+      command: bash /usr/bin/restart-smartmeter.sh
+      tags: restart-smartmeter
+
+## loki (Raspbian)
 - hosts: loki
 
   become: true
@@ -183,10 +234,59 @@
 
   tags: loki
 
+  roles:
+
   tasks:
+
+    - name: Setup static ip address configuration
+      template:
+        src: dhcpcd.conf-static-ip.j2
+        dest: "/etc/dhcpcd.conf"
+        owner: root
+        group: root
+        mode: 0644
+      tags: setup-static-ip-address
 
     - name: "copy ser2net.yaml to /etc/ser2net.yaml"
       copy:
         src: files/hosts/loki/ser2net.yaml
         dest: /etc/ser2net.yaml
         mode: 0644
+      tags: ser2net
+
+    - name: Reload service ser2net
+      service:
+        name: ser2net
+        state: restarted
+      tags: ser2net
+
+    - name: "Copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh"
+      copy:
+        src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
+        dest: /usr/local/bin/restart-smartmeter.sh
+        mode: 0755
+      tags: smartmeter
+
+    - name: Creates an entry like "@reboot /usr/local/bin/restart-smartmeter.sh"
+      ansible.builtin.cron:
+        name: "run restart-smartmeter.sh after reboot via crontable"
+        special_time: reboot
+        job: "/usr/local/bin/restart-smartmeter.sh"
+      tags: crontab smartmeter
+
+    - name: Create a symbolic link for private nopw ssh key
+      ansible.builtin.file:
+        src: /home/darkiop/.ssh/darkiop@loki_ed25519_nopw
+        dest: /home/darkiop/.ssh/id_rsa
+        owner: darkiop
+        group: darkiop
+        state: link
+      tags: ssh-create-symlinks
+
+    - name: Create a symbolic link for public nopw ssh key
+      ansible.builtin.file:
+        src: /home/darkiop/.ssh/darkiop@loki_ed25519_nopw.pub
+        dest: /home/darkiop/.ssh/id_rsa.pub
+        owner: darkiop
+        group: darkiop
+      tags: ssh-create-symlinks
