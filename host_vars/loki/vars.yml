@@ -1,12 +1,10 @@
-# Role: my.essentials - sudo
-sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/bin/systemctl
+# Setup static ip address
+dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}" # host_vars/loki/vault.yml
+dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}" # host_vars/loki/vault.yml
+dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}" # host_vars/loki/vault.yml
+dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}" # host_vars/loki/vault.yml
+dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}" # host_vars/loki/vault.yml
 
 # Role: my.essentials - apt install aditional_software task
 apt_aditional_software:
   - ser2net
-
-dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}"
-dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}"
-dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}"
-dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}"
-dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}"

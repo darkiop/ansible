@@ -1,0 +1,8 @@
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
+
+# dhcpcd.conf
+vault_dhcpcd_static_ip_address: 
+vault_dhcpcd_static_routers: 
+vault_dhcpcd_static_domain_name: 
+vault_dhcpcd_static_domain_search: 
+vault_dhcpcd_static_domain_name_servers: 

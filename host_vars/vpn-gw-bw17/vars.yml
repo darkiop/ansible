@@ -1,3 +1,10 @@
+# Setup static ip address
+dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}"
+dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}"
+dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}"
+dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}"
+dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}"
+
 # Role: r_pufky.pihole
 pihole_ipv4_address: '192.168.20.2/24'
 pihole_ipv6_address: ''

@@ -1,0 +1,14 @@
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
+
+# dhcpcd.conf
+vault_dhcpcd_static_ip_address: 
+vault_dhcpcd_static_routers: 
+vault_dhcpcd_static_domain_name: 
+vault_dhcpcd_static_domain_search: 
+vault_dhcpcd_static_domain_name_servers: 
+
+# wiregaurd
+vault_wireguard_endpoint: 
+vault_wireguard_private_key_peer: 
+vault_wireguard_preshared_key: 
+vault_wireguard_publickey_hetzner: 
