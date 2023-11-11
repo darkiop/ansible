@@ -21,12 +21,5 @@ vault_samba_password:
 # proxmox
 vault_pve_password: 
 
-# pihole
-vault_pihole_webpassword: 
-
-# dhcpcd.conf
-vault_dhcpcd_static_ip_address: 
-vault_dhcpcd_static_routers: 
-vault_dhcpcd_static_domain_name: 
-vault_dhcpcd_static_domain_search: 
-vault_dhcpcd_static_domain_name_servers: 
+# wireguard
+vault_wireguard_endpoint: 
