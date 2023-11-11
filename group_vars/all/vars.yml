@@ -57,6 +57,7 @@ apt_default_software:
   - nfs-common
   - iproute2
   - htop
+  - iotop
   - iperf3
   - lnav
   - tcpdump
