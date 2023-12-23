@@ -1,3 +1,6 @@
+# Role: my.essentials - sudo
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/bin/docker
+
 # Setup static ip address
 dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}"
 dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}"
@@ -6,13 +9,18 @@ dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}"
 dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}"
 
 # Role: r_pufky.pihole
-pihole_ipv4_address: '192.168.20.2/24'
-pihole_ipv6_address: ''
-pihole_pihole_dns_1: '192.168.20.1#53'
-pihole_pihole_dns_2: ''
+pihole_ipv4_address: "{{ vault_dhcpcd_static_ip_address }}/24"
+pihole_ipv6_address: ""
+pihole_pihole_dns_1: "{{ vault_dhcpcd_static_routers }}#53"
+pihole_pihole_dns_2: ""
 pihole_update_enable: true
+
+# Role: my.essentials - apt install aditional_software task
+apt_aditional_software:
+   - docker
+   - docker-compose
 
 # Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp
 ntp_servers:
-  - "192.168.20.1"
+  - "{{ vault_dhcpcd_static_routers }}"

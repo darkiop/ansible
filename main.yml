@@ -103,7 +103,7 @@
       tags: security
 
 ## VPN-GATEWAYS
-- hosts: vpn_gateways
+- hosts: vpn_gw
 
   become: true
   become_user: root
@@ -222,7 +222,7 @@
         mode: 0777
 
     # Restart SmartMeter 
-    - name: Restart SmartMeter restarts ser2net@loki, socat@pve-ct-iobroker and smartmeter.0/1@ioBroker
+    - name: Restart ser2net.service @loki, socat.service @pve-ct-iobroker and smartmeter.0/1 instances @ioBroker
       command: bash /usr/bin/restart-smartmeter.sh
       tags: restart-smartmeter
 
@@ -290,3 +290,30 @@
         owner: darkiop
         group: darkiop
       tags: ssh-create-symlinks
+
+    ### arp cron for wakeonlan
+    - name: "create bin directory"
+      become: true
+      become_user: "{{ user_username }}"
+      file:
+        path: ~/bin
+        state: directory
+        mode: 0777
+      tags: crontab-arp
+
+    - name: "copy arp.sh for wakeonlan"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/loki/arp.sh
+        dest: ~/bin/
+        mode: 0777
+      tags: crontab-arp
+
+    - name: "create cronjob for arp -s (needed for wakeonlan)"
+      ansible.builtin.cron:
+        name: "setup crontab for arp for wakeonlan"
+        minute: "*"
+        hour: "*"
+        job: "/home/darkiop/bin/arp.sh >/dev/null 2>&1"
+      tags: crontab-arp
