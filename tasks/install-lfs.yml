@@ -1,20 +1,5 @@
 # https://github.com/Canop/lfs
 
-- name: lfs - install github3 module
-  pip:
-    name: github3.py
-
-- name: lfs - get the latest release version
-  github_release:
-    user: Canop
-    repo: lfs
-    action: latest_release
-  register: release
-
-- name: lfs - show version
-  debug:
-    var: release
-
 # x86_64
 - name: lfs - download latest release as zip file
   get_url: 
