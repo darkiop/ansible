@@ -8,13 +8,7 @@ ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}"
 
 # Role: my.essentials - install tasks
 install_dotfiles: true
-install_lsd: true
 install_navi: true
-install_bat: true
-install_fd: true
-install_btop: true
-install_dategrep: true
-install_glances: true
 install_chtsh: true
 install_lfs: true
 
@@ -35,7 +29,13 @@ apt_default_software:
   - zsh
   - unzip
   - rsync
-  - mlocate
+  #- mlocate
+  - btop
+  # - dategrep
+  - lsd
+  - bat
+  - fd-find
+  - glances
   - powerline
   - html2text
   - lsof
@@ -63,7 +63,6 @@ apt_default_software:
   - tcpdump
   - wakeonlan
   - speedtest-cli
-  - telnet
   - tmux
   - atop
   - mtr
