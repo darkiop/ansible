@@ -1,11 +1,5 @@
 # Role: my.essentials - install tasks
 install_dotfiles: true
-install_lsd: true
 install_navi: true
-install_bat: true
-install_fd: true
-install_btop: true
-install_dategrep: true
-install_glances: true
 install_chtsh: true
 install_lfs: true
