@@ -3,7 +3,7 @@
 - hosts:
     - pve_hosts
     - pve_ct_vm
-    - vpn_gateways
+    - vpn_gw
   become: true
   become_user: root
   tasks:
