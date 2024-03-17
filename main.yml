@@ -87,7 +87,7 @@
       tags: smartd
 
 ## PROXMOX: CT & VMs
-- hosts: pve_ct_vm
+- hosts: lxc, vm
 
   become: true
   become_user: root
@@ -134,7 +134,7 @@
     - role: r_pufky.pihole
       tags: pihole
 
-  post_tasks: 
+  post_tasks:
 
     - name: 'Update pihole gravity database'
       ansible.builtin.command: 'pihole -g'

@@ -1,8 +1,9 @@
-# ansible-playbook books/reboot.yml -i hosts.yml -l pve_ct_vm
+# ansible-playbook books/reboot.yml -i hosts.yml -l lxc, vm
 ---
 - hosts:
     - pve_hosts
-    - pve_ct_vm
+    - lxc
+    - vm
     - vpn_gw
   become: true
   become_user: root

@@ -3,7 +3,8 @@
 ---
 - hosts:
     - pve_hosts
-    - pve_ct_vm
+    - lxc
+    - vm
     - vpn_gw
   become: true
   become_user: root
