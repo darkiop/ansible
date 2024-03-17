@@ -6,6 +6,7 @@
     state: present
     update_cache: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  ignore_errors: yes
 
 - name: apt-install - install aditional software
   become: true
@@ -15,3 +16,4 @@
     state: present
     update_cache: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  ignore_errors: yes
