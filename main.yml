@@ -10,8 +10,12 @@
 # ansible loki -m setup -a 'filter=ansible_architecture'
 
 ---
-### ALL
-- hosts: all
+### ALL 
+- hosts:
+    - pve_hosts
+    - lxc
+    - vm
+    - vpn_gw
 
   become: true
   become_user: root
@@ -141,6 +145,21 @@
       register: myoutput
       changed_when: myoutput.rc != 0
       tags: pihole
+
+## Synology NAS
+- hosts: nas
+
+  #become: true
+  #become_user: root
+
+  #tags: 
+
+  #roles:
+
+  tasks:
+
+    - name: add SSH public keys
+      import_tasks: tasks/ssh_authorized_keys.yml
 
 ####################################################
 # CLIENT SPECIFIC CONFIGURATIONS
