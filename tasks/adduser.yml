@@ -1,4 +1,3 @@
----
 - name: create login user "{{ user_username }}"
   become: yes
   user:
@@ -23,12 +22,6 @@
   user: 
     name: "{{ item }}"
     shell: "{{ user_shell }}"
-  with_items: "{{ user_username }}"
-
-- name: add SSH public key
-  authorized_key:
-    user: "{{ item }}"
-    key: "{{ lookup('file', 'files/ssh/'+ item + '.key.pub') }}"
   with_items: "{{ user_username }}"
 
 - name: ensure group "sambashare" exists

@@ -1,0 +1,12 @@
+- name: delete ~.ssh/authorized_keys from {{ user_username }}
+  become: true
+  become_user: "{{ user_username }}"
+  file:
+    path: ~/.ssh/authorized_keys
+    state: absent
+
+- name: add SSH public keys
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', 'files/ssh/'+ item + '.key.pub') }}"
+  with_items: "{{ user_username }}"

@@ -26,6 +26,10 @@
 - import_tasks: tasks/adduser.yml
   tags: adduser
 
+# add ssh keys
+- import_tasks: tasks/ssh_authorized_keys.yml
+  tags: ssh
+
 # sudo
 - import_tasks: tasks/sudoers.d.yml
   tags: sudo
