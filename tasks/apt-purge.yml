@@ -3,3 +3,5 @@
       name:  "{{ purge_package }}"
       purge: true
       state: absent
+    when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+  - debug: msg={{ apt.stdout.split('\n')[:-1] }}
