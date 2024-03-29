@@ -13,6 +13,9 @@ install_chtsh: true
 install_lfs: true
 
 # Role: my.essentials - apt install default_software task
+
+# TODO Split for Debian/Ubuntu
+
 apt_default_software:
   - git
   - curl
@@ -30,12 +33,12 @@ apt_default_software:
   - unzip
   - rsync
   #- mlocate
-  - btop
-  # - dategrep
+  #- btop
+  #- dategrep
   - lsd
   - bat
-  - fd-find
-  - glances
+  #- fd-find
+  #- glances
   - powerline
   - html2text
   - lsof
