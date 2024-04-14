@@ -90,6 +90,26 @@
           temperature_report_crit: 70
       tags: smartd
 
+  tasks:
+
+    - name: "create bin directory"
+      become: true
+      become_user: "{{ user_username }}"
+      file:
+        path: ~/bin
+        state: directory
+        mode: 0755
+      tags: copy-scripts
+
+    - name: "copy scripts"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/pve_hosts/
+        dest: ~/bin/
+        mode: 0755
+      tags: copy-scripts
+
 ## PROXMOX: CT & VMs
 - hosts: lxc, vm
 
@@ -161,6 +181,15 @@
     - name: add SSH public keys
       import_tasks: tasks/ssh_authorized_keys.yml
 
+    - name: "copy arp.sh for wakeonlan"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/loki/arp.sh
+        dest: ~/bin/
+        mode: 0777
+      tags: crontab, crontab-arp, copy-scripts
+
 ####################################################
 # CLIENT SPECIFIC CONFIGURATIONS
 ####################################################
@@ -177,54 +206,23 @@
 
   tasks:
 
-    ### backup-scripts
-    - name: "create backup-scripts directory"
+    - name: "create bin directory"
       become: true
       become_user: "{{ user_username }}"
       file:
-        path: ~/backup-scripts
+        path: ~/bin
         state: directory
-        mode: 0777
+        mode: 0755
+      tags: copy-scripts
 
-    - name: "copy backup-scripts"
+    - name: "copy scripts"
       become: true
       become_user: "{{ user_username }}"
       copy:
         src: files/hosts/pve-ct-iobroker/
-        dest: ~/backup-scripts/
-        mode: 0777
-
-    - name: "create cronjob for Backup: ioBroker"
-      ansible.builtin.cron:
-        name: "Backup: ioBroker"
-        minute: "30"
-        hour: "8"
-        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-iobroker.sh >/dev/null 2>&1"
-      tags: crontab
-
-    - name: "create cronjob for Backup: mariadb"
-      ansible.builtin.cron:
-        name: "Backup: mariadb"
-        minute: "35"
-        hour: "8"
-        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-mariadb.sh >/dev/null 2>&1"
-      tags: crontab
-
-    - name: "create cronjob for Backup: CCU"
-      ansible.builtin.cron:
-        name: "Backup: CCU"
-        minute: "40"
-        hour: "8"
-        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-ccu.sh >/dev/null 2>&1"
-      tags: crontab
-
-    - name: "create cronjob for Backup: Grafana"
-      ansible.builtin.cron:
-        name: "Backup: Grafana"
-        minute: "45"
-        hour: "8"
-        job: "/home/darkiop/backup-scripts/iobroker-backup-sync-grafana.sh >/dev/null 2>&1"
-      tags: crontab
+        dest: ~/bin/
+        mode: 0755
+      tags: copy-scripts
 
     - name: "create cronjob for iface metric @ reboot"
       ansible.builtin.cron:
@@ -237,13 +235,41 @@
     - name: "copy restart-smartmeter.sh"
       copy:
         src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
-        dest: /usr/bin/restart-smartmeter.sh
-        mode: 0777
+        dest: ~/bin/
+        mode: 0755
+      tags: copy-scripts, smartmeter
 
-    # Restart SmartMeter 
+    - name: Create a symbolic for /usr/bin/restart-smartmeter.sh
+      ansible.builtin.file:
+        src: /home/darkiop/bin/restart-smartmeter.sh
+        dest: /usr/bin/restart-smartmeter.sh
+        owner: darkiop
+        group: darkiop
+        state: link
+      tags: copy-scripts, smartmeter
+
+    ### Restart SmartMeter 
     - name: Restart ser2net.service @loki, socat.service @pve-ct-iobroker and smartmeter.0/1 instances @ioBroker
       command: bash /usr/bin/restart-smartmeter.sh
-      tags: restart-smartmeter
+      tags: smartmeter, restart-smartmeter
+
+    ### copy rsync-backups.sh
+    - name: "copy rsync-backups.sh"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/pve-ct-iobroker/rsync-backups.sh
+        dest: ~/bin/rsync-backups.sh
+        mode: 0755
+      tags: copy-scripts, rsync-backups
+
+    - name: "create cronjob for rsync-backups.sh"
+      ansible.builtin.cron:
+        name: "setup crontab for rsync-backups.sh"
+        minute: "02"
+        hour: "19"
+        job: "/home/darkiop/bin/rsync-backups.sh >/dev/null 2>&1"
+      tags: crontab, crontab-rsync-backups, rsync-backups
 
 ## loki (Raspbian)
 - hosts: loki
@@ -284,14 +310,14 @@
         src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
         dest: /usr/local/bin/restart-smartmeter.sh
         mode: 0755
-      tags: smartmeter
+      tags: smartmeter, copy-scripts
 
     - name: Creates an entry like "@reboot /usr/local/bin/restart-smartmeter.sh"
       ansible.builtin.cron:
         name: "run restart-smartmeter.sh after reboot via crontable"
         special_time: reboot
         job: "/usr/local/bin/restart-smartmeter.sh"
-      tags: crontab smartmeter
+      tags: crontab, crontab-smartmeter, smartmeter
 
     - name: Create a symbolic link for private nopw ssh key
       ansible.builtin.file:
@@ -300,7 +326,7 @@
         owner: darkiop
         group: darkiop
         state: link
-      tags: ssh-create-symlinks
+      tags: ssh
 
     - name: Create a symbolic link for public nopw ssh key
       ansible.builtin.file:
@@ -308,7 +334,7 @@
         dest: /home/darkiop/.ssh/id_rsa.pub
         owner: darkiop
         group: darkiop
-      tags: ssh-create-symlinks
+      tags: ssh
 
     ### arp cron for wakeonlan
     - name: "create bin directory"
@@ -317,8 +343,8 @@
       file:
         path: ~/bin
         state: directory
-        mode: 0777
-      tags: crontab-arp
+        mode: 0755
+      tags: crontab, crontab-arp, copy-scripts
 
     - name: "copy arp.sh for wakeonlan"
       become: true
@@ -327,7 +353,7 @@
         src: files/hosts/loki/arp.sh
         dest: ~/bin/
         mode: 0777
-      tags: crontab-arp
+      tags: crontab, crontab-arp, copy-scripts
 
     - name: "create cronjob for arp -s (needed for wakeonlan)"
       ansible.builtin.cron:
@@ -335,4 +361,22 @@
         minute: "*"
         hour: "*"
         job: "/home/darkiop/bin/arp.sh >/dev/null 2>&1"
-      tags: crontab-arp
+      tags: crontab, crontab-arp
+
+    ### rsync named backups to odin
+    - name: "copy backup_bind.sh"
+      become: true
+      become_user: "{{ user_username }}"
+      copy:
+        src: files/hosts/loki/backup_bind.sh
+        dest: ~/bin/
+        mode: 0755
+      tags: bind-backup, copy-scripts
+
+    - name: "create cronjob for backup_bind.sh"
+      ansible.builtin.cron:
+        name: "setup crontab for backup_bind.sh"
+        minute: "00"
+        hour: "12"
+        job: "/home/darkiop/bin/backup_bind.sh >/dev/null 2>&1"
+      tags: crontab, crontab-bind-backup, bind-backup
