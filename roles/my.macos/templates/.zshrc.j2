@@ -1,0 +1,71 @@
+# {{ ansible_managed }}
+
+# OH-MY-ZSH
+if [ -d $HOME/.oh-my-zsh ]; then
+  export ZSH="$HOME/.oh-my-zsh"
+fi
+
+# ZSH PLUGIN MANAGER
+if [ -f $(brew --prefix)/share/antigen/antigen.zsh ]; then
+  source $(brew --prefix)/share/antigen/antigen.zsh
+fi
+
+# THEME
+# ~/.oh-my-zsh/custom/themes
+ZSH_THEME=""
+
+# SPACESHIP OPTIONS
+SPACESHIP_TIME_SHOW="true"
+
+# AUTOCOMPLETION
+CASE_SENSITIVE="true"
+
+# PLUGINS
+# $ZSH/plugins/
+# $ZSH_CUSTOM/plugins/
+plugins=(
+  macos                   # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/macos
+  zsh-autosuggestions
+  zsh-completions
+  git
+  fzf
+  fzf-tab                 # https://github.com/Aloxaf/fzf-tab#oh-my-zsh
+  brew                    # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/brew
+  aliases
+  #colorize
+  #command-not-found
+  nmap                    # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/nmap
+  starship
+)
+
+# load oh-my-zsh.sh
+if [ $ZSH/.oh-my-zsh.sh ]; then
+  source $ZSH/oh-my-zsh.sh
+else
+  source /etc/zshrc
+fi
+
+# load navi
+if [ -x $(brew --prefix)/bin/navi ]; then
+  source $HOME/Github/dotfiles-zsh/alias-navi
+  # load widget (STRG + G)
+  if [ $SHELL = "/bin/bash" ]; then
+    eval "$(navi widget bash)"
+  elif [ $SHELL = "/bin/zsh" ]; then
+    eval "$(navi widget zsh)"
+  fi
+fi
+
+# load alias
+if [ -L $HOME/.alias ]; then
+  source $HOME/.alias
+fi
+source $HOME/Github/dotfiles-zsh/alias-navi
+
+# load fzf
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+#test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+
+# clear screen
+clear
