@@ -1,0 +1,58 @@
+- name: Install mosquitto & mosquitto-clients
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  with_items:
+    - mosquitto
+    - mosquitto-clients
+
+- name: Delete existing /etc/mosquitto/passwd
+  become: true
+  file:
+    path: /etc/mosquitto/passwd
+    state: absent
+
+- name: Create /etc/mosquitto/passwd
+  become: true
+  file:
+    path: /etc/mosquitto/passwd
+    mode: 0644
+    state: touch
+
+- name: Run mosquitto_passwd command and capture the output
+  become: true
+  shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ mqtt_username }}" "{{ mqtt_password }}"
+  register: passwd_output
+  changed_when: false
+
+#- name: Read the content of /etc/mosquitto/passwd
+#  become: true
+#  shell: cat /etc/mosquitto/passwd
+#  register: passwd_content
+
+#- name: Display the content of /etc/mosquitto/passwd
+#  debug:
+#    msg: "Content of /etc/mosquitto/passwd:\n{{ passwd_content.stdout }}"
+
+- name: Create custom config file for mosquitto
+  copy:
+    dest: /etc/mosquitto/conf.d/custom.conf
+    owner: root
+    group: root
+    mode: 0664
+    content: |
+      listener 1883
+      allow_anonymous false
+      password_file /etc/mosquitto/passwd
+  notify: Restart mosquitto
+
+#- name: Read the content of /etc/mosquitto/conf.d/custom.conf
+#  become: true
+#  shell: cat /etc/mosquitto/conf.d/custom.conf
+#  register: custom_conf_content
+
+#- name: Display the content of /etc/mosquitto/passwd
+#  debug:
+#    msg: "Content of /etc/mosquitto/conf.d/custom.conf:\n{{ custom_conf_content.stdout }}"
