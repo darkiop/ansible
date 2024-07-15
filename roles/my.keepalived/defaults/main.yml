@@ -1,0 +1,5 @@
+keepalived_instance:
+keepalived_state:
+keepalived_interface:
+keepalived_priority:
+keepalived_virtual_ipv4:

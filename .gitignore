@@ -1,5 +1,6 @@
 .DS_Store
 vault.yml
-files/ssh/*.key.pub
 tmp/*
 trash/*
+roles/my.pihole/files/output.yaml
+roles/my.pihole/files/urls.txt

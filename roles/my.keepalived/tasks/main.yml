@@ -1,0 +1,52 @@
+- name: Enable nonlocal IP binding
+  blockinfile:
+    path: /etc/sysctl.conf
+    block: |
+      net.ipv4.ip_nonlocal_bind = 1
+      net.ipv6.ip_nonlocal_bind = 1
+  notify: Reload sysctl config
+
+- name: Install keepalived package
+  apt:
+    force_apt_get: yes
+    name: keepalived
+
+- name: Configure keepalived
+  template:
+    dest: /etc/keepalived/keepalived.conf
+    src: keepalived.j2
+    mode: 0644
+  notify: Restart keepalived
+
+# TODO check pihole-ftl with script
+# https://www.reddit.com/r/pihole/comments/d5056q/tutorial_v2_how_to_run_2_pihole_servers_in_ha/?rdt=34610
+
+# https://www.keepalived.org/manpage.html
+
+# https://www.linux-magazin.de/ausgaben/2015/07/einfuehrung2/
+
+#01 ! Configuration File for keepalived
+#02
+#03 global_defs {
+#04    notification_email {
+#05      charly@kuehnast.com
+#06    }
+#07    notification_email_from ha_test@kuehnast.com
+#08    smtp_server localhost
+#09    smtp_connect_timeout 30
+#10 }
+#11
+#12 vrrp_instance VI_1 {
+#13     state MASTER
+#14     interface eth0
+#15     virtual_router_id 51
+#16     priority 100
+#17     advert_int 1
+#18     authentication {
+#19         auth_type PASS
+#20         auth_pass meinpasswort
+#21     }
+#22     virtual_ipaddress {
+#23         10.0.0.100
+#24     }
+#25 }
