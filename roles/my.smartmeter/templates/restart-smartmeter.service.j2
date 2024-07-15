@@ -1,0 +1,15 @@
+# {{ ansible_managed }}
+
+[Unit]
+Description=Runs restart-smartmeter.sh after reboot
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/restart-smartmeter.sh
+Restart=on-failure
+User={{ ansible_user }}
+Environment="ENV_VAR=value"
+
+[Install]
+WantedBy=multi-user.target

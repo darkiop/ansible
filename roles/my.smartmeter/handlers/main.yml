@@ -1,0 +1,9 @@
+- name: Debug before restart ser2net
+  debug:
+    msg: "The configuration file has been updated, proceeding to restart ser2net..."
+  listen: Restart ser2net
+
+- name: Restart ser2net
+  ansible.builtin.service:
+    name: ser2net
+    state: restarted

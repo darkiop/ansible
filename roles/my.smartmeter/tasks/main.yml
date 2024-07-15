@@ -1,0 +1,33 @@
+- name: Install ser2net package
+  apt:
+    force_apt_get: yes
+    name: ser2net
+
+- name: Copy ser2net.yaml to /etc/ser2net.yaml
+  template:
+    src: templates/ser2net.yaml.j2
+    dest: /etc/ser2net.yaml
+    mode: 0644
+  notify: Restart ser2net
+
+- name: Copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh
+  template:
+    src: templates/restart-smartmeter.sh.j2
+    dest: /usr/local/bin/restart-smartmeter.sh
+    mode: 0755
+  tags: smartmeter, copy-scripts
+
+- name: Create the systemd service file for restart-smartmeter.service
+  template:
+    src: templates/restart-smartmeter.service.j2
+    dest: /etc/systemd/system/restart-smartmeter.service
+    mode: 0644
+
+- name: Reload systemd to recognize the new service
+  command: systemctl daemon-reload
+
+- name: Enable the new service restart-smartmeter.service
+  systemd:
+    name: restart-smartmeter.service
+    enabled: yes
+    state: started
