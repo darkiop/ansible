@@ -2,6 +2,7 @@
   apt:
     force_apt_get: yes
     name: ser2net
+  when: install_ser2net | default(true)
 
 - name: Copy ser2net.yaml to /etc/ser2net.yaml
   template:
@@ -9,6 +10,7 @@
     dest: /etc/ser2net.yaml
     mode: 0644
   notify: Restart ser2net
+  when: install_ser2net | default(true)
 
 - name: Copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh
   template:
@@ -16,18 +18,24 @@
     dest: /usr/local/bin/restart-smartmeter.sh
     mode: 0755
   tags: smartmeter, copy-scripts
+  when: install_restart_script | default(true)
 
 - name: Create the systemd service file for restart-smartmeter.service
   template:
     src: templates/restart-smartmeter.service.j2
     dest: /etc/systemd/system/restart-smartmeter.service
     mode: 0644
+  when: install_restart_script | default(true)
 
 - name: Reload systemd to recognize the new service
   command: systemctl daemon-reload
+  when: install_restart_script | default(true)
 
 - name: Enable the new service restart-smartmeter.service
   systemd:
     name: restart-smartmeter.service
     enabled: yes
     state: started
+  when: install_restart_script | default(true)
+
+# TODO install socat for target device

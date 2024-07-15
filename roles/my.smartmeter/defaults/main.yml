@@ -1,0 +1,2 @@
+install_ser2net: true
+install_restart_script: true
