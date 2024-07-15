@@ -1,0 +1,5 @@
+---
+- name: Install Samba
+  include_role:
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    name: bertvv.samba
