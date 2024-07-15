@@ -1,5 +1,0 @@
-# Role: my.essentials - install tasks
-install_dotfiles: true
-install_navi: true
-install_chtsh: true
-install_lfs: true

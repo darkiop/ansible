@@ -1,8 +1,0 @@
-- name: replace priv key
-  ansible.builtin.lineinfile:
-    path: /tmp/file
-    search_string: 'PrivateKey'
-    line: "PrivateKey = xxxxxxxxxxxxxxxxxxxx"
-    owner: root
-    group: root
-    mode: '0644'
