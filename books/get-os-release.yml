@@ -1,0 +1,23 @@
+---
+- name: Retrieve /etc/os-release on Debian/Ubuntu
+  
+  hosts: all
+  
+  become: yes
+  
+  tasks:
+  
+    - name: Ensure the system is Debian or Ubuntu
+      ansible.builtin.shell: cat /etc/os-release
+      register: os_release_contents
+      changed_when: false
+
+    - name: Display the contents of /etc/os-release
+      ansible.builtin.debug:
+        var: os_release_contents.stdout
+
+    - name: Ensure the system is Debian or Ubuntu based on /etc/os-release
+      ansible.builtin.assert:
+        that: "'debian' in os_release_contents.stdout or 'ubuntu' in os_release_contents.stdout"
+        fail_msg: "This playbook is designed for Debian or Ubuntu systems only."
+        success_msg: "This is a Debian or Ubuntu system."

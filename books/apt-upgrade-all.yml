@@ -1,5 +1,5 @@
 # ansible-playbook books/apt-upgrade-all.yml -i hosts.yml
-# ansible-playbook books/apt-upgrade-all.yml -i hosts.yml -l lxc, pve_v,
+# ansible-playbook books/apt-upgrade-all.yml -i hosts.yml -l lxc, vm
 ---
 - hosts:
     - pve_hosts
