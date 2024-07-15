@@ -1,0 +1,4 @@
+- name: Update pihole gravity database
+  ansible.builtin.command: 'pihole -g'
+  register: myoutput
+  changed_when: myoutput.rc != 0
