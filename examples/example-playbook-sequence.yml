@@ -1,0 +1,62 @@
+# Playbook
+# ├── Pre-tasks (pre_tasks)
+# ├── Roles
+# │   ├── Tasks (within roles)
+# │   ├── Handlers (within roles, triggered by tasks)
+# │   └── Other elements (e.g., vars, defaults, files)
+# ├── Tasks (tasks)
+# ├── Handlers (handlers, triggered by tasks)
+# └── Post-tasks (post_tasks)
+
+# 1. Roles:
+# Roles are a way to group tasks, variables, files, templates, and handlers.
+# Roles are executed in the order they are defined in the playbook.
+# Roles can include their own tasks, handlers, and other elements.
+# 2. Pre-Tasks:
+# Pre-tasks are executed before any tasks or roles.
+# They are defined in the playbook under the pre_tasks key.
+# Useful for setting up prerequisites or checking conditions.
+# 3. Tasks:
+# Tasks are the main actions to configure the system.
+# They are executed in the order they are defined within the playbook or a role.
+# Tasks are defined under the tasks key in a playbook or within a role.
+# 4. Handlers:
+# Handlers are tasks that are triggered by other tasks.
+# They are defined under the handlers key in a playbook or within a role.
+# Handlers run only if notified by a task.
+# Handlers run at the end of a play or a block of tasks unless explicitly defined otherwise.
+# 5. Post-Tasks:
+# Post-tasks are executed after all tasks and handlers.
+# They are defined in the playbook under the post_tasks key.
+# Useful for clean-up operations or final verification steps.
+# 6. Include and Import Statements:
+# include_tasks and import_tasks allow including additional tasks from other files.
+# import_role and include_role can include roles dynamically.
+# Import statements are processed during playbook parsing, while include statements are processed during execution.
+
+- name: Example Playbook
+  hosts: all
+  become: yes
+
+  pre_tasks:
+    - name: Pre-task example
+      ansible.builtin.shell: echo "Running pre-task"
+
+  roles:
+    - role: common
+    - role: webserver
+
+  tasks:
+    - name: Task example
+      ansible.builtin.shell: echo "Running task"
+
+  handlers:
+    - name: Restart Apache
+      ansible.builtin.service:
+        name: apache2
+        state: restarted
+      listen: "restart webserver"
+
+  post_tasks:
+    - name: Post-task example
+      ansible.builtin.shell: echo "Running post-task"

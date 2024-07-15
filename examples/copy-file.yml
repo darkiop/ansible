@@ -1,0 +1,8 @@
+- name: "copy file"
+  become: true
+  become_user: "{{ user_username }}"
+  copy:
+    src: 
+    dest: 
+    mode: 0755
+  tags: copy-files

@@ -1,0 +1,5 @@
+- name: add SSH public keys
+  authorized_key:
+    user: "{{ item }}"
+    key: "{{ lookup('file', 'files/ssh/'+ item + '.key.pub') }}"
+  with_items: "{{ user_username }}"

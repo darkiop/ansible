@@ -1,0 +1,9 @@
+- name: 'Run command'
+  command: 'command'
+  register: myoutput
+  changed_when: myoutput.rc != 0
+
+- name: 'Run command'
+  shell: 'command'
+  register: myoutput
+  changed_when: myoutput.rc != 0
