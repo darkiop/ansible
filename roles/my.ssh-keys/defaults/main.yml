@@ -1,0 +1,2 @@
+ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
+ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"

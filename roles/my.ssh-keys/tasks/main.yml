@@ -1,0 +1,37 @@
+---
+# Linux
+- name: Set authorized SSH keys for {{ ansible_user }}
+  template:
+    src: authorized_keys.j2
+    dest: /home/{{ ansible_user }}/.ssh/authorized_keys
+    owner: '{{ ansible_user }}'
+    group: '{{ ansible_user }}'
+    mode: '0600'
+  when: 
+    - ansible_facts['os_family'] != 'Darwin'
+    - ansible_user != 'root'
+  tags: add-ssh-keys
+
+- name: Set authorized SSH keys for root
+  become: true
+  template:
+    src: authorized_keys_root.j2
+    dest: /root/.ssh/authorized_keys
+    owner: root
+    group: root
+    mode: '0600'
+  when: ansible_facts['os_family'] != 'Darwin'
+  tags: add-ssh-keys
+
+# MacOS
+- name: Set authorized SSH keys for {{ ansible_user }}
+  template:
+    src: authorized_keys.j2
+    dest: /Users/{{ ansible_user }}/.ssh/authorized_keys
+    owner: '{{ ansible_user }}'
+    group: staff
+    mode: '0600'
+  when: ansible_facts['os_family'] == 'Darwin'
+  tags: add-ssh-keys
+
+# TODO add private keys for each host

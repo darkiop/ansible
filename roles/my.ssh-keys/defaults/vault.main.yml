@@ -1,0 +1,6 @@
+# https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
+
+vault_ssh_public_keys:
+- ""
+vault_ssh_public_keys_root:
+- ""
