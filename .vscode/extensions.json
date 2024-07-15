@@ -1,6 +1,7 @@
 {
   "recommendations": [
     "redhat.ansible",
-    "aaron-bond.better-comments"
+    "aaron-bond.better-comments",
+    "gruntfuggly.todo-tree"
   ]
 }
