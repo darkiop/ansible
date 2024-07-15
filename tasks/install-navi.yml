@@ -10,7 +10,7 @@
 - name: Install python3-pip
   become: true
   become_user: root
-  apt: 
+  apt:
     name: "python3-pip"
     state: present
 
@@ -26,7 +26,7 @@
 - name: navi - install fzf
   become: true
   become_user: root
-  apt: 
+  apt:
     name: fzf
     state: present
     update_cache: true
@@ -42,9 +42,24 @@
   debug:
     var: release
 
-- name: navi - download & unarchive the latest version
+- name: navi - Print the system architecture
+  debug:
+    msg: "System architecture is {{ ansible_architecture }}"
+
+- name: navi - Set src based on architecture
+  set_fact:
+    src_file: >
+      {% if ansible_architecture == 'x86_64' %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-x86_64-unknown-linux-musl.tar.gz
+      {% elif ansible_architecture == 'aarch64' %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-aarch64-unknown-linux-gnu.tar.gz
+      {% else %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-aarch64-unknown-linux-gnu.tar.gz
+      {% endif %}
+
+- name: navi - Unarchive the file based on architecture
   unarchive:
-    src: https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-x86_64-unknown-linux-musl.tar.gz
+    src: "{{ src_file }}"
     dest: /usr/local/bin
     remote_src: yes
 
