@@ -1,5 +1,4 @@
----
-- name: pip-install
+- name: my.essentails - pip-install.yml - pip-install
   become: true
   become_user: root
   pip: 

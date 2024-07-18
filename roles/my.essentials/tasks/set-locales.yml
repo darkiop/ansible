@@ -1,4 +1,4 @@
-- name: generate the locale "{{ user_locale }}"
+- name: my.essentials - set-locales.yml - generate the locale "{{ user_locale }}"
   when: ansible_os_family == 'Debian'
   locale_gen:
     name: "{{ user_locale }}"

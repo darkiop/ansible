@@ -1,19 +1,17 @@
-- name: apt update / upgrade
+- name: my.essentials - apt-upgrade.yml - apt-upgrade
   apt:
-    update_cache: yes
-    cache_valid_time: 3600
     upgrade: safe
   register: apt
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
 - debug: msg={{ apt.stdout.split('\n')[:-1] }}
 
-- name: check if a reboot is needed on all servers
+- name: my.essentials - apt-upgrade.yml - check if a reboot is needed on all servers
   register: reboot_required_file
   stat:
     path: /var/run/reboot-required
     checksum_algorithm: md5
 
-- name: reboot the box if kernel updated
+- name: my.essentials - apt-upgrade.yml - reboot the box if kernel updated
   reboot:
     msg: "Reboot initiated by Ansible for kernel updates"
     connect_timeout: 5

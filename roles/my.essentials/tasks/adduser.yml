@@ -1,5 +1,5 @@
-- name: create login user "{{ user_username }}"
-  become: yes
+- name: my.essentials - adduser.yml - create login user "{{ user_username }}"
+  become: true
   user:
     name: "{{ item }}"
     password: "{{ user_password | password_hash('sha512') }}"
@@ -11,29 +11,29 @@
     update_password: on_create
   with_items: "{{ user_username }}"
 
-- name: ensure group "{{ user_username }}" exists
-  become: yes
+- name: my.essentials - adduser.yml - ensure group "{{ user_username }}" exists
+  become: true
   group:
     name: "{{ item }}"
     state: present
   with_items: "{{ user_username }}"
 
-- name: set the default shell
+- name: my.essentials - adduser.yml - set the default shell
   user: 
     name: "{{ item }}"
     shell: "{{ user_shell }}"
   with_items: "{{ user_username }}"
 
-- name: ensure group "sambashare" exists
+- name: my.essentials - adduser.yml - ensure group "sambashare" exists
   when: enable_samba | default(False) 
-  become: yes
+  become: true
   group:
     name: "sambashare"
     state: present
 
-- name: append the samba group
+- name: my.essentials - adduser.yml - append the samba group
   when: enable_samba | default(False) 
-  become: yes
+  become: true
   user:
     name: "{{ user_username }}"
     groups: 

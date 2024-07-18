@@ -1,4 +1,4 @@
-- name: apt-install - install default software
+- name: my.essentials - apt-install.yml - install default software
   become: true
   become_user: root
   apt: 
@@ -8,7 +8,7 @@
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
   ignore_errors: yes
 
-- name: apt-install - install aditional software
+- name: my.essentials - apt-install.yml - install aditional software
   become: true
   become_user: root
   apt: 

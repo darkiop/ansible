@@ -1,7 +1,6 @@
-- name: force install of git
+- name: my.essentials - check-and-install-git.yml - force install of git
   apt: 
     name: git
     state: present
     update_cache: true
-  ignore_errors: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'

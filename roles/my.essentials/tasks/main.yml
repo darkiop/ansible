@@ -1,58 +1,70 @@
+# setup-network
+# TODO wip
+#- import_tasks: wip___setup-network.yml
+#  tags: setup-network
+#  when: setup_network | default(False)
+
 # apt-update
-- import_tasks: tasks/apt-update.yml
+- import_tasks: apt-update.yml
   tags: apt-update
 
 # apt-upgrade
-- import_tasks: tasks/apt-upgrade.yml
+- import_tasks: apt-upgrade.yml
   tags: apt-upgrade
+  when: apt_upgrade | default(False)
 
 # apt-install
-- import_tasks: tasks/apt-install.yml
+- import_tasks: apt-install.yml
   tags: apt-install
 
+# Install python3-pip
+- import_tasks: install-python3-pip.yml
+  tags: pip-install, python3-pip
+
 # pip-install
-- import_tasks: tasks/pip-install.yml
+- import_tasks: pip-install.yml
   tags: pip-install
 
 # locales
-- import_tasks: tasks/set-locales.yml
+- import_tasks: set-locales.yml
   tags: locales
 
 # timezone
-- import_tasks: tasks/set-timezone.yml
+- import_tasks: set-timezone.yml
   tags: timezone
 
 # adduser
-- import_tasks: tasks/adduser.yml
+- import_tasks: adduser.yml
   tags: adduser
 
-# add ssh keys
-- import_tasks: tasks/ssh_authorized_keys.yml
-  tags: ssh
-
-# sudo
-- import_tasks: tasks/sudoers.d.yml
-  tags: sudo
-
 # dotfiles
-- import_tasks: tasks/dotfiles-install.yml
+- import_tasks: dotfiles-install.yml
   tags: install-dotfiles
   when: install_dotfiles | default(False)
 
 # navi
-- import_tasks: tasks/install-navi.yml
+- import_tasks: install-navi.yml
   tags: install-navi
-  ignore_errors: true
   when: install_navi | default(False)
 
 # cht.sh
-- import_tasks: tasks/install-cht.sh.yml
+- import_tasks: install-cht.sh.yml
   tags: install-chtsh
-  ignore_errors: true
   when: install_chtsh | default(False)
 
-# lfs
-- import_tasks: tasks/install-lfs.yml
-  tags: install-lfs
-  ignore_errors: true
-  when: install_lfs | default(False)
+# TODO vimrc
+# vimrc
+#- import_tasks: wip___install-vimrc.yml
+#  tags: install-vimrc
+#  when: install_vimrc | default(False)
+
+# TODO dysk
+# dysk - https://github.com/Canop/dysk/releases
+#- import_tasks: wip___install-dysk.yml
+#  tags: install-dysk
+#  when: install_dysk | default(False)
+
+# TODO move to role my.sudoers
+# sudo
+#- import_tasks: tasks/sudoers.d.yml
+#   tags: sudo

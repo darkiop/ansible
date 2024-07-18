@@ -1,4 +1,37 @@
+# Setup Environment
 install_dotfiles: true
 install_navi: true
 install_chtsh: true
-install_lfs: true
+install_dysk: true
+
+# Install Software
+apt_upgrade: false
+apt_default_software:
+apt_aditional_software:
+pip_install:
+
+# Role my.essentials - user
+user_username:
+user_password:
+user_shell: /bin/bash
+user_dotfiles_repo: https://github.com/darkiop/dotfiles
+user_timezone: Europe/Berlin
+user_locale: en_US.UTF-8
+user_keyboard_layout: de
+user_email:
+user_email_password: "{{ vault_user_email_password }}"
+
+# Role: my.essentials - sudo
+sudoers_bin_nopasswd:
+
+# Network Configuration
+setup_network: false
+network_mode: dhcp # static/dhcp - default = dhcp
+network_interface_name:
+network_static_ip_1:
+network_static_ip_2:
+network_gateway:
+network_domain_name: "{{ vault_local_fqdn }}"
+network_domain_search: "{{ vault_local_fqdn }}"
+network_dns_1: 192.168.1.53
+network_dns_2:

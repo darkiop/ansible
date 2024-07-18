@@ -1,0 +1,47 @@
+# https://github.com/chubin/cheat.sh#
+
+- name: my.essentials - install-chtsh.yml - download cht.sh
+  get_url:
+    url: https://cht.sh/:cht.sh
+    dest: /usr/local/bin/cht.sh
+
+- name: my.essentials - install-chtsh.yml - change file ownership, group and permissions
+  file:
+    path: /usr/local/bin/cht.sh
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: my.essentials - install-chtsh.yml - create .config directory for "{{ user_username }}"
+  become: true
+  become_user: "{{ user_username }}"
+  file:
+    path: $HOME/.cht.sh
+    state: directory
+    mode: '0755'
+
+- name: my.essentials - install-chtsh.yml - copy config.yaml to ~/.cht.sh - "{{ user_username }}"
+  template: 
+    src: cht.sh.conf.j2
+    dest: ~/.cht.sh/cht.sh.conf
+    owner: "{{ user_username }}"
+    group: "{{ user_username }}"
+    mode: 0644
+
+- name: my.essentials - install-chtsh.yml - create .config directory for root
+  become: true
+  become_user: root
+  file:
+    path: /root/.cht.sh
+    state: directory
+    mode: '0755'
+
+- name: my.essentials - install-chtsh.yml - copy config.yaml to ~/.cht.sh - root
+  become: true
+  become_user: root
+  template: 
+    src: cht.sh.conf.j2
+    dest: ~/.cht.sh/cht.sh.conf
+    owner: root
+    group: root
+    mode: 0644

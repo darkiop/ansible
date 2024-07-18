@@ -1,0 +1,69 @@
+- name: my.essentials - install-navi.yml - gather package facts
+  ansible.builtin.package_facts:
+
+- name: my.essentials - install-navi.yml - check if python3-pip is installed
+  ansible.builtin.debug:
+    msg: "python3-pip is installed"
+  when: "'python3-pip' in ansible_facts.packages"
+
+- name: my.essentials - install-navi.yml - fail if python3-pip is not installed
+  ansible.builtin.fail:
+    msg: "python3-pip is not installed!"
+  when: "'python3-pip' not in ansible_facts.packages"
+
+- name: my.essentials - install-navi.yml - check if github3.py is installed
+  command: pip show github3.py
+  register: pip_show_result
+  ignore_errors: true
+
+- name: my.essentials - install-navi.yml - install github3.py if not present
+  pip:
+    name: github3.py
+    state: present
+  when: pip_show_result.rc != 0
+
+- name: my.essentials - install-navi.yml - install fzf
+  become: true
+  become_user: root
+  apt:
+    name: fzf
+    state: present
+
+- name: my.essentials - install-navi.yml - get the latest release version
+  github_release:
+    user: denisidoro
+    repo: navi
+    action: latest_release
+  register: release
+
+- name: my.essentials - install-navi.yml - show the latest release version
+  debug:
+    var: release
+
+#- name: my.essentials - install-navi.yml - show the system architecture
+#  debug:
+#    msg: "System architecture is {{ ansible_architecture }}"
+
+- name: my.essentials - install-navi.yml - select the bin based on architecture
+  set_fact:
+    src_file: >
+      {% if ansible_architecture == 'x86_64' %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-x86_64-unknown-linux-musl.tar.gz
+      {% elif ansible_architecture == 'aarch64' %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-aarch64-unknown-linux-gnu.tar.gz
+      {% else %}
+        https://github.com/denisidoro/navi/releases/download/{{ release['tag'] }}/navi-{{ release['tag'] }}-aarch64-unknown-linux-gnu.tar.gz
+      {% endif %}
+
+- name: my.essentials - install-navi.yml - download and unarchive the file src_file
+  unarchive:
+    src: "{{ src_file }}"
+    dest: /usr/local/bin
+    remote_src: yes
+
+- name: my.essentials - install-navi.yml - change file ownership, group and permissions
+  file:
+    path: /usr/local/bin/navi
+    owner: root
+    group: root
+    mode: '0755'
