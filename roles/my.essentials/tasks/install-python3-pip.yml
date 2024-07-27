@@ -1,4 +1,4 @@
-- name: my.essentials - install-python3-pip.yml - install python3-pip
+- name: my.essentials - install-python3-pip.yml - force install python3-pip
   become: true
   become_user: root
   apt:

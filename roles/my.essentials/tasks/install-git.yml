@@ -1,4 +1,4 @@
-- name: my.essentials - check-and-install-git.yml - force install of git
+- name: my.essentials - install-git.yml - force install of git
   apt: 
     name: git
     state: present

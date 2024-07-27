@@ -1,17 +1,17 @@
-# Check if git is installed
+# force installation of git
 
-- name: force install of git
-  import_tasks: check-and-install-git.yml
+- name: my.essentials - install-dotfiles.yml - force install of git
+  import_tasks: install-git.yml
 
-# Install for {{ user_username }}
+# Install dotfiles for {{ user_username }}
 
-- name: dotfiles - recursively remove old dotfiles directory - {{ user_username }}
+- name: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - {{ user_username }}
   file:
     path: /home/{{ item }}/dotfiles
     state: absent
   with_items: "{{ user_username }}"
 
-- name: dotfiles - clone the latest dotfiles repo to {{ user_username }}/dotfiles
+- name: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to {{ user_username }}/dotfiles
   become: true
   become_user: "{{ user_username }}"
   git:
@@ -21,7 +21,7 @@
     force: yes
   with_items: "{{ user_username }}"
 
-- name: dotfiles - copy dotfiles-install.sh - {{ user_username }}
+- name: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - {{ user_username }}
   become: true
   become_user: "{{ user_username }}"
   copy:
@@ -29,38 +29,38 @@
     dest: ~/dotfiles-install.sh
     mode: 0777
 
-- name: dotfiles - install dotfiles for {{ user_username }}
+- name: my.essentials - install-dotfiles.yml - install dotfiles for {{ user_username }}
   become: true
   become_user: "{{ user_username }}"
   command: bash ~/dotfiles-install.sh
 
-- name: dotfiles - git config pull.rebase false - {{ user_username }}
+- name: my.essentials - install-dotfiles.yml - git config pull.rebase false - {{ user_username }}
   become: true
   become_user: "{{ user_username }}"
   command: chdir=~/dotfiles git config pull.rebase false
 
-- name: dotfiles - remove dotfiles-install.sh - {{ user_username }}
+- name: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - {{ user_username }}
   become: true
   become_user: "{{ user_username }}"
   file:
     path: ~/dotfiles-install.sh
     state: absent
 
-# Install for root
+# Install dotfiles for root
 
-- name: dotfiles - recursively remove old dotfiles directory - root
+- name: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - root
   file:
     path: /root/dotfiles
     state: absent
 
-- name: dotfiles - clone the latest dotfiles repo to /root/dotfiles
+- name: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to /root/dotfiles
   git:
     repo: "{{ user_dotfiles_repo }}"
     dest: /root/dotfiles
     recursive: yes # yes = incl. submodules
     force: yes
 
-- name: dotfiles - copy dotfiles-install.sh - root
+- name: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - root
   become: true
   become_user: root
   copy:
@@ -68,17 +68,17 @@
     dest: ~/dotfiles-install.sh
     mode: 0777
 
-- name: dotfiles - install dotfiles for root
+- name: my.essentials - install-dotfiles.yml - install dotfiles for root
   become: true
   become_user: root
   command: bash ~/dotfiles-install.sh
 
-- name: dotfiles - git config pull.rebase false - root
+- name: my.essentials - install-dotfiles.yml - git config pull.rebase false - root
   become: true
   become_user: root
   command: chdir=~/dotfiles git config pull.rebase false
 
-- name: dotfiles - remove dotfiles-install.sh - root
+- name: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - root
   become: true
   become_user: root
   file:

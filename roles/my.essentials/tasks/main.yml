@@ -38,7 +38,7 @@
   tags: adduser
 
 # dotfiles
-- import_tasks: dotfiles-install.yml
+- import_tasks: install-dotfiles.yml
   tags: install-dotfiles
   when: install_dotfiles | default(False)
 
