@@ -1,23 +1,23 @@
-- name: Install Docker CE
+- name: my.docker - install Docker CE
   include_role:
     # https://github.com/geerlingguy/ansible-role-docker)
     name: geerlingguy.docker
 
-- name: Create docker main directory
+- name: my.docker - create docker main directory
   become: true
   become_user: "{{ user_username }}"
   ansible.builtin.file:
     path: /home/{{ user_username }}/docker
     state: directory
 
-- name: Create docker prod directory
+- name: my.docker - create docker prod directory
   become: true
   become_user: "{{ user_username }}"
   ansible.builtin.file:
     path: /home/{{ user_username }}/docker/prod
     state: directory
 
-- name: Create docker test directory
+- name: my.docker - create docker test directory
   become: true
   become_user: "{{ user_username }}"
   ansible.builtin.file:
