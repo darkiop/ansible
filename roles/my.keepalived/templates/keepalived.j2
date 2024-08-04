@@ -1,12 +1,11 @@
 # {{ ansible_managed }}
 
-vrrp_instance {{ keepalived_instance }} {
-  state {{ keepalived_state }}
-  interface {{ keepalived_interface }}
-  virtual_router_id 51
-  priority {{ keepalived_priority }}
-  advert_int 1
+vrrp_instance {{ my_keepalived_instance }} {
+  state {{ my_keepalived_state }}
+  interface {{ my_keepalived_interface }}
+  virtual_router_id {{ my_keepalived_router_id }}
+  priority {{ my_keepalived_priority }}
   virtual_ipaddress {
-    {{ keepalived_virtual_ipv4 }}
+    {{ my_keepalived_virtual_ipv4 }}
   }
 }
