@@ -1,0 +1,9 @@
+# {{ ansible_managed }}
+
+{% for (host,config) in ssh_config.items() %}
+Host {{host}}
+  {% for (k,v) in config.items() %}
+  {{k}} {{v}}
+  {% endfor %}
+
+{% endfor %}

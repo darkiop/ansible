@@ -1,0 +1,10 @@
+ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
+ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
+ssh_config:
+  example-host-1 example-host-1-alias:
+    HostName: example-host-1
+    User: user
+  example-host-2:
+    HostName: example-host-2
+    User: user
+    IdentityFile: .ssh/ke
