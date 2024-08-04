@@ -1,7 +1,0 @@
----
-# vzdump nfs fix
-- name: vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups
-  lineinfile:
-    path: /etc/vzdump.conf
-    regexp: '^#tmpdir: DIR'
-    line: 'tmpdir: /tmp'

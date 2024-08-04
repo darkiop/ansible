@@ -1,5 +1,3 @@
----
-# installs a systemd timer which use gstatus to generate /var/www/html/gstatus.json
 - name: glusterf-gstatus-json - install nginx
   apt: 
     name: nginx
@@ -8,22 +6,16 @@
   become: true
 
 - name: glusterf-gstatus-json - copy gstatus-status-to-json.service
-  copy:
-    src: files/gstatus-status-to-json.service
+  template:
+    src: templates/gstatus-status-to-json.service.j2
     dest: /etc/systemd/system/gstatus-status-to-json.service
-    owner: root
-    group: root
-    mode: ug+rwX,o=
-    force: yes
+    mode: 0644
 
 - name: glusterf-gstatus-json - copy gstatus-status-to-json.timer
-  copy:
-    src: files/gstatus-status-to-json.timer
+  template:
+    src: templates/gstatus-status-to-json.timer.j2
     dest: /etc/systemd/system/gstatus-status-to-json.timer
-    owner: root
-    group: root
-    mode: ug+rwX,o=
-    force: yes
+    mode: 0644
 
 - name: glusterf-gstatus-json - start gstatus-status-to-json.timer
   ansible.builtin.systemd:

@@ -1,19 +1,46 @@
----
-- name: my.proxmox - GlusterFS
-  include_tasks: ./glusterfs.yml
-  when: my_proxmox_glusterfs | default(False)
+- name: my.proxmox - use lae.proxmox role
+  include_role:
+    name: lae.proxmox
 
-- name: my.proxmox - Setup Proxmox Repositorys
-  include_tasks: ./tasks/proxmox-enable-community-repo.yml
-  when: my_proxmox_community_repo | default(False)
+- name: my.proxmox - vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups
+  lineinfile:
+    path: /etc/vzdump.conf
+    regexp: '^#tmpdir: DIR'
+    line: 'tmpdir: /tmp'
 
-- name: my.proxmox - Setup Watchdog
-  include_tasks: ./tasks/watchdog.yml
-  when: my_proxmox_watchdog | default(False)
+- name: my.proxmox - remove Proxmox no-subscription popup
+  command: sed -Ezi.bak "s/(function\(orig_cmd\) \{)/\1\n\torig_cmd\(\);\n\treturn;/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+  notify: Restart pveproxy.service
+  tags: remove-no-subscription-popup
 
-# wake-on-lan config
-# TODO
-# auf pve01 mit Mac-Adresse von pve01-cl (= interner LAN-Port)
-#pvenode config set -wakeonlan 1c:69:7a:02:5e:3f
-# auf pve02 mit Mac-Adresse von pve02-cl (= interner LAN-Port)
-#pvenode config set -wakeonlan 1c:69:7a:62:9b:957
+- name: my.proxmox - setup wakeonlan interface
+  command: pvenode config set -wakeonlan {{ my_proxmox_wol_iface }}
+  when: my_proxmox_wol_iface|length > 0
+  tags: wol-interface
+
+- name: my.proxmox - disable enterprise repo
+  apt_repository:
+    repo: 'deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise'
+    state: absent
+
+- name: my.proxmox - enable community repo
+  apt_repository:
+    repo: 'deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription'
+    state: present
+
+- name: my.proxmox - watchdog-config - setup
+  copy:
+    content: "WATCHDOG_MODULE={{ my_proxmox_watchdog }}"
+    dest: /etc/default/pve-ha-manager
+    mode: 0640
+  register: watchdog
+
+- name: my.proxmox - watchdog-config - reboot
+  reboot:
+    msg: "Reboot initiated by Ansible - watchdog changed"
+    connect_timeout: 5
+    reboot_timeout: 420
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime
+  when: watchdog.changed
