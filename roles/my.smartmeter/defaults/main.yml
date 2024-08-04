@@ -1,2 +1,2 @@
-install_ser2net: true
-install_restart_script: true
+my_smartmeter_install_ser2net: true
+my_smartmeter_install_restart_script: true
