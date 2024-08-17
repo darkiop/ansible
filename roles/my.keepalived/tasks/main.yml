@@ -18,7 +18,7 @@
     mode: 0644
   notify: Restart keepalived
 
-# TODO check pihole-ftl with script
+# TODO check pihole-ftl status with script
 
 # https://www.reddit.com/r/pihole/comments/d5056q/tutorial_v2_how_to_run_2_pihole_servers_in_ha/?rdt=34610
 # https://www.keepalived.org/manpage.html
