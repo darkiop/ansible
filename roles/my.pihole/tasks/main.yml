@@ -11,6 +11,6 @@
     group: root
     mode: 0644
   notify: Update pihole gravity database
-  when: pihole_custom_list_use | default(False)
+  when: my_pihole_custom_list_use | default(False)
 
 # TODO Sync https://github.com/vmstan/gravity-sync
