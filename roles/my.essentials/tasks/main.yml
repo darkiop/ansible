@@ -11,7 +11,7 @@
 # apt-upgrade
 - import_tasks: apt-upgrade.yml
   tags: apt-upgrade
-  when: apt_upgrade | default(False)
+  when: my_essentials_apt_upgrade | default(False)
 
 # apt-install
 - import_tasks: apt-install.yml
@@ -37,32 +37,31 @@
 - import_tasks: adduser.yml
   tags: adduser
 
+# TODO move to role my.dotfiles
 # dotfiles
 - import_tasks: install-dotfiles.yml
   tags: install-dotfiles
-  when: install_dotfiles | default(False)
+  when: my_essentials_install_dotfiles | default(False)
 
-# navi
+# navi - https://github.com/denisidoro/navi
 - import_tasks: install-navi.yml
   tags: install-navi
-  when: install_navi | default(False)
+  when: my_essentials_install_navi | default(False)
 
-# cht.sh
+# cht.sh - https://github.com/chubin/cheat.sh
 - import_tasks: install-cht.sh.yml
   tags: install-chtsh
-  when: install_chtsh | default(False)
+  when: my_essentials_install_chtsh | default(False)
 
-# TODO vimrc
-# vimrc
-#- import_tasks: wip___install-vimrc.yml
-#  tags: install-vimrc
-#  when: install_vimrc | default(False)
+# vimrc - https://github.com/amix/vimrc
+- import_tasks: install-vimrc.yml
+  tags: install-vimrc
+  when: my_essentials_install_vimrc | default(False)
 
-# TODO dysk
 # dysk - https://github.com/Canop/dysk/releases
-#- import_tasks: wip___install-dysk.yml
-#  tags: install-dysk
-#  when: install_dysk | default(False)
+- import_tasks: install-dysk.yml
+  tags: install-dysk
+  when: my_essentials_install_dysk | default(False)
 
 # TODO move to role my.sudoers
 # sudo

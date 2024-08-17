@@ -12,20 +12,20 @@
     group: root
     mode: '0755'
 
-- name: my.essentials - install-chtsh.yml - create .config directory for "{{ user_username }}"
+- name: my.essentials - install-chtsh.yml - create .config directory for "{{ my_essentials_user_username }}"
   become: true
-  become_user: "{{ user_username }}"
+  become_user: "{{ my_essentials_user_username }}"
   file:
     path: $HOME/.cht.sh
     state: directory
     mode: '0755'
 
-- name: my.essentials - install-chtsh.yml - copy config.yaml to ~/.cht.sh - "{{ user_username }}"
+- name: my.essentials - install-chtsh.yml - copy config.yaml to ~/.cht.sh - "{{ my_essentials_user_username }}"
   template: 
     src: cht.sh.conf.j2
     dest: ~/.cht.sh/cht.sh.conf
-    owner: "{{ user_username }}"
-    group: "{{ user_username }}"
+    owner: "{{ my_essentials_user_username }}"
+    group: "{{ my_essentials_user_username }}"
     mode: 0644
 
 - name: my.essentials - install-chtsh.yml - create .config directory for root

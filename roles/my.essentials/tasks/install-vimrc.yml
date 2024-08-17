@@ -1,0 +1,30 @@
+# https://github.com/amix/vimrc
+
+- name: my.essentials - install-vimrc.yml - ensure git is installed
+  apt:
+    name: git
+    state: present
+
+- name: my.essentials - install-vimrc.yml - define users
+  set_fact:
+    users:
+      - "{{ my_essentials_user_username }}"
+      - root
+
+- name: my.essentials - install-vimrc.yml - clone the Vim configuration repository
+  become: true
+  become_user: "{{ item }}"
+  git:
+    repo: 'https://github.com/amix/vimrc.git'
+    dest: '~/.vim_runtime'
+    version: 'HEAD'
+    force: yes
+  with_items: "{{ users }}"
+
+- name: my.essentials - install-vimrc.yml - run the Vim installation script
+  become: true
+  become_user: "{{ item }}"
+  shell: 'sh ~/.vim_runtime/install_awesome_vimrc.sh'
+  args:
+    executable: /bin/bash
+  with_items: "{{ users }}"

@@ -1,28 +1,28 @@
-- name: my.essentials - adduser.yml - create login user "{{ user_username }}"
+- name: my.essentials - adduser.yml - create login user "{{ my_essentials_user_username }}"
   become: true
   user:
     name: "{{ item }}"
-    password: "{{ user_password | password_hash('sha512') }}"
+    password: "{{ my_essentials_user_password | password_hash('sha512') }}"
     groups: 
       - sudo
       - users
     state: present
     append: true
     update_password: on_create
-  with_items: "{{ user_username }}"
+  with_items: "{{ my_essentials_user_username }}"
 
-- name: my.essentials - adduser.yml - ensure group "{{ user_username }}" exists
+- name: my.essentials - adduser.yml - ensure group "{{ my_essentials_user_username }}" exists
   become: true
   group:
     name: "{{ item }}"
     state: present
-  with_items: "{{ user_username }}"
+  with_items: "{{ my_essentials_user_username }}"
 
 - name: my.essentials - adduser.yml - set the default shell
   user: 
     name: "{{ item }}"
-    shell: "{{ user_shell }}"
-  with_items: "{{ user_username }}"
+    shell: "{{ my_essentials_user_shell }}"
+  with_items: "{{ my_essentials_user_username }}"
 
 - name: my.essentials - adduser.yml - ensure group "sambashare" exists
   when: enable_samba | default(False) 
@@ -35,7 +35,7 @@
   when: enable_samba | default(False) 
   become: true
   user:
-    name: "{{ user_username }}"
+    name: "{{ my_essentials_user_username }}"
     groups: 
       - sambashare
     append: true

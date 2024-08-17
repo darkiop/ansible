@@ -5,7 +5,19 @@
     name: "python3-pip"
     state: present
 
+- name: my.essentials - install-python3-pip.yml - get python3 version
+  ansible.builtin.command: python3 --version
+  register: python_version_output
+
+- name: my.essentials - install-python3-pip.yml - extract version
+  set_fact:
+    python_version: "{{ python_version_output.stdout | regex_search('Python (\\d+\\.\\d+)', '\\1') | join('') }}"
+  
+- name: my.essentials - install-python3-pip.yml - display the Python version
+  debug:
+    msg: "Installed Python version is: {{ python_version }}"
+
 - name: my.essentials - install-python3-pip.yml - delete EXTERNALLY-MANAGED
   file:
     state: absent
-    path: /usr/lib/python3.11/EXTERNALLY-MANAGED
+    path: /usr/lib/python{{ python_version }}/EXTERNALLY-MANAGED

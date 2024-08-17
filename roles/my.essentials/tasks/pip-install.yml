@@ -2,5 +2,5 @@
   become: true
   become_user: root
   pip: 
-    name: "{{ pip_install }}"
+    name: "{{ my_essentials_pip_packages }}"
     state: present

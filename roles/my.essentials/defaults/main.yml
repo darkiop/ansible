@@ -1,37 +1,38 @@
 # Setup Environment
-install_dotfiles: true
-install_navi: true
-install_chtsh: true
-install_dysk: true
+my_essentials_install_dotfiles: true
+my_essentials_install_navi: true
+my_essentials_install_chtsh: true
+my_essentials_install_dysk: true
+my_essentials_install_vimrc: true
 
 # Install Software
-apt_upgrade: false
-apt_default_software:
-apt_aditional_software:
-pip_install:
+my_essentials_apt_upgrade: false
+my_essentials_apt_default_packages:
+my_essentials_apt_aditional_packages:
+my_essentials_pip_packages:
 
-# Role my.essentials - user
-user_username:
-user_password:
-user_shell: /bin/bash
-user_dotfiles_repo: https://github.com/darkiop/dotfiles
-user_timezone: Europe/Berlin
-user_locale: en_US.UTF-8
-user_keyboard_layout: de
-user_email:
-user_email_password: "{{ vault_user_email_password }}"
-
-# Role: my.essentials - sudo
-sudoers_bin_nopasswd:
+# User Setup
+my_essentials_user_username:
+my_essentials_user_password:
+my_essentials_user_shell: /bin/bash
+my_essentials_user_dotfiles_repo: https://github.com/darkiop/dotfiles
+my_essentials_user_timezone: Europe/Berlin
+my_essentials_user_locale: en_US.UTF-8
+my_essentials_user_keyboard_layout: de
+my_essentials_user_email:
+my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password }}"
 
 # Network Configuration
 setup_network: false
-network_mode: dhcp # static/dhcp - default = dhcp
-network_interface_name:
-network_static_ip_1:
-network_static_ip_2:
-network_gateway:
-network_domain_name: "{{ vault_local_fqdn }}"
-network_domain_search: "{{ vault_local_fqdn }}"
-network_dns_1: 192.168.1.53
-network_dns_2:
+my_essentials_network_mode: dhcp # static/dhcp - default = dhcp
+my_essentials_network_interface_name:
+my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 }}"
+my_essentials_network_static_ip_2: "{{ vault_my_essentials_network_static_ip_2 }}"
+my_essentials_network_gateway: "{{ vault_my_essentials_network_gateway }}"
+my_essentials_network_domain_name: "{{ vault_my_essentials_network_domain_name }}"
+my_essentials_network_domain_search: "{{ vault_my_essentials_network_domain_search }}"
+my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 }}"
+my_essentials_network_dns_2:
+
+# Sudo
+sudoers_bin_nopasswd:
