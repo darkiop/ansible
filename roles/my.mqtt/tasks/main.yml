@@ -23,7 +23,7 @@
 
 - name: my.mqtt - run mosquitto_passwd command and capture the output
   become: true
-  shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ mqtt_username }}" "{{ mqtt_password }}"
+  shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ my_mqtt_username }}" "{{ my_mqtt_password }}"
   register: passwd_output
   changed_when: false
 

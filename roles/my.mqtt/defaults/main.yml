@@ -1,2 +1,2 @@
-mqtt_username: mqtt
-mqtt_password: mqtt
+my_mqtt_username: mqtt
+my_mqtt_password: mqtt
