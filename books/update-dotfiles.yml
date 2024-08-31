@@ -8,6 +8,28 @@
     - vpn_gw
   become: true
   become_user: root
+
   tasks:
-    - import_tasks: ../tasks/dotfiles-update.yml
-      tags: dotfiles-update
+
+    # my_essentials_user_username
+    - name: dotfiles - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      git:
+        repo: "{{ my_essentials_user_dotfiles_repo }}"
+        dest: /home/{{ item }}/dotfiles
+        recursive: yes # yes = incl. submodules
+        force: yes
+        update: yes
+        version: master
+      with_items: "{{ my_essentials_user_username }}"
+
+    # root
+    - name: dotfiles - clone the latest dotfiles repo to /root/dotfiles
+      git:
+        repo: "{{ my_essentials_user_dotfiles_repo }}"
+        dest: /root/dotfiles
+        recursive: yes # yes = incl. submodules
+        force: yes
+        update: yes
+        version: master
