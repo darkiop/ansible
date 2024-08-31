@@ -1,0 +1,15 @@
+- name: my.ssh - set fact for users user-config
+  set_fact:
+    users:
+      - "{{ my_essentials_user_username }}"
+      - root
+  tags: ssh-user-config
+
+- name: my.ssh - Create SSH config for each user
+  become: true
+  become_user: "{{ item }}"
+  template:
+    src: config.j2
+    dest: ~/.ssh/config
+  with_items: "{{ users }}"
+  tags: ssh-user-config

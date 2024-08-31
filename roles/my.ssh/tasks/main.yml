@@ -1,60 +1,13 @@
----
+# TODO add private keys
+
 - name: my.ssh - create SSH directory
   file:
     state: directory
     name: .ssh
     mode: '0700'
 
-# User Config
-- name: my.ssh - set fact for users user-config
-  set_fact:
-    users:
-      - "{{ my_essentials_user_username }}"
-      - root
-  tags: ssh-user-config
+- import_tasks: user-config.yml
+  tags: user-config
 
-- name: my.ssh - Create SSH config for each user
-  become: true
-  become_user: "{{ item }}"
-  template:
-    src: config.j2
-    dest: ~/.ssh/config
-  with_items: "{{ users }}"
-  tags: ssh-user-config
-
-# authorized SSH keys (Linux)
-- name: my.ssh - Place authorized SSH keys for {{ ansible_user }}
-  template:
-    src: authorized_keys.j2
-    dest: /home/{{ ansible_user }}/.ssh/authorized_keys
-    owner: '{{ ansible_user }}'
-    group: '{{ ansible_user }}'
-    mode: '0600'
-  when: 
-    - ansible_facts['os_family'] != 'Darwin'
-    - ansible_user != 'root'
-  tags: add-ssh-keys
-
-- name: my.ssh - Place authorized SSH keys for root
-  become: true
-  template:
-    src: authorized_keys_root.j2
-    dest: /root/.ssh/authorized_keys
-    owner: root
-    group: root
-    mode: '0600'
-  when: ansible_facts['os_family'] != 'Darwin'
-  tags: add-ssh-keys
-
-# authorized SSH keys (MacOS)
-- name: my.ssh - Place authorized SSH keys for {{ ansible_user }}
-  template:
-    src: authorized_keys.j2
-    dest: /Users/{{ ansible_user }}/.ssh/authorized_keys
-    owner: '{{ ansible_user }}'
-    group: staff
-    mode: '0600'
-  when: ansible_facts['os_family'] == 'Darwin'
-  tags: add-ssh-keys
-
-# TODO add private keys for each host
+- import_tasks: authorized-keys.yml
+  tags: authorized-keys
