@@ -1,5 +1,5 @@
 - name: "create cronjob"
-  ansible.builtin.cron:
+  cron:
     name: ""
     minute: "00"
     hour: "10"

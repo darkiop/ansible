@@ -1,0 +1,7 @@
+- name: blockinfile
+  blockinfile:
+    path: /tmp/dummyfile
+    block: |
+      line with value = 1
+      line with value = 1
+  notify: Reload xyz

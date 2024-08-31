@@ -1,5 +1,5 @@
 - name: Create a symbolic
-  ansible.builtin.file:
+  file:
     src: 
     dest: 
     owner: darkiop

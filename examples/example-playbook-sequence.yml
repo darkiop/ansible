@@ -36,7 +36,7 @@
 
 - name: Example Playbook
   hosts: all
-  become: yes
+  become: true
 
   pre_tasks:
     - name: Pre-task example

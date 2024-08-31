@@ -1,8 +1,8 @@
 - name: Mount a filesystem and ensure it is present in /etc/fstab
   mount:
     path:
-    src: 
+    src:
     fstype: nfs
     opts: defaults
     state: mounted
-  become: yes
+  become: true

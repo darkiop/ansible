@@ -1,5 +1,5 @@
 - name: replace priv key
-  ansible.builtin.lineinfile:
+  lineinfile:
     path: /tmp/file
     search_string: 'PrivateKey'
     line: "PrivateKey = xxxxxxxxxxxxxxxxxxxx"
