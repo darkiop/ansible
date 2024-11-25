@@ -1,6 +1,6 @@
-- name: my.mqtt - install mosquitto & mosquitto-clients
+- name: "Role: my.mqtt - install mosquitto & mosquitto-clients"
   become: true
-  apt:
+  ansible.builtin.apt:
     name: "{{ item }}"
     state: present
     update_cache: true
@@ -8,51 +8,50 @@
     - mosquitto
     - mosquitto-clients
 
-- name: my.mqtt - delete existing /etc/mosquitto/passwd
+- name: "Role: my.mqtt - delete existing /etc/mosquitto/passwd"
   become: true
-  file:
+  ansible.builtin.file:
     path: /etc/mosquitto/passwd
     state: absent
 
-- name: my.mqtt - create /etc/mosquitto/passwd
+- name: "Role: my.mqtt - create /etc/mosquitto/passwd"
   become: true
-  file:
+  ansible.builtin.file:
     path: /etc/mosquitto/passwd
-    mode: 0644
+    mode: "0644"
     state: touch
 
-- name: my.mqtt - run mosquitto_passwd command and capture the output
+- name: "Role: my.mqtt - run mosquitto_passwd command and capture the output"
   become: true
-  shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ my_mqtt_username }}" "{{ my_mqtt_password }}"
+  ansible.builtin.shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ my_mqtt_username }}" "{{ my_mqtt_password }}"
   register: passwd_output
   changed_when: false
 
-#- name: my.mqtt - read the content of /etc/mosquitto/passwd
+# - name: "Role: my.mqtt - read the content of /etc/mosquitto/passwd"
 #  become: true
 #  shell: cat /etc/mosquitto/passwd
 #  register: passwd_content
 
-#- name: my.mqtt - display the content of /etc/mosquitto/passwd
+# - name: "Role: my.mqtt - display the content of /etc/mosquitto/passwd"
 #  debug:
 #    msg: "Content of /etc/mosquitto/passwd:\n{{ passwd_content.stdout }}"
 
-- name: my.mqtt - create custom config file for mosquitto
-  copy:
+- name: "Role: my.mqtt - create custom config file for mosquitto"
+  ansible.builtin.copy:
     dest: /etc/mosquitto/conf.d/custom.conf
     owner: root
     group: root
-    mode: 0664
+    mode: "0664"
     content: |
       listener 1883
       allow_anonymous false
       password_file /etc/mosquitto/passwd
   notify: Restart mosquitto
-
-#- name: my.mqtt - read the content of /etc/mosquitto/conf.d/custom.conf
+# - name: "Role: my.mqtt - read the content of /etc/mosquitto/conf.d/custom.conf"
 #  become: true
 #  shell: cat /etc/mosquitto/conf.d/custom.conf
 #  register: custom_conf_content
 
-#- name: my.mqtt - display the content of /etc/mosquitto/passwd
+# - name: "Role: my.mqtt - display the content of /etc/mosquitto/passwd"
 #  debug:
 #    msg: "Content of /etc/mosquitto/conf.d/custom.conf:\n{{ custom_conf_content.stdout }}"
