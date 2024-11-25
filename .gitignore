@@ -3,3 +3,4 @@ vault.yml
 roles/my.pihole/files/output.yaml
 roles/my.pihole/files/urls.txt
 .trunk
+wip_*
