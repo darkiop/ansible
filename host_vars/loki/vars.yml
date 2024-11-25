@@ -1,10 +1,22 @@
-# Setup static ip address
-dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}" # host_vars/loki/vault.yml
-dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}" # host_vars/loki/vault.yml
-dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}" # host_vars/loki/vault.yml
-dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}" # host_vars/loki/vault.yml
-dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}" # host_vars/loki/vault.yml
+# Network Configuration
+my_essentials_network_mode: static # static, dhcp - default/empty = dhcp
+my_essentials_network_interface_name: eth0
+my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 }}"
+my_essentials_network_static_ip_2: "{{ vault_my_essentials_network_static_ip_2 }}"
+my_essentials_network_gateway: "{{ vault_my_essentials_network_gateway }}"
+my_essentials_network_domain_name: "{{ vault_my_essentials_network_domain_name }}"
+my_essentials_network_domain_search: "{{ vault_my_essentials_network_domain_search }}"
+my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 }}"
+my_essentials_network_dns_2: "{{ vault_my_essentials_network_dns_2 }}"
 
 # Role: my.essentials - apt install aditional_software task
-apt_aditional_software:
+my_essentials_apt_aditional_packages:
   - ser2net
+
+# Role: geerlingguy.security
+# allow root login for ssh -> qdevice pve
+security_ssh_permit_root_login: "yes"
+security_ssh_password_authentication: "yes"
+security_ssh_allowed_users:
+  - "{{ my_essentials_user_username }}"
+  - root

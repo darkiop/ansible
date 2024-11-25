@@ -1,25 +1,30 @@
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
 
-# inventory
-vault_ansible_user: 
-vault_ansible_sudo_pass: 
-vault_ansible_ssh_private_key_file: 
+# ansible inventory
+vault_ansible_user:
+vault_ansible_sudo_pass:
+vault_ansible_ssh_private_key_file:
 
-# essentials
-vault_user_username: 
-vault_user_password: 
-vault_user_email: 
-vault_user_email_password: 
+# Role: my.essentials
+vault_my_essentials_user_username:
+vault_my_essentials_user_password:
+vault_my_essentials_user_email:
+vault_my_essentials_user_email_password:
 
 # local domain
-vault_local_fqdn: 
+vault_local_fqdn:
 
 # samba
-vault_samba_user: 
-vault_samba_password: 
+vault_samba_user:
+vault_samba_password:
 
 # proxmox
-vault_pve_password: 
+vault_pve_password:
 
 # wireguard
-vault_wireguard_endpoint: 
+vault_wireguard_endpoint:
+
+# Role: my.ssh
+vault_ssh_public_keys:
+vault_ssh_public_keys_root:
+vault_ssh_config:

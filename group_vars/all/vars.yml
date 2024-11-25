@@ -7,16 +7,16 @@ ansible_sudo_pass: "{{ vault_ansible_sudo_pass }}"
 ansible_ssh_private_key_file: "{{ vault_ansible_ssh_private_key_file }}"
 
 # Role: my.essentials - install tasks
-install_dotfiles: true
-install_navi: true
-install_chtsh: true
-install_lfs: true
+my_essentials_install_dotfiles: true
+my_essentials_install_navi: true
+my_essentials_install_chtsh: true
+my_essentials_install_dysk: true
+my_essentials_install_vimrc: true
 
 # Role: my.essentials - apt install default_software task
-
 # TODO Split for Debian/Ubuntu
-
-apt_default_software:
+# TODO remove commented / find correct package
+my_essentials_apt_default_packages:
   - git
   - curl
   - vim
@@ -32,13 +32,13 @@ apt_default_software:
   - zsh
   - unzip
   - rsync
-  #- mlocate
-  #- btop
-  #- dategrep
+  - plocate
+  # - btop
+  # - dategrep # not available for debain
   - lsd
   - bat
-  #- fd-find
-  #- glances
+  # - fd-find
+  - glances
   - powerline
   - html2text
   - lsof
@@ -70,25 +70,32 @@ apt_default_software:
   - atop
   - mtr
   - fzf
+  - sqlite3
 
 # Role: my.essentials - apt install aditional_software task
-apt_aditional_software:
+my_essentials_apt_aditional_packages:
   # - name
 
 # Role: my.essentials - pip install
-pip_install:
+my_essentials_pip_packages:
   # - name
 
-# Role my.essentials - user 
-user_username: "{{ vault_user_username }}"
-user_password: "{{ vault_user_password }}"
-user_shell: /bin/bash
-user_dotfiles_repo: https://github.com/darkiop/dotfiles
-user_timezone: Europe/Berlin
-user_locale: en_US.UTF-8
-user_keyboard_layout: de
-user_email: darkiop@gmail.com
-user_email_password: "{{ vault_user_email_password }}"
+# Role my.essentials - user
+my_essentials_user_username: "{{ vault_my_essentials_user_username }}"
+my_essentials_user_password: "{{ vault_my_essentials_user_password }}"
+my_essentials_user_shell: /bin/bash
+my_essentials_user_dotfiles_repo: https://github.com/darkiop/dotfiles
+my_essentials_user_timezone: Europe/Berlin
+# my_essentials_user_locale: en_US.UTF-8
+my_essentials_user_locale: C
+my_essentials_user_keyboard_layout: de
+my_essentials_user_email: darkiop@gmail.com
+my_essentials_user_email_password: "{{ vault_user_email_password }}"
+
+# Role: my.ssh
+my_ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
+my_ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
+my_ssh_ssh_config: "{{ vault_ssh_config }}"
 
 # Local FQDN
 local_fqdn: "{{ vault_local_fqdn }}"
@@ -101,12 +108,12 @@ sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbi
 ntp_enabled: true
 ntp_manage_config: true
 ntp_config_file: /etc/ntp.conf
-ntp_timezone: "{{ user_timezone }}"
+ntp_timezone: "{{ my_essentials_user_timezone }}"
 ntp_servers:
-  - "192.168.10.1"
+  - 192.168.10.1
 ntp_restrict:
-  - "127.0.0.1"
-  - "::1"
+  - 127.0.0.1
+  - ::1
 
 # Role: bertvv.samba
 # https://github.com/bertvv/ansible-role-samba
@@ -114,50 +121,49 @@ samba_users:
   - name: "{{ vault_samba_user }}"
     password: "{{ vault_samba_password }}"
 samba_server_string: "{{ inventory_hostname }}"
-samba_workgroup: "HOME"
+samba_workgroup: HOME
 samba_map_to_guest: bad user
 samba_log_size: 1000
 samba_load_homes: true
-samba_apple_extensions: yes 
-samba_server_max_protocol: "SMB3"
-samba_server_min_protocol: "SMB3"
+samba_apple_extensions: true
+samba_server_max_protocol: SMB3
+samba_server_min_protocol: SMB3
 samba_mitigate_cve_2017_7494: false
-samba_global_include: samba-global-include.conf
-samba_homes_include: samba-homes-include.conf
+samba_global_include: templates/samba-global-include.conf
+samba_homes_include: templates/samba-homes-include.conf
 
 # Role: geerlingguy.security
 # https://github.com/geerlingguy/ansible-role-security
 security_ssh_port: 22
 security_ssh_permit_root_login: "no"
 security_ssh_allowed_users:
-  - "{{ user_username }}"
-security_autoupdate_enabled: false # handled by https://github.com/hifis-net/ansible-role-unattended-upgrades
+  - "{{ my_essentials_user_username }}"
+security_autoupdate_enabled: true
 
 # Role: stuvusit.smartd
 # https://github.com/stuvusIT/smartd
-smartd_default_mail_recipients: [ "{{ user_email }}" ]
+smartd_default_mail_recipients: ["{{ my_essentials_user_email }}"]
 
 # Role: chriswayg.msmtp-mailer
 # https://github.com/chriswayg/ansible-msmtp-mailer
 msmtp_accounts:
-- account:   gmail
-  host:      smtp.gmail.com
-  port:      587
-  auth:      "on"
-  from:      "{{ user_email }}"
-  user:      "{{ user_email }}"
-  password:  '"{{ user_email_password }}"'
-msmtp_default_account: "gmail"
-msmtp_alias_default : "{{ user_email }}"
-msmtp_log : "syslog"
+  - account: gmail
+    host: smtp.gmail.com
+    port: 587
+    auth: "on"
+    from: "{{ my_essentials_user_email }}"
+    user: "{{ my_essentials_user_email }}"
+    password: '"{{ my_essentials_user_email_password }}"'
+msmtp_default_account: gmail
+msmtp_alias_default: "{{ my_essentials_user_email }}"
+msmtp_log: syslog
 
-# Role: hifis.unattended_upgrades
-# https://github.com/hifis-net/ansible-role-unattended-upgrades
-unattended_mail_report: true
-unattended_mail_sender: 
-unattended_remove_unused_dependencies: true
-unattended_remove_new_unused_dependencies: true
-unattended_remove_unused_kernel_packages: true
-unattended_automatic_reboot: false
-unattended_update_days: 7
-unattended_clean_interval: 7
+# TODO convert to role my.sudoers
+# Task: tasks/sudoers.d.yml
+sudo_sudoersd_dir: /etc/sudoers.d
+sudo_sudoersd_owner: root
+sudo_sudoersd_group: root
+sudo_defaults:
+  - env_reset
+  - secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+  - use_pty

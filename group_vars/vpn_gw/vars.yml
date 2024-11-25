@@ -1,35 +1,38 @@
 # Role: my.essentials - install tasks
-install_dotfiles: true
-install_navi: false
-install_chtsh: false
-install_lfs: false
+my_essentials_install_dotfiles: true
+my_essentials_install_navi: false
+my_essentials_install_chtsh: false
+my_essentials_install_dysk: false
+my_essentials_install_vimrc: false
 
 # Role: my.essentials - sudo
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/bin/systemctl
 
-# Role: r_pufky.pihole
+# Role: my.pihole
 pihole_update_enable: true
-pihole_webpassword: '{{ vault_pihole_webpassword }}'
-pihole_pihole_interface: 'eth0'
+pihole_webpassword: "{{ vault_pihole_webpassword }}"
+pihole_pihole_interface: eth0
+
+my_pihole_custom_list_use: true
 
 pihole_ad_sources:
   - id: 1
-    address: 'https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts'
+    address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
     enabled: true
-    comment: 'ansible adlist'
+    comment: ansible adlist
   - id: 2
-    address: 'https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist'
+    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
     enabled: true
-    comment: 'ansible adlist'
+    comment: ansible adlist
   - id: 3
-    address: 'https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe'
+    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
     enabled: true
-    comment: 'ansible adlist'
+    comment: ansible adlist
   - id: 4
-    address: 'https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt'
+    address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
     enabled: true
-    comment: 'ansible adlist'
+    comment: ansible adlist
   - id: 5
-    address: 'https://v.firebog.net/hosts/Easyprivacy.txt'
+    address: https://v.firebog.net/hosts/Easyprivacy.txt
     enabled: true
-    comment: 'ansible adlist'
+    comment: ansible adlist

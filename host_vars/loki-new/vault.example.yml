@@ -1,5 +1,8 @@
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
 
+# Pi-hole
+vault_pihole_webpassword:
+
 # Network Configuration
 vault_network_static_ip_address:
 vault_network_static_ip_address_2:
