@@ -1,19 +1,22 @@
-- name: my.essentials - apt-install.yml - install default software
+- name: "Role: my.essentials - apt-install.yml - install default software"
   become: true
   become_user: root
-  apt: 
+  ansible.builtin.apt:
     name: "{{ my_essentials_apt_default_packages }}"
     state: present
     update_cache: true
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  ignore_errors: yes
+  register: apt_output
+  # failed_when:
+  #  - "'Unable to locate package' in apt_output.msg"
 
-- name: my.essentials - apt-install.yml - install aditional software
+- name: "Role: my.essentials - apt-install.yml - install aditional software"
   become: true
   become_user: root
-  apt: 
+  ansible.builtin.apt:
     name: "{{ my_essentials_apt_aditional_packages }}"
     state: present
     update_cache: true
   when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  ignore_errors: yes
+  register: apt_output
+  # failed_when:
+  # - "'Unable to locate package' in apt_output.msg"

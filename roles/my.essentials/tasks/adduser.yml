@@ -1,9 +1,9 @@
-- name: my.essentials - adduser.yml - create login user "{{ my_essentials_user_username }}"
+- name: "Role: my.essentials - adduser.yml - create login user '{{ my_essentials_user_username }}'"
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ item }}"
     password: "{{ my_essentials_user_password | password_hash('sha512') }}"
-    groups: 
+    groups:
       - sudo
       - users
     state: present
@@ -11,31 +11,31 @@
     update_password: on_create
   with_items: "{{ my_essentials_user_username }}"
 
-- name: my.essentials - adduser.yml - ensure group "{{ my_essentials_user_username }}" exists
+- name: "Role: my.essentials - adduser.yml - ensure group '{{ my_essentials_user_username }}' exists"
   become: true
-  group:
+  ansible.builtin.group:
     name: "{{ item }}"
     state: present
   with_items: "{{ my_essentials_user_username }}"
 
-- name: my.essentials - adduser.yml - set the default shell
-  user: 
+- name: "Role: my.essentials - adduser.yml - set the default shell"
+  ansible.builtin.user:
     name: "{{ item }}"
     shell: "{{ my_essentials_user_shell }}"
   with_items: "{{ my_essentials_user_username }}"
 
-- name: my.essentials - adduser.yml - ensure group "sambashare" exists
-  when: enable_samba | default(False) 
+- name: "Role: my.essentials - adduser.yml - ensure group sambashare exists"
+  when: enable_samba | default(false)
   become: true
-  group:
-    name: "sambashare"
+  ansible.builtin.group:
+    name: sambashare
     state: present
 
-- name: my.essentials - adduser.yml - append the samba group
-  when: enable_samba | default(False) 
+- name: "Role: my.essentials - adduser.yml - append the samba group"
+  when: enable_samba | default(false)
   become: true
-  user:
+  ansible.builtin.user:
     name: "{{ my_essentials_user_username }}"
-    groups: 
+    groups:
       - sambashare
     append: true

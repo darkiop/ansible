@@ -1,5 +1,31 @@
-- name: my.essentials - set-locales.yml - generate the locale "{{ my_essentials_user_locale }}"
-  locale_gen:
-    name: "{{ my_essentials_user_locale }}"
+# - name: my.essentials - set-locales.yml - generate the locale "{{ my_essentials_user_locale }}"
+#  locale_gen:
+#    name: "{{ my_essentials_user_locale }}"
+#    state: present
+#  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
+
+# - name: my.essentials - set-locales.yml - generate the locale "{{ my_essentials_user_locale }}"
+# command: locale-gen {{ my_essentials_user_locale }}
+# args:
+# creates: /usr/lib/locale/{{ my_essentials_user_locale }}
+# tags: locale
+
+# - name: Update system-wide locale
+# lineinfile:
+# path: /etc/default/locale
+# regexp: '^LANG='
+# line: 'LANG={{ my_essentials_user_locale }}'
+# create: yes
+# tags: update_locale
+
+# TASK [my.essentials : Role: my.essentials - set-locales.yml - Ensure a locale exists] ****************************************
+# [DEPRECATION WARNING]: This class is using the old VarDict from ModuleHelper, which is deprecated. Set the class variable
+# use_old_vardict to False and make the necessary adjustments.The old VarDict class will be removed in community.general
+# 11.0.0. This feature will be removed from community.general in version 11.0.0. Deprecation warnings can be disabled by
+# setting deprecation_warnings=False in ansible.cfg.
+# changed: [test]
+
+- name: "Role: my.essentials - set-locales.yml - Ensure a locale exists"
+  community.general.locale_gen:
+    name: de_CH.UTF-8
     state: present
-  when: ansible_os_family == 'Debian'

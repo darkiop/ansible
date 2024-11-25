@@ -1,27 +1,27 @@
 # {{ ansible_managed }}
 {% if ansible_facts['distribution'] == "Debian" and ansible_facts['distribution_version'] == "12" %}
-{% if network_mode == 'dhcp' %}
+{% if my_essentials_network_mode == 'dhcp' %}
 # DHCP
 auto eth0
 iface eth0 inet dhcp
 {% endif %}
-{% if network_mode == 'static' %}
+{% if my_essentials_network_mode == 'static' %}
 # STATIC
-auto {{ network_interface_name }}
-iface {{ network_interface_name }} inet static
-    address {{ network_static_ip_1 }}
+auto {{ my_essentials_network_interface_name }}
+iface {{ my_essentials_network_interface_name }} inet static
+    address {{ my_essentials_network_static_ip_1 }}
     netmask 255.255.255.0
-    gateway {{ network_gateway }}
-    dns-nameservers {{ network_domain_search }}
-    dns-search {{ network_dns_1 }}
-{% if network_static_ip_1_2 %}
-    up ip addr add {{ network_static_ip_2 }} dev {{ network_interface_name }}
-    down ip addr del {{ network_static_ip_2 }} dev {{ network_interface_name }}
+    gateway {{ my_essentials_network_gateway }}
+    dns-nameservers {{ my_essentials_network_domain_search }}
+    dns-search {{ my_essentials_network_dns_1 }}
+{% if my_essentials_network_static_ip_1_2 %}
+    up ip addr add {{ my_essentials_network_static_ip_2 }} dev {{ my_essentials_network_interface_name }}
+    down ip addr del {{ my_essentials_network_static_ip_2 }} dev {{ my_essentials_network_interface_name }}
 {% endif %}
 {% endif %}
 {% endif %}
 {% if ansible_facts['distribution'] == "Ubuntu" %}
-{% if network_mode == 'static' %}
+{% if my_essentials_network_mode == 'static' %}
 hostname
 clientid
 persistent
@@ -32,18 +32,18 @@ option interface_mtu
 require dhcp_server_identifier
 slaac private
 interface eth0
-static ip_address={{ network_static_ip_1 }}
-static routers={{ network_gateway }}
-static domain_name={{ network_domain_name }}
-static domain_search={{ network_domain_search }}
-static domain_name_servers={{ network_dns_1 }}
-{% if network_static_ip_2 %}
+static ip_address={{ my_essentials_network_static_ip_1 }}
+static routers={{ my_essentials_network_gateway }}
+static domain_name={{ my_essentials_network_domain_name }}
+static domain_search={{ my_essentials_network_domain_search }}
+static domain_name_servers={{ my_essentials_network_dns_1 }}
+{% if my_essentials_network_static_ip_2 %}
 interface eth0:0
-static ip_address={{ network_static_ip_2 }}
-static routers={{ network_gateway }}
-static domain_name={{ network_domain_name }}
-static domain_search={{ network_domain_search }}
-static domain_name_servers={{ network_dns_1 }}
+static ip_address={{ my_essentials_network_static_ip_2 }}
+static routers={{ my_essentials_network_gateway }}
+static domain_name={{ my_essentials_network_domain_name }}
+static domain_search={{ my_essentials_network_domain_search }}
+static domain_name_servers={{ my_essentials_network_dns_1 }}
 {% endif %}
 {% endif %}
 {% endif %}

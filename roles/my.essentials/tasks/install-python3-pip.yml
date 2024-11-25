@@ -1,23 +1,25 @@
-- name: my.essentials - install-python3-pip.yml - force install python3-pip
+- name: "Role: my.essentials - install-python3-pip.yml - force install python3-pip"
   become: true
   become_user: root
-  apt:
-    name: "python3-pip"
+  ansible.builtin.apt:
+    name: python3-pip
     state: present
 
-- name: my.essentials - install-python3-pip.yml - get python3 version
+- name: "Role: my.essentials - install-python3-pip.yml - get python3 version"
   ansible.builtin.command: python3 --version
   register: python_version_output
+  changed_when: python_version_output.rc != 0
 
-- name: my.essentials - install-python3-pip.yml - extract version
-  set_fact:
+- name: "Role: my.essentials - install-python3-pip.yml - extract version"
+  ansible.builtin.set_fact:
     python_version: "{{ python_version_output.stdout | regex_search('Python (\\d+\\.\\d+)', '\\1') | join('') }}"
-  
-- name: my.essentials - install-python3-pip.yml - display the Python version
-  debug:
+
+- name: "Role: my.essentials - install-python3-pip.yml - display the Python version"
+  ansible.builtin.debug:
     msg: "Installed Python version is: {{ python_version }}"
 
-- name: my.essentials - install-python3-pip.yml - delete EXTERNALLY-MANAGED
-  file:
+- name: "Role: my.essentials - install-python3-pip.yml - delete EXTERNALLY-MANAGED"
+  ansible.builtin.file:
     state: absent
     path: /usr/lib/python{{ python_version }}/EXTERNALLY-MANAGED
+    mode: "0755"

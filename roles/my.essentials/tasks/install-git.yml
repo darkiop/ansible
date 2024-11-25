@@ -1,5 +1,5 @@
-- name: my.essentials - install-git.yml - force install of git
-  apt: 
+- name: "Role: my.essentials - install-git.yml - force install of git"
+  ansible.builtin.apt:
     name: git
     state: present
     update_cache: true

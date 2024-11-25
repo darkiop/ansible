@@ -1,0 +1,21 @@
+- name: "Role: my.essentials - Set the hostname"
+  ansible.builtin.hostname:
+    name: "{{ my_essentials_hostname }}"
+
+- name: "Role: my.essentials - Update /etc/hostname"
+  ansible.builtin.copy:
+    dest: /etc/hostname
+    content: "{{ my_essentials_hostname }}\n"
+    owner: root
+    group: root
+    mode: "0644"
+
+# - name: "Role: my.essentials - Update /etc/hosts with the new hostname"
+#   ansible.builtin.lineinfile:
+#     path: /etc/hosts
+#     regexp: "^127\.0\.1\.1\s+"
+#     line: "127.0.1.1 {{ my_essentials_hostname }}"
+#     owner: root
+#     group: root
+#     mode: "0644"
+  # notify: Reboot

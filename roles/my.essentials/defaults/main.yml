@@ -1,3 +1,7 @@
+# Setup hostname
+my_essentials_change_hostname: false
+my_essentials_hostname:
+
 # Setup Environment
 my_essentials_install_dotfiles: true
 my_essentials_install_navi: true
@@ -35,4 +39,10 @@ my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 }}"
 my_essentials_network_dns_2:
 
 # Sudo
-sudoers_bin_nopasswd:
+# TODO change name of variable
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
+sudo_defaults:
+  - env_reset
+  - secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+  - use_pty
+  - "!mail_badpass"

@@ -1,6 +1,6 @@
-- name: my.essentails - pip-install.yml - pip-install
+- name: "Role: my.essentails - pip-install.yml - pip-install"
   become: true
   become_user: root
-  pip: 
+  ansible.builtin.pip:
     name: "{{ my_essentials_pip_packages }}"
     state: present

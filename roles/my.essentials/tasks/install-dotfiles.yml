@@ -1,86 +1,87 @@
-# force installation of git
-
-- name: my.essentials - install-dotfiles.yml - force install of git
-  import_tasks: install-git.yml
+# Force installation of git
+- name: "Role: my.essentials - install-dotfiles.yml - force install of git"
+  ansible.builtin.import_tasks: install-git.yml
 
 # Install dotfiles for {{ my_essentials_user_username }}
-
-- name: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - {{ my_essentials_user_username }}
-  file:
+- name: "Role: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - {{ my_essentials_user_username }}"
+  ansible.builtin.file:
     path: /home/{{ item }}/dotfiles
     state: absent
+    mode: "0755"
   with_items: "{{ my_essentials_user_username }}"
 
-- name: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles
+- name: "Role: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles"
   become: true
   become_user: "{{ my_essentials_user_username }}"
-  git:
+  ansible.builtin.git:
     repo: "{{ my_essentials_user_dotfiles_repo }}"
     dest: /home/{{ item }}/dotfiles
-    recursive: yes # yes = incl. submodules
-    force: yes
+    recursive: true
+    version: HEAD
+    force: true
   with_items: "{{ my_essentials_user_username }}"
+  tags:
+    - skip_ansible_lint
 
-- name: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - {{ my_essentials_user_username }}
+- name: "Role: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - {{ my_essentials_user_username }}"
   become: true
   become_user: "{{ my_essentials_user_username }}"
-  copy:
-    src: files/scripts/dotfiles/dotfiles-install.sh
+  ansible.builtin.copy:
+    src: files/dotfiles-install.sh
     dest: ~/dotfiles-install.sh
-    mode: 0777
+    mode: "0777"
 
-- name: my.essentials - install-dotfiles.yml - install dotfiles for {{ my_essentials_user_username }}
+- name: "Role: my.essentials - install-dotfiles.yml - install dotfiles for {{ my_essentials_user_username }}"
   become: true
   become_user: "{{ my_essentials_user_username }}"
-  command: bash ~/dotfiles-install.sh
+  ansible.builtin.command: bash ~/dotfiles-install.sh
+  register: output
+  changed_when: output.rc != 0
 
-- name: my.essentials - install-dotfiles.yml - git config pull.rebase false - {{ my_essentials_user_username }}
-  become: true
-  become_user: "{{ my_essentials_user_username }}"
-  command: chdir=~/dotfiles git config pull.rebase false
-
-- name: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - {{ my_essentials_user_username }}
-  become: true
-  become_user: "{{ my_essentials_user_username }}"
-  file:
-    path: ~/dotfiles-install.sh
-    state: absent
+# - name: "Role: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - {{ my_essentials_user_username }}"
+#   become: true
+#   become_user: "{{ my_essentials_user_username }}"
+#   ansible.builtin.file:
+#     path: ~/dotfiles-install.sh
+#     state: absent
+#     mode: "0755"
 
 # Install dotfiles for root
 
-- name: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - root
-  file:
+- name: "Role: my.essentials - install-dotfiles.yml - recursively remove old dotfiles directory - root"
+  ansible.builtin.file:
     path: /root/dotfiles
     state: absent
+    mode: "0755"
 
-- name: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to /root/dotfiles
-  git:
+- name: "Role: my.essentials - install-dotfiles.yml - clone the latest dotfiles repo to /root/dotfiles"
+  ansible.builtin.git:
     repo: "{{ my_essentials_user_dotfiles_repo }}"
     dest: /root/dotfiles
-    recursive: yes # yes = incl. submodules
-    force: yes
+    recursive: true
+    force: true
+  tags:
+    - skip_ansible_lint
 
-- name: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - root
+- name: "Role: my.essentials - install-dotfiles.yml - copy dotfiles-install.sh - root"
   become: true
   become_user: root
-  copy:
-    src: files/scripts/dotfiles/dotfiles-install.sh
+  ansible.builtin.copy:
+    src: files/dotfiles-install.sh
     dest: ~/dotfiles-install.sh
-    mode: 0777
+    mode: "0777"
 
-- name: my.essentials - install-dotfiles.yml - install dotfiles for root
+- name: "Role: my.essentials - install-dotfiles.yml - install dotfiles for root"
   become: true
   become_user: root
-  command: bash ~/dotfiles-install.sh
+  ansible.builtin.command: bash ~/dotfiles-install.sh
+  register: output
+  changed_when: output.rc != 0
 
-- name: my.essentials - install-dotfiles.yml - git config pull.rebase false - root
-  become: true
-  become_user: root
-  command: chdir=~/dotfiles git config pull.rebase false
-
-- name: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - root
-  become: true
-  become_user: root
-  file:
-    path: ~/dotfiles-install.sh
-    state: absent
+# - name: "Role: my.essentials - install-dotfiles.yml - remove dotfiles-install.sh - root"
+#   become: true
+#   become_user: root
+#   ansible.builtin.file:
+#     path: ~/dotfiles-install.sh
+#     state: absent
+#     mode: "0755"

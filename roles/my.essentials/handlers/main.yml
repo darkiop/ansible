@@ -1,9 +1,17 @@
 - name: Restart networking.service
-  service:
+  ansible.builtin.service:
     name: networking.service
     state: restarted
 
 - name: Restart dhcpcd.service
-  service:
+  ansible.builtin.service:
     name: dhcpcd.service
     state: restarted
+
+- name: Reboot
+  ansible.builtin.reboot:
+    connect_timeout: 5
+    reboot_timeout: 180
+    pre_reboot_delay: 0
+    post_reboot_delay: 30
+    test_command: uptime

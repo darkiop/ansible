@@ -1,69 +1,90 @@
-# setup-network
-# TODO wip
-#- import_tasks: wip___setup-network.yml
-#  tags: setup-network
-#  when: setup_network | default(False)
-
 # apt-update
-- import_tasks: apt-update.yml
+- name: "Role my.essentials: apt-update"
+  ansible.builtin.include_tasks: apt-update.yml
   tags: apt-update
 
 # apt-upgrade
-- import_tasks: apt-upgrade.yml
+- name: "Role my.essentials: apt-upgrade"
+  ansible.builtin.include_tasks: apt-upgrade.yml
   tags: apt-upgrade
-  when: my_essentials_apt_upgrade | default(False)
+  when: my_essentials_apt_upgrade | default(false)
 
 # apt-install
-- import_tasks: apt-install.yml
+- name: "Role my.essentials: apt-install"
+  ansible.builtin.include_tasks: apt-install.yml
   tags: apt-install
 
 # Install python3-pip
-- import_tasks: install-python3-pip.yml
+- name: "Role my.essentials: install-python3-pip"
+  ansible.builtin.include_tasks: install-python3-pip.yml
   tags: pip-install, python3-pip
 
 # pip-install
-- import_tasks: pip-install.yml
+- name: "Role my.essentials: pip-install"
+  ansible.builtin.include_tasks: pip-install.yml
   tags: pip-install
 
 # locales
-- import_tasks: set-locales.yml
+- name: "Role my.essentials: locales"
+  ansible.builtin.include_tasks: set-locales.yml
   tags: locales
 
 # timezone
-- import_tasks: set-timezone.yml
+- name: "Role my.essentials: timezone"
+  ansible.builtin.include_tasks:
+    file: set-timezone.yml
   tags: timezone
 
 # adduser
-- import_tasks: adduser.yml
+- name: "Role my.essentials: adduser"
+  ansible.builtin.include_tasks:
+    file: adduser.yml
   tags: adduser
+
+# sudoers
+- name: "Role: my.essentials: Setup and Install sudo"
+  ansible.builtin.include_tasks:
+    file: wip__sudoers.yml
+  tags: sudo
+
+# hostname
+- name: "Role: my.essentials: Setup hostname"
+  ansible.builtin.include_tasks: hostname.yml
+  tags: hostname
+  when: my_essentials_change_hostname | default(false)
 
 # TODO move to role my.dotfiles
 # dotfiles
-- import_tasks: install-dotfiles.yml
+- name: "Role my.essentials: install-dotfiles"
+  ansible.builtin.include_tasks: install-dotfiles.yml
   tags: install-dotfiles
-  when: my_essentials_install_dotfiles | default(False)
+  when: my_essentials_install_dotfiles | default(true)
 
 # navi - https://github.com/denisidoro/navi
-- import_tasks: install-navi.yml
+- name: "Role my.essentials: install-navi"
+  ansible.builtin.include_tasks: install-navi.yml
   tags: install-navi
-  when: my_essentials_install_navi | default(False)
+  when: my_essentials_install_navi | default(false)
 
 # cht.sh - https://github.com/chubin/cheat.sh
-- import_tasks: install-cht.sh.yml
+- name: "Role my.essentials: install-cht.sh"
+  ansible.builtin.include_tasks: install-cht.sh.yml
   tags: install-chtsh
-  when: my_essentials_install_chtsh | default(False)
+  when: my_essentials_install_chtsh | default(false)
 
 # vimrc - https://github.com/amix/vimrc
-- import_tasks: install-vimrc.yml
+- name: "Role my.essentials: install-vimrc"
+  ansible.builtin.include_tasks: install-vimrc.yml
   tags: install-vimrc
-  when: my_essentials_install_vimrc | default(False)
+  when: my_essentials_install_vimrc | default(false)
 
 # dysk - https://github.com/Canop/dysk/releases
-- import_tasks: install-dysk.yml
+- name: "Role my.essentials: install-dysk"
+  ansible.builtin.include_tasks: install-dysk.yml
   tags: install-dysk
-  when: my_essentials_install_dysk | default(False)
-
-# TODO move to role my.sudoers
-# sudo
-#- import_tasks: tasks/sudoers.d.yml
-#   tags: sudo
+  when: my_essentials_install_dysk | default(false)
+# setup-network
+# TODO wip
+# - ansible.builtin.include_tasks: wip___setup-network.yml
+#  tags: setup-network
+#  when: setup_network | default(false)
