@@ -1,30 +1,30 @@
-- name: my.keepalived - enable nonlocal IP binding
-  blockinfile:
+# https://wiki.archlinux.org/title/Keepalived
+# https://docs.linuxfabrik.ch/software/keepalived.html
+# https://www.reddit.com/r/pihole/comments/d5056q/tutorial_v2_how_to_run_2_pihole_servers_in_ha/?rdt=34610
+# https://www.keepalived.org/manpage.html
+# https://www.linux-magazin.de/ausgaben/2015/07/einfuehrung2/
+
+- name: "Role: my.keepalived - enable nonlocal IP binding"
+  ansible.builtin.blockinfile:
     path: /etc/sysctl.conf
     block: |
       net.ipv4.ip_nonlocal_bind = 1
       net.ipv6.ip_nonlocal_bind = 1
   notify: Reload sysctl config
 
-- name: my.keepalived - force install keepalived package
-  apt:
-    force_apt_get: yes
+- name: "Role: my.keepalived - force install keepalived package"
+  ansible.builtin.apt:
+    force_apt_get: true
     name: keepalived
 
-- name: my.keepalived - configure keepalived
-  template:
+- name: "Role: my.keepalived - configure keepalived"
+  ansible.builtin.template:
     dest: /etc/keepalived/keepalived.conf
     src: keepalived.j2
-    mode: 0644
+    mode: "0644"
   notify: Restart keepalived
-
 # TODO check pihole-ftl status with script
-
-# https://www.reddit.com/r/pihole/comments/d5056q/tutorial_v2_how_to_run_2_pihole_servers_in_ha/?rdt=34610
-# https://www.keepalived.org/manpage.html
-# https://www.linux-magazin.de/ausgaben/2015/07/einfuehrung2/
-
-#global_defs {
+# global_defs {
 # notification_email {
 #        {{ my_essentials_user_email }}
 #    }

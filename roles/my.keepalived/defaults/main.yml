@@ -1,4 +1,4 @@
-my_keepalived_instance: 
+my_keepalived_instance:
 my_keepalived_state: MASTER # MASTER/BACKUP
 my_keepalived_interface: eth0
 my_keepalived_router_id: 1
