@@ -8,23 +8,22 @@
 # ansible-galaxy install -r roles/requirements.yml --force
 
 roles:
-  - name: geerlingguy.security                  # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/security/
-  - name: geerlingguy.ntp                       # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/ntp/
-  - name: geerlingguy.nodejs                    # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/nodejs/
-  - name: geerlingguy.docker                    # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/docker/
-  - name: bertvv.samba                          # https://galaxy.ansible.com/ui/standalone/roles/bertvv/samba/
-  - name: chriswayg.msmtp-mailer                # https://galaxy.ansible.com/ui/standalone/roles/chriswayg/msmtp-mailer/
-  - name: stuvusit.smartd                       # https://galaxy.ansible.com/ui/standalone/roles/stuvusIT/smartd/
-  - name: lae.proxmox                           # https://galaxy.ansible.com/ui/standalone/roles/lae/proxmox/
-  - name: djarbz.proxmox_backup_client          # https://galaxy.ansible.com/ui/standalone/roles/djarbz/proxmox_backup_client/
-  - name: sbaerlocher.snmp                      # https://galaxy.ansible.com/ui/standalone/roles/sbaerlocher/snmp/
-  - name: simoncaron.pve_addons                 # https://galaxy.ansible.com/ui/standalone/roles/simoncaron/pve_addons/
-  - name: r_pufky.pihole                        # https://galaxy.ansible.com/ui/standalone/roles/r_pufky/pihole/
-  - name: githubixx.ansible_role_wireguard      # https://galaxy.ansible.com/ui/standalone/roles/githubixx/ansible_role_wireguard/
-  - name: artis3n.tailscale                     # https://galaxy.ansible.com/ui/standalone/roles/artis3n/tailscale/
-  - name: elliotweiser.osx-command-line-tools   # needed for collection geerlingguy.mac
+  - name: geerlingguy.security # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/security/
+  - name: geerlingguy.ntp # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/ntp/
+  - name: geerlingguy.nodejs # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/nodejs/
+  - name: geerlingguy.docker # https://galaxy.ansible.com/ui/standalone/roles/geerlingguy/docker/
+  - name: bertvv.samba # https://galaxy.ansible.com/ui/standalone/roles/bertvv/samba/
+  - name: chriswayg.msmtp-mailer # https://galaxy.ansible.com/ui/standalone/roles/chriswayg/msmtp-mailer/
+  - name: stuvusit.smartd # https://galaxy.ansible.com/ui/standalone/roles/stuvusIT/smartd/
+  - name: lae.proxmox # https://galaxy.ansible.com/ui/standalone/roles/lae/proxmox/
+  - name: djarbz.proxmox_backup_client # https://galaxy.ansible.com/ui/standalone/roles/djarbz/proxmox_backup_client/
+  - name: sbaerlocher.snmp # https://galaxy.ansible.com/ui/standalone/roles/sbaerlocher/snmp/
+  - name: r_pufky.pihole # https://galaxy.ansible.com/ui/standalone/roles/r_pufky/pihole/
+  - name: githubixx.ansible_role_wireguard # https://galaxy.ansible.com/ui/standalone/roles/githubixx/ansible_role_wireguard/
+  - name: artis3n.tailscale # https://galaxy.ansible.com/ui/standalone/roles/artis3n/tailscale/
+  - name: elliotweiser.osx-command-line-tools # needed for collection geerlingguy.mac
 
 collections:
-  - name: community.docker                      # https://docs.ansible.com/ansible/latest/collections/community/docker/index.html
-  - name: geerlingguy.mac                       # https://galaxy.ansible.com/ui/repo/published/geerlingguy/mac/
-  - name: hifis.toolkit                         # https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/
+  - name: community.docker # https://docs.ansible.com/ansible/latest/collections/community/docker/index.html
+  - name: geerlingguy.mac # https://galaxy.ansible.com/ui/repo/published/geerlingguy/mac/
+  - name: hifis.toolkit # https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/
