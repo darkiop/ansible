@@ -1,2 +1,13 @@
-my_smartmeter_install_ser2net: true
-my_smartmeter_install_restart_script: true
+my_smartmeter_ser2net_install: true
+my_smartmeter_ser2net_host: loki-new
+my_smartmeter_ser2net_user: "{{ ansible_user }}"
+
+my_smartmeter_restart_smartmeter_install: true
+my_smartmeter_restart_smartmeter_iobroker_host: pve-ct-iobroker
+my_smartmeter_restart_smartmeter_iobroker_host_user: "{{ ansible_user }}"
+
+my_smartmeter_socat_install: false
+my_smartmeter_socat_ser2net_host_usb0:
+my_smartmeter_socat_ser2net_port_usb0: 9990
+my_smartmeter_socat_ser2net_host_usb1:
+my_smartmeter_socat_ser2net_port_usb1: 9991

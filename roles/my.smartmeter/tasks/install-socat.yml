@@ -1,0 +1,22 @@
+- name: "Role: my.smartmeter - install socat package"
+  ansible.builtin.apt:
+    force_apt_get: true
+    name: socat
+
+- name: "Role: my.smartmeter - create the systemd service for socat-loki-usb0.service"
+  ansible.builtin.template:
+    src: templates/socat-loki-usb0.service.j2
+    dest: /etc/systemd/system/socat-loki-usb0.service.j2
+    mode: "0644"
+  notify:
+    - Reload systemd daemon
+    - Restart restart-smartmeter.service
+
+- name: "Role: my.smartmeter - create the systemd service for socat-loki-usb1.service"
+  ansible.builtin.template:
+    src: templates/socat-loki-usb1.service.j2
+    dest: /etc/systemd/system/socat-loki-usb1.service.j2
+    mode: "0644"
+  notify:
+    - Reload systemd daemon
+    - Restart restart-smartmeter.service

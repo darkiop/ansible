@@ -1,0 +1,13 @@
+- name: "Role: my.smartmeter - install ser2net package"
+  ansible.builtin.apt:
+    force_apt_get: true
+    name: ser2net
+
+- name: "Role: my.smartmeter - copy ser2net.yaml to /etc/ser2net.yaml"
+  ansible.builtin.template:
+    src: templates/ser2net.yaml.j2
+    dest: /etc/ser2net.yaml
+    mode: "0644"
+  notify:
+    - Restart ser2net
+    - Restart restart-smartmeter.service

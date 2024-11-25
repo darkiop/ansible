@@ -1,0 +1,26 @@
+- name: "Role: my.smartmeter - copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh"
+  ansible.builtin.template:
+    src: templates/restart-smartmeter.sh.j2
+    dest: /usr/local/bin/restart-smartmeter.sh
+    mode: "0755"
+  tags: smartmeter, copy-scripts
+
+- name: "Role: my.smartmeter - create the systemd service file for restart-smartmeter.service"
+  ansible.builtin.template:
+    src: templates/restart-smartmeter.service.j2
+    dest: /etc/systemd/system/restart-smartmeter.service
+    mode: "0644"
+  notify: Reload systemd daemon
+
+- name: "Role: my.smartmeter - enable the new service restart-smartmeter.service"
+  ansible.builtin.systemd:
+    name: restart-smartmeter.service
+    enabled: true
+    state: started
+
+- name: "Role: my.smartmeter - creates an entry @reboot /usr/local/bin/restart-smartmeter.sh"
+  ansible.builtin.cron:
+    name: run restart-smartmeter.sh after reboot via crontable
+    special_time: reboot
+    job: /usr/local/bin/restart-smartmeter.sh
+  tags: crontab-smartmeter

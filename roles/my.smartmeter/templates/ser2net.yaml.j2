@@ -1,9 +1,8 @@
-# {{ ansible_managed }}
-
 %YAML 1.1
 ---
 define: &banner \r\nser2net port \p device \d [\B] (Debian GNU/Linux)\r\n\r\n
 
+# Heizung
 connection: &usb0
     accepter: tcp,9990
     enable: on
@@ -11,8 +10,9 @@ connection: &usb0
       banner: *banner
       kickolduser: true
       telnet-brk-on-sync: true
-    connector: serialdev,/dev/ttyUSB0,9600n81,local
+    connector: serialdev,/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A906XWGH-if00-port0,9600n81,local
 
+# Haus & PV
 connection: &usb1
     accepter: tcp,9991
     enable: on
@@ -20,4 +20,4 @@ connection: &usb1
       banner: *banner
       kickolduser: true
       telnet-brk-on-sync: true
-    connector: serialdev,/dev/ttyUSB1,9600n81,local
+    connector: serialdev,/dev/serial/by-id/usb-FTDI_FT232R_USB_UART_A906XWLI-if00-port0,9600n81,local

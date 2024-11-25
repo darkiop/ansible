@@ -1,9 +1,23 @@
-- name: Debug before restart ser2net
-  debug:
-    msg: "The configuration file has been updated, proceeding to restart ser2net..."
+- name: Debug before restart ser2net.service
+  ansible.builtin.debug:
+    msg: The configuration file has been updated, proceeding to restart ser2net
   listen: Restart ser2net
 
 - name: Restart ser2net
   ansible.builtin.service:
     name: ser2net
     state: restarted
+
+- name: Restart socat.service
+  ansible.builtin.service:
+    name: socat
+    state: restarted
+
+- name: Restart restart-smartmeter.service
+  ansible.builtin.service:
+    name: restart-smartmeter
+    state: restarted
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true

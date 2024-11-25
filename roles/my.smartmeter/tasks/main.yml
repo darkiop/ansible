@@ -1,41 +1,17 @@
-- name: my.smartmeter - install ser2net package
-  apt:
-    force_apt_get: yes
-    name: ser2net
-  when: my_smartmeter_install_ser2net | default(true)
+# ser2net
+- name: "Role: my.smartmeter - import install-ser2net.yml"
+  ansible.builtin.import_tasks: install-ser2net.yml
+  tags: ser2net
+  when: my_smartmeter_ser2net_install | default(true)
 
-- name: my.smartmeter - copy ser2net.yaml to /etc/ser2net.yaml
-  template:
-    src: templates/ser2net.yaml.j2
-    dest: /etc/ser2net.yaml
-    mode: 0644
-  notify: Restart ser2net
-  when: my_smartmeter_install_ser2net | default(true)
+# Script: restart-smartmeter.sh
+- name: "Role: my.smartmeter - import install-restart-smartmeter.sh.yml"
+  ansible.builtin.import_tasks: install-restart-smartmeter.sh.yml
+  tags: restart-smartmeter
+  when: my_smartmeter_restart_smartmeter_install | default(true)
 
-- name: my.smartmeter - copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh
-  template:
-    src: templates/restart-smartmeter.sh.j2
-    dest: /usr/local/bin/restart-smartmeter.sh
-    mode: 0755
-  tags: smartmeter, copy-scripts
-  when: my_smartmeter_install_restart_script | default(true)
-
-- name: my.smartmeter - create the systemd service file for restart-smartmeter.service
-  template:
-    src: templates/restart-smartmeter.service.j2
-    dest: /etc/systemd/system/restart-smartmeter.service
-    mode: 0644
-  when: my_smartmeter_install_restart_script | default(true)
-
-- name: my.smartmeter - reload systemd to recognize the new service
-  command: systemctl daemon-reload
-  when: my_smartmeter_install_restart_script | default(true)
-
-- name: my.smartmeter - enable the new service restart-smartmeter.service
-  systemd:
-    name: restart-smartmeter.service
-    enabled: yes
-    state: started
-  when: my_smartmeter_install_restart_script | default(true)
-
-# TODO install socat for target device
+# socat
+- name: "Role: my.smartmeter - import install-socat.yml"
+  ansible.builtin.import_tasks: install-socat.yml
+  tags: socat
+  when: my_smartmeter_socat_install | default(false)

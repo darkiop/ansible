@@ -1,0 +1,11 @@
+[Unit]
+Description=SOCAT Listen Service – USB1 (Haus und PV)
+After=network.target iobroker.service
+Wants=iobroker.service
+[Service]
+Type=simple
+User=iobroker
+ExecStart=/bin/bash -c '/usr/bin/socat pty,link=/tmp/ttyCOM0 tcp:{{ my_smartmeter_socat_ser2net_host_usb1 }}:{{ my_smartmeter_socat_ser2net_port_usb1 }}'
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target

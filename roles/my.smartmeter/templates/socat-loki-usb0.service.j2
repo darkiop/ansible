@@ -1,0 +1,11 @@
+[Unit]
+Description=SOCAT Listen Service - USB0 (Heizung)
+After=network.target iobroker.service
+Wants=iobroker.service
+[Service]
+Type=simple
+User=iobroker
+ExecStart=/bin/bash -c '/usr/bin/socat pty,link=/tmp/ttyCOM0 tcp:{{ my_smartmeter_socat_ser2net_host_usb0 }}:{{ my_smartmeter_socat_ser2net_port_usb0 }}'
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
