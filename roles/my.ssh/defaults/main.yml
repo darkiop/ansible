@@ -1,6 +1,6 @@
-ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
-ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
-ssh_config:
+my_ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
+my_ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
+my_ssh_ssh_config:
   example-host-1 example-host-1-alias:
     HostName: example-host-1
     User: user
