@@ -1,16 +1,14 @@
-- name: my.pihole - install Pi-hole based on r_pufky.pihole
-  include_role:
+- name: "Role: my.pihole - install Pi-hole based on r_pufky.pihole"
+  ansible.builtin.include_role:
     name: r_pufky.pihole # https://github.com/r-pufky/ansible_pihole
 
-- name: my.pihole - create custom.list (local dns records for pihole)
+- name: "Role: my.pihole - create custom.list (local dns records for pihole)"
   become: true
-  template:
+  ansible.builtin.template:
     src: templates/custom.list.j2
-    dest: "/etc/pihole/custom.list"
+    dest: /etc/pihole/custom.list
     owner: root
     group: root
-    mode: 0644
+    mode: "0644"
   notify: Update pihole gravity database
-  when: my_pihole_custom_list_use | default(False)
-
-# TODO Sync https://github.com/vmstan/gravity-sync
+  when: pihole_custom_list_use | default(false)
