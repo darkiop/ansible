@@ -1,0 +1,24 @@
+---
+- name: "Playbook: pbs-client-test.yml"
+
+  hosts: pve-ct-pbs-client-test
+
+  become: true
+  become_user: root
+
+  vars:
+    # General settings
+    pbs_client_repository: root@oam@10.4.0.backup.example.org:datastore1
+    pbs_client_password: xyz
+    pbs_client_backup_archives:
+      - root.pxar:/
+    pbs_client_include_mountpoints:
+      - /var/external-data
+    pbs_client_backup_id: "{{ ansible_fqdn }}" # use the FQDN instead of just the hostname
+    # Encryption
+    pbs_client_encryption_mode: rsa
+    pbs_client_encryption_pubkey: "{{ lookup('file', '~/pbs-pubkey.pem') }}"
+    #
+#  roles:
+#
+#    - role: ../roles/my.pbs-client

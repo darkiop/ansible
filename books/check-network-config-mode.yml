@@ -1,0 +1,46 @@
+---
+- name: "Playbook: check-network-config-mode.yml"
+
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Check if /etc/network/interfaces.d/ exists
+      ansible.builtin.stat:
+        path: /etc/network/interfaces.d/
+      register: interfaces_d
+
+    - name: Check if /etc/netplan/ exists
+      ansible.builtin.stat:
+        path: /etc/netplan/
+      register: netplan
+
+    - name: Check if NetworkManager is in use
+      ansible.builtin.command: nmcli -t --fields running general
+      changed_when: false
+      ignore_errors: true
+      register: nmcli_status
+
+    - name: Check if /etc/sysconfig/network-scripts/ifcfg- exists
+      ansible.builtin.stat:
+        path: /etc/sysconfig/network-scripts/
+      register: ifcfg
+
+    - name: Determine network configuration system
+      ansible.builtin.set_fact:
+        network_config_system: >-
+          {% if interfaces_d.stat.exists %}
+            interfaces.d
+          {% elif netplan.stat.exists %}
+            netplan
+          {% elif nmcli_status.rc == 0 and 'running' in nmcli_status.stdout %}
+            NetworkManager
+          {% elif ifcfg.stat.exists %}
+            ifcfg
+          {% else %}
+            unknown
+          {% endif %}
+
+    - name: Print the network configuration system
+      ansible.builtin.debug:
+        msg: "The network configuration system in use is: {{ network_config_system }}"

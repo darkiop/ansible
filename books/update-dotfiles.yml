@@ -1,7 +1,8 @@
 # ansible-playbook update-dotfiles.yml
 # ansible-playbook update-dotfiles.yml -l <host>
 ---
-- hosts:
+- name: "Playbook: update-dotfiles.yml"
+  hosts:
     - pve_hosts
     - lxc
     - vm
@@ -10,26 +11,25 @@
   become_user: root
 
   tasks:
-
     # my_essentials_user_username
-    - name: dotfiles - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles
+    - name: "Playbook: dotfiles - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles"
       become: true
       become_user: "{{ my_essentials_user_username }}"
-      git:
+      ansible.builtin.git:
         repo: "{{ my_essentials_user_dotfiles_repo }}"
         dest: /home/{{ item }}/dotfiles
-        recursive: yes # yes = incl. submodules
-        force: yes
-        update: yes
+        recursive: true
+        force: true
+        update: true
         version: master
       with_items: "{{ my_essentials_user_username }}"
 
     # root
-    - name: dotfiles - clone the latest dotfiles repo to /root/dotfiles
-      git:
+    - name: "Playbook: dotfiles - clone the latest dotfiles repo to /root/dotfiles"
+      ansible.builtin.git:
         repo: "{{ my_essentials_user_dotfiles_repo }}"
         dest: /root/dotfiles
-        recursive: yes # yes = incl. submodules
-        force: yes
-        update: yes
+        recursive: true
+        force: true
+        update: true
         version: master

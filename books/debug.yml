@@ -1,0 +1,33 @@
+# ansible-playbook books/debug.yml -i hosts.yml
+---
+- name: "Playbook: debug.yml"
+
+  hosts: all
+  tasks:
+    - name: Show vars
+      ansible.builtin.debug:
+        var: ansible_architecture
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: timezone
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: inventory_hostname
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: ansible_hostname
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: username
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: ansible_env.HOME
+
+    - name: Show vars
+      ansible.builtin.debug:
+        var: debugtest

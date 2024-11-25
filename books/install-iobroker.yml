@@ -1,7 +1,9 @@
 # https://github.com/Low-Frequency/ansible-role-iobroker
 
-- name: Install ioBroker
+- name: "Playbook: install-iobroker"
+
   hosts: iobroker
+
   become: true
   become_user: root
 

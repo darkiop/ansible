@@ -1,20 +1,24 @@
 # ansible-playbook books/apt-purge.yml -i hosts.yml -l <hostname> -e purge_package=<package_name>
 ---
-- hosts:
+- name: "Playbook: apt-purge"
+
+  hosts:
     - pve_hosts
     - lxc
     - vm
     - vpn_gw
-  
+
   become: true
   become_user: root
 
   tasks:
-  
     - name: Purge package
       ansible.builtin.apt:
-        name:  "{{ purge_package }}"
+        name: "{{ purge_package }}"
         purge: true
         state: absent
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-    - debug: msg={{ apt.stdout.split('\n')[:-1] }}
+
+    - name: Output of Purge packag"
+      ansible.builtin.debug:
+        msg: "{{ apt.stdout.split('\n')[:-1] }}"

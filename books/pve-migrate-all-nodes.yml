@@ -4,32 +4,33 @@
 #  replace: group pve02
 # TODO Fix: if /etc/pve/ha/resources.cfg.bak does not exist > auth error before copying
 ---
-- hosts: pve_hosts
+- name: "Playbook: pve-migrate-all-nodes.yml"
+  hosts: pve_hosts
+
   become: true
   become_user: root
 
   vars_prompt:
+    - name: Search
+      prompt: search (e.g. 'group pve01')
+      private: false
 
-  - name: "search"
-    prompt: "search (e.g. 'group pve01')"
-    private: no
-
-  - name: "replace"
-    prompt: "replace (e.g. 'group pve02')"
-    private: no
+    - name: Replace
+      prompt: replace (e.g. 'group pve02')
+      private: false
 
   tasks:
-
     - name: Backup resources.cfg
       become: true
       become_user: root
-      copy:
+      ansible.builtin.copy:
         src: /etc/pve/ha/resources.cfg
         dest: /etc/pve/ha/resources.cfg.bak
-        remote_src: yes
+        remote_src: true
+        mode: "0755"
 
     - name: Edit resources.cfg
-      replace:
+      ansible.builtin.replace:
         path: /etc/pve/ha/resources.cfg
         regexp: "{{ search }}"
         replace: "{{ replace }}"

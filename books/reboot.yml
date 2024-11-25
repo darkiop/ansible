@@ -1,14 +1,16 @@
 # ansible-playbook books/reboot.yml -i hosts.yml -l lxc, vm
 ---
-- hosts:
+- name: "Playbook: reboot.yml"
+
+  hosts:
     - pve_hosts
     - lxc
     - vm
     - vpn_gw
+
   become: true
   become_user: root
 
   tasks:
-  
-  - name: Unconditionally reboot the machine with all defaults
-    ansible.builtin.reboot:
+    - name: Unconditionally reboot the machine with all defaults
+      ansible.builtin.reboot:

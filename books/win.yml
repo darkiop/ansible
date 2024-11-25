@@ -1,39 +1,40 @@
 # Test Ansible with Windows
 
-- hosts: pve-vm-win11
+- name: "Playbook: win.yml"
+  hosts: pve-vm-win11
 
   tasks:
 
     - name: Install all critical and security updates
-      win_updates:
+      ansible.windows.win_updates:
         category_names:
-        - CriticalUpdates
-        - SecurityUpdates
+          - CriticalUpdates
+          - SecurityUpdates
         state: installed
       register: update_result
 
     - name: Reboot host if required
-      win_reboot:
+      ansible.windows.win_reboot:
       when: update_result.reboot_required
 
     - name: Install chocolatey
-      win_chocolatey:
+      chocolatey.chocolatey.win_chocolatey:
         name:
-        - chocolatey
-        - chocolatey-core.extension
+          - chocolatey
+          - chocolatey-core.extension
         state: present
 
     - name: Install multiple packages
-      win_chocolatey:
+      chocolatey.chocolatey.win_chocolatey:
         name:
-        - procexp
-        - firefox
-        - windirstat
-        - geekuninstaller
+          - procexp
+          - firefox
+          - windirstat
+          - geekuninstaller
         state: present
 
-    - name: update
-      win_chocolatey:
+    - name: Update
+      chocolatey.chocolatey.win_chocolatey:
         name: all
         state: latest
-        ignore_checksums: yes
+        ignore_checksums: true

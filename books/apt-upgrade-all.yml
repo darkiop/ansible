@@ -1,32 +1,36 @@
 # ansible-playbook books/apt-upgrade-all.yml -i hosts.yml
 # ansible-playbook books/apt-upgrade-all.yml -i hosts.yml -l lxc, vm
 ---
-- hosts:
+- name: Playbook apt-upgrade.yml
+  hosts:
     - pve_hosts
     - lxc
     - vm
     - vpn_gw
-  
+
   become: true
   become_user: root
-  
+
   tasks:
-    - name: apt-upgrade.yml
-      apt:
+    - name: "Playbook: apt-upgrade.yml"
+      ansible.builtin.apt:
         upgrade: safe
       register: apt
       when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-    - debug: msg={{ apt.stdout.split('\n')[:-1] }}
 
-    - name: apt-upgrade.yml - reboot required?
+    - name: "Playbook: apt-upgrade.yml - Output of apt-upgrade"
+      ansible.builtin.debug:
+        msg: "{{ apt.stdout.split('\n')[:-1] }}"
+
+    - name: "Playbook: apt-upgrade.yml - reboot required?"
       register: reboot_required_file
-      stat:
+      ansible.builtin.stat:
         path: /var/run/reboot-required
         checksum_algorithm: md5
 
-    - name: apt-upgrade.yml - reboot the box if kernel updated
-      reboot:
-        msg: "Reboot initiated by Ansible for kernel updates"
+    - name: "Playbook: apt-upgrade.yml - reboot the box if kernel updated"
+      ansible.builtin.reboot:
+        msg: Reboot initiated by Ansible for kernel updates
         connect_timeout: 5
         reboot_timeout: 420
         pre_reboot_delay: 0

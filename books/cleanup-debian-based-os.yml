@@ -1,6 +1,8 @@
 # ansible-playbook books/cleanup-debian-based-os.yml -i hosts.yml
 ---
-- hosts:
+- name: "Playbook: cleanup-debian-based-os.yml"
+
+  hosts:
     - pve_hosts
     - lxc
     - vm
@@ -8,25 +10,25 @@
 
   become: true
   become_user: root
-  
-  tasks:
 
+  tasks:
     - name: Register journalctl installation status
-      command: which journalctl
+      ansible.builtin.command: which journalctl
       changed_when: false
       failed_when: false
       register: journalctl_installed
-      
-    - name: run journalctl log cleanup
+
+    - name: Run journalctl log cleanup
       become: true
       become_user: root
-      command: journalctl --vacuum-time=2d
+      ansible.builtin.command: journalctl --vacuum-time=2d
+      changed_when: false
       when: journalctl_installed
 
-    - name: apt autoremove - Remove dependencies that are no longer required
-      apt:
-        autoremove: yes
+    - name: Remove dependencies that are no longer required
+      ansible.builtin.apt:
+        autoremove: true
 
-    - name: apt autoclean - Remove useless packages from the cache
-      apt:
-        autoclean: yes
+    - name: Remove useless packages from the cache
+      ansible.builtin.apt:
+        autoclean: true
