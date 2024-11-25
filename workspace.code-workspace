@@ -1,22 +1,35 @@
 {
 	"folders": [
 		{
-			"name": "ansible",
-			"path": "/home/darkiop/Github/ansible"
+			"name": "github-darkiop-ansible",
+			"path": "/home/darkiop/github/darkiop/ansible"
 		},
 		{
-			"name": "home-.ansible",
+			"name": ".ansible",
 			"path": "/home/darkiop/.ansible"
 		}
 	],
 	"settings": {
 		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
 		"editor.tabSize": 2,
-		"workbench.colorTheme": "Sapphire (Dim)"
+		"workbench.colorTheme": "Dark Bash",
+		"ansible.python.interpreterPath": "/bin/python3.12"
 	},
 	"extensions": {
 		"recommendations": [
-			"redhat.ansible"
+			"aaron-bond.better-comments",
+			"hnw.vscode-auto-open-markdown-preview",
+			"nicscott.dark-bash",
+			"wholroyd.jinja",
+			"pkief.material-icon-theme",
+			"ms-vscode-remote.remote-ssh",
+			"ms-vscode-remote.remote-ssh-edit",
+			"ms-vscode.remote-explorer",
+			"kameshkotwani.google-search",
+			"redhat.ansible",
+			"ikbengeenrobot.ansible-variable-lookup",
+			"gruntfuggly.todo-tree",
+			"redhat.vscode-yaml"
 		]
 	}
 }
