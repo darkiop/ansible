@@ -1,13 +1,24 @@
-# TODO add private keys
+- name: "Role: my.ssh - set fact for users user-config"
+  ansible.builtin.set_fact:
+    users:
+      - root
+      - "{{ my_essentials_user_username }}"
 
-- name: my.ssh - create SSH directory
-  file:
+- name: "Role: my.ssh - create SSH directory for {{ my_essentials_user_username }}"
+  become: true
+  become_user: "{{ my_essentials_user_username }}"
+  ansible.builtin.file:
     state: directory
-    name: .ssh
-    mode: '0700'
+    path: "/home/{{ my_essentials_user_username }}/.ssh"
+    mode: "0700"
 
-- import_tasks: user-config.yml
-  tags: user-config
+- name: "Role: my.ssh - import user-config.yml"
+  ansible.builtin.import_tasks: user-config.yml
+  tags: ssh-user-config
 
-- import_tasks: authorized-keys.yml
-  tags: authorized-keys
+- name: "Role: my.ssh - import authorized-keys.yml"
+  ansible.builtin.import_tasks: authorized-keys.yml
+  tags: ssh-authorized-keys
+# TODO add private keys
+# - import_tasks: private-keys.yml
+#  tags: private-keys
