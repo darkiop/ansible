@@ -16,9 +16,10 @@ pihole_pihole_dns_2: ""
 pihole_update_enable: true
 
 # Role: my.essentials - apt install aditional_software task
-apt_aditional_software:
-   - docker
-   - docker-compose
+# TODO remove and use my.docker role?
+my_essentials_apt_aditional_packages:
+  - docker
+  - docker-compose
 
 # Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp

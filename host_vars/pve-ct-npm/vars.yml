@@ -6,9 +6,9 @@ samba_shares:
     read_only: yes
     writable: no
     browseable: yes
-    owner: "root"
-    path: "/etc/letsencrypt/archive/birkenweg.walk-steinweiler.de"
-    valid_users: "{{ user_username }}"
-    write_list: "{{ user_username }}"
+    owner: root
+    path: /etc/letsencrypt/archive/birkenweg.walk-steinweiler.de
+    valid_users: "{{ my_essentials_user_username }}"
+    write_list: "{{ my_essentials_user_username }}"
     group: root
     user: root

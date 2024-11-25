@@ -1,0 +1,6 @@
+# Role: my.essentials - apt install aditional_software task
+my_essentials_apt_aditional_packages:
+  - sshpass
+  - python3-full
+  - ansible
+  - ansible-lint

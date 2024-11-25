@@ -4,14 +4,23 @@ sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbi
 # Role: bertvv.samba
 samba_shares:
   - name: opt-iobroker
-    guest_ok: no
-    public: yes
-    read_only: no
-    writable: yes
-    browseable: yes
-    owner: "{{ user_username }}"
-    path: "/opt/iobroker"
-    valid_users: "{{ user_username }}"
-    write_list: "{{ user_username }}"
+    guest_ok: false
+    public: true
+    read_only: false
+    writable: true
+    browseable: true
+    owner: "{{ my_essentials_user_username }}"
+    path: /opt/iobroker
+    valid_users: "{{ my_essentials_user_username }}"
+    write_list: "{{ my_essentials_user_username }}"
     group: iobroker
     user: iobroker
+
+# Role: my.smartmeter
+my_smartmeter_ser2net_install: false
+my_smartmeter_restart_smartmeter_install: true
+my_smartmeter_socat_install: true
+my_smartmeter_socat_ser2net_host_usb0: 192.168.1.43
+my_smartmeter_socat_ser2net_port_usb0: 9990
+my_smartmeter_socat_ser2net_host_usb1: 192.168.1.43
+my_smartmeter_socat_ser2net_port_usb1: 9991
