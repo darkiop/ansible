@@ -4,3 +4,4 @@ roles/my.pihole/files/output.yaml
 roles/my.pihole/files/urls.txt
 .trunk
 wip_*
+host_vars/test*
