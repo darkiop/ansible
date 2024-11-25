@@ -1,46 +1,44 @@
-- name: my.proxmox - use lae.proxmox role
-  include_role:
+- name: "Role: my.proxmox - use lae.proxmox role"
+  ansible.builtin.include_role:
     name: lae.proxmox
 
-- name: my.proxmox - vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups
-  lineinfile:
+- name: "Role: my.proxmox - vzdump-nfs-fix - set temp-dir in vzdump.conf for nfs backups"
+  ansible.builtin.lineinfile:
     path: /etc/vzdump.conf
-    regexp: '^#tmpdir: DIR'
-    line: 'tmpdir: /tmp'
+    regexp: "^#tmpdir: DIR"
+    line: "tmpdir: /tmp"
 
-- name: my.proxmox - remove Proxmox no-subscription popup
-  command: sed -Ezi.bak "s/(function\(orig_cmd\) \{)/\1\n\torig_cmd\(\);\n\treturn;/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+- name: "Role: my.proxmox - remove Proxmox no-subscription popup"
+  ansible.builtin.command:
+    cmd: sed -Ezi.bak "s/(function\(orig_cmd\) \{)/\1\n\torig_cmd\(\);\n\treturn;/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js
+  register: output
+  changed_when: false
   notify: Restart pveproxy.service
-  tags: remove-no-subscription-popup
+  tags:
+    - remove-no-subscription-popup
+    - skip_ansible_lint
 
-- name: my.proxmox - setup wakeonlan interface
-  command: pvenode config set -wakeonlan {{ my_proxmox_wol_iface }}
+- name: "Role: my.proxmox - setup wakeonlan interface"
+  ansible.builtin.command:
+    cmd: pvenode config set -wakeonlan {{ my_proxmox_wol_iface }}
+  changed_when: false
   when: my_proxmox_wol_iface|length > 0
   tags: wol-interface
 
-- name: my.proxmox - disable enterprise repo
-  apt_repository:
-    repo: 'deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise'
+- name: "Role: my.proxmox - disable enterprise repo"
+  ansible.builtin.apt_repository:
+    repo: "deb https://enterprise.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-enterprise"
     state: absent
 
-- name: my.proxmox - enable community repo
-  apt_repository:
-    repo: 'deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription'
+- name: "Role: my.proxmox - enable community repo"
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.proxmox.com/debian/pve {{ ansible_distribution_release }} pve-no-subscription"
     state: present
 
-- name: my.proxmox - watchdog-config - setup
-  copy:
+- name: "Role: my.proxmox - watchdog-config - setup"
+  ansible.builtin.copy:
     content: "WATCHDOG_MODULE={{ my_proxmox_watchdog }}"
     dest: /etc/default/pve-ha-manager
-    mode: 0640
+    mode: "0640"
   register: watchdog
-
-- name: my.proxmox - watchdog-config - reboot
-  reboot:
-    msg: "Reboot initiated by Ansible - watchdog changed"
-    connect_timeout: 5
-    reboot_timeout: 420
-    pre_reboot_delay: 0
-    post_reboot_delay: 30
-    test_command: uptime
-  when: watchdog.changed
+  notify: reboot
