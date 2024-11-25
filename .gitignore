@@ -1,7 +1,6 @@
 .DS_Store
 vault.yml
-roles/my.pihole/files/output.yaml
-roles/my.pihole/files/urls.txt
+roles/my.pihole/files/generate_*
 .trunk
 wip_*
 host_vars/test*
