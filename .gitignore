@@ -1,6 +1,5 @@
 .DS_Store
 vault.yml
-tmp/*
-trash/*
 roles/my.pihole/files/output.yaml
 roles/my.pihole/files/urls.txt
+.trunk
