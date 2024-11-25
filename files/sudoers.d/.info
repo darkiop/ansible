@@ -1,4 +1,0 @@
-filename = hostname
-
-sample content:
-%sudo localhost=/usr/bin/systemctl is-active ssh.service
