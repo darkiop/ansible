@@ -1,7 +1,7 @@
 - name: Mount a filesystem and ensure it is present in /etc/fstab
-  mount:
-    path:
-    src:
+  ansible.posix.mount:
+    path: /mnt/test
+    src: /src/export
     fstype: nfs
     opts: defaults
     state: mounted

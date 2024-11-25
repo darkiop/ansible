@@ -43,7 +43,6 @@
       ansible.builtin.shell: echo "Running pre-task"
 
   roles:
-    - role: common
     - role: webserver
 
   tasks:
@@ -55,7 +54,7 @@
       ansible.builtin.service:
         name: apache2
         state: restarted
-      listen: "restart webserver"
+      listen: restart webserver
 
   post_tasks:
     - name: Post-task example

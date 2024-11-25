@@ -1,5 +1,5 @@
 - name: add SSH public keys
-  authorized_key:
+  ansible.builtin.authorized_key:
     user: "{{ item }}"
     key: "{{ lookup('file', 'files/ssh/'+ item + '.key.pub') }}"
   with_items: "{{ my_essentials_user_username }}"

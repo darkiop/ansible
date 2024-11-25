@@ -1,8 +1,8 @@
-- name: "copy file"
+- name: Copy file
   become: true
   become_user: "{{ my_essentials_user_username }}"
-  copy:
-    src: 
-    dest: 
-    mode: 0755
+  ansible.builtin.copy:
+    src: /xyz
+    dest: /abc
+    mode: "0755"
   tags: copy-files

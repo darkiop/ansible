@@ -1,0 +1,18 @@
+- name: Check if GnuPG is installed
+  ansible.builtin.command: gpg --version
+  register: gnupg_installed
+  ignore_errors: true
+  retries: 5
+  delay: 10
+  until: gnupg_installed.rc == 0
+# Explanation:
+# command: gpg --version: This runs a shell command to check if GnuPG is installed. If GnuPG is installed,
+# this command will return a version string and a return code (rc) of 0.
+# register: gnupg_installed: This captures the result of the gpg --version command and stores it in the gnupg_installed variable.
+# ignore_errors: yes: This allows the playbook to continue executing even if the command fails (e.g., GnuPG is not installed).
+# retries: 5: This tells Ansible to retry the task up to 5 times if the condition is not met.
+# delay: 10: This specifies a 10-second delay between retries.
+# until: gnupg_installed.rc == 0: This condition checks if the return code (rc) from the gpg --version command is 0, which indicates success.
+# The task will keep retrying until this condition is satisfied, or until the maximum number of retries is reached.
+# In summary, Ansible will attempt to check if GnuPG is installed (gpg --version), and if it is not, it will retry up to 5 times
+# with a 10-second delay between retries, until the command returns a success status (rc == 0).

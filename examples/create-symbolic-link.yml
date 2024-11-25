@@ -1,7 +1,7 @@
 - name: Create a symbolic
-  file:
-    src: 
-    dest: 
+  ansible.builtin.file:
+    src: /tmp/src
+    dest: /tmp/dest
     owner: darkiop
     group: darkiop
     state: link

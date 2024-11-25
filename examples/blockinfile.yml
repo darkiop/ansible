@@ -1,5 +1,5 @@
 - name: blockinfile
-  blockinfile:
+  ansible.builtin.blockinfile:
     path: /tmp/dummyfile
     block: |
       line with value = 1

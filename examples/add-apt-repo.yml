@@ -1,11 +1,11 @@
 - name: Enable apt-key
-  apt_key:
+  ansible.builtin.apt_key:
     url: "https://example.com-{{ ansible_distribution_release }}.gpg"
     keyring: "/etc/apt/trusted.gpg.d/example-release-{{ ansible_distribution_release }}.gpg"
 
 - name: Add repo
-  apt_repository:
+  ansible.builtin.apt_repository:
     repo: "deb http://example.com {{ ansible_distribution_release }} example-repo"
     filename: example
     state: present
-    update_cache: yes
+    update_cache: true

@@ -1,6 +1,6 @@
-- name: delete file
+- name: Delete file
   become: true
   become_user: "{{ my_essentials_user_username }}"
-  file:
+  ansible.builtin.file:
     path: /tmp/file1
     state: absent

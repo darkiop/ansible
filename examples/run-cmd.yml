@@ -1,9 +1,9 @@
-- name: 'Run command'
-  command: 'command'
-  register: myoutput
-  changed_when: myoutput.rc != 0
+- name: Run command
+  ansible.builtin.command: command
+  register: output
+  changed_when: false
 
-- name: 'Run command'
-  shell: 'command'
-  register: myoutput
-  changed_when: myoutput.rc != 0
+- name: Run command
+  ansible.builtin.shell: command
+  register: output
+  changed_when: false

@@ -1,7 +1,7 @@
-- name: "create cronjob"
-  cron:
+- name: Create cronjob
+  ansible.builtin.cron:
     name: ""
     minute: "00"
     hour: "10"
-    job: "file.sh >/dev/null 2>&1"
+    job: file.sh >/dev/null 2>&1
   tags: crontab
