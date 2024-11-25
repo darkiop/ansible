@@ -41,12 +41,6 @@
     file: adduser.yml
   tags: adduser
 
-# sudoers
-- name: "Role: my.essentials: Setup and Install sudo"
-  ansible.builtin.include_tasks:
-    file: wip__sudoers.yml
-  tags: sudo
-
 # hostname
 - name: "Role: my.essentials: Setup hostname"
   ansible.builtin.include_tasks: hostname.yml
@@ -83,8 +77,18 @@
   ansible.builtin.include_tasks: install-dysk.yml
   tags: install-dysk
   when: my_essentials_install_dysk | default(false)
+
+#
+# TODO: wip
+#
+
 # setup-network
-# TODO wip
-# - ansible.builtin.include_tasks: wip___setup-network.yml
+# - ansible.builtin.include_tasks: wip__setup-network.yml
 #  tags: setup-network
 #  when: setup_network | default(false)
+
+# sudoers
+# - name: "Role: my.essentials: Setup and Install sudo"
+#   ansible.builtin.include_tasks:
+#     file: wip__sudoers.yml
+#   tags: sudo
