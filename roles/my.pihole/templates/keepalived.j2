@@ -1,0 +1,29 @@
+# {{ ansible_managed }}
+
+vrrp_script check_pihole {
+    script "/usr/local/bin/check_pihole.sh"
+    interval 5      # Check every 5 seconds
+    timeout 3       # Timeout for the script execution
+    rise 2          # Number of successful checks before considering it healthy
+    fall 2          # Number of failures before considering it unhealthy
+}
+
+vrrp_instance {{ my_keepalived_instance }} {
+
+  state {{ my_keepalived_state }}
+
+  interface {{ my_keepalived_interface }}
+
+  virtual_router_id {{ my_keepalived_router_id }}
+
+  priority {{ my_keepalived_priority }}
+
+  virtual_ipaddress {
+    {{ my_keepalived_virtual_ipv4 }}
+  }
+
+  track_script {
+      check_pihole
+  }
+
+}

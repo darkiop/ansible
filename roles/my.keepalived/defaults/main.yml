@@ -1,6 +1,0 @@
-my_keepalived_instance:
-my_keepalived_state: MASTER # MASTER/BACKUP
-my_keepalived_interface: eth0
-my_keepalived_router_id: 1
-my_keepalived_priority: 255
-my_keepalived_virtual_ipv4:

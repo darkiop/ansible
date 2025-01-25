@@ -2,3 +2,13 @@
   ansible.builtin.command: pihole -g
   register: output
   changed_when: false
+
+- name: Reload sysctl config
+  ansible.builtin.command: sysctl -p
+  register: output
+  changed_when: output.rc != 0
+
+- name: Restart keepalived
+  ansible.builtin.service:
+    name: keepalived
+    state: restarted
