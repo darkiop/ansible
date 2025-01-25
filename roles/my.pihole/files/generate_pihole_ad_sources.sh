@@ -1,4 +1,5 @@
 #!/bin/bash
+# This script generates a YAML file with Pi-hole ad sources from a list of URLs
 
 # Input file containing URLs
 input_file="generate_pihole_ad_sources-input.txt"
