@@ -1,30 +1,39 @@
 # ansible-playbook main.yml -i hosts.yml -l <host>
 # ansible-playbook main.yml -i hosts.yml --tags <tag1>,<tag2>
 # ansible-playbook main.yml -i hosts.yml -e <variable>=<value>
-#  -i = inventory file
-#  -l = limit host
-#  -e = define a variable
 #
 # Get a list of facts:
-# ansible -m setup 
+# ansible -m setup
 # ansible loki -m setup -a 'filter=ansible_architecture'
+#
+# Ask for pw insted of using SSH key
+# --ask-pass
+# --ask-become-pass
 
----
-### ALL 
-- hosts:
+####################################################
+# GENERAL CONFIGURATIONS
+####################################################
+- name: General Setup
+  hosts:
+    # GROUPS
     - pve_hosts
-    - lxc
-    - vm
-    - vpn_gw
+    - pve_lxc
+    - pve_vm
+    - vpn_gw_ext
+    # CLIENTS
+    - loki-new
 
   become: true
   become_user: root
 
-  roles: 
-    
-    ## ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+  roles:
+    # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
       tags: essentials
+
+    # SSH-Keys
+    - role: my.ssh
+      tags: ssh
 
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
@@ -34,51 +43,35 @@
     - role: geerlingguy.ntp
       tags: ntp
 
-    ## UNATTENDED-UPGRADES (https://github.com/hifis-net/ansible-role-unattended-upgrades)
-    - role: hifis.unattended_upgrades
-      unattended_origins_patterns:
-        - 'origin=Debian,codename=${distro_codename},label=Debian-Security'
-        - 'o=Debian,codename=${distro_codename},label=Debian'
-      when: 
-        - ansible_lsb.id == "Debian"
-      tags: unattended_upgrades
-
-    - role: hifis.unattended_upgrades
-      unattended_origins_patterns:
-        - 'origin=Raspbian,codename=${distro_codename},label=Raspbian'
-      when: 
-        - ansible_distribution == "Debian"
-        - ansible_lsb.id == "Raspbian"
-      tags: unattended_upgrades
-
-    - role: hifis.unattended_upgrades
-      unattended_origins_patterns:
-        - 'origin=Ubuntu,archive=${distro_codename}-security'
-        - 'o=Ubuntu,a=${distro_codename}'
-        - 'o=Ubuntu,a=${distro_codename}-updates'
-      when: 
-        - ansible_distribution == "Ubuntu"
-      tags: unattended_upgrades
+  tasks:
+    # TODO move to my.essentials
+    - name: Create bin directory
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.file:
+        path: ~/bin
+        state: directory
+        mode: "0755"
+      tags: copy-scripts
 
 ####################################################
 # GROUP SPECIFIC CONFIGURATIONS
 ####################################################
 
 ## PROXMOX: HOSTS
-- hosts: pve_hosts
+# ansible-playbook main.yml -l pve_hosts
+- name: Setup for Proxmox Hosts
+  hosts: pve_hosts
 
   become: true
   become_user: root
 
   roles:
-
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
-    - role: bertvv.samba
+    - role: my.samba
       tags: samba
-    
+
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
-    - role: lae.proxmox
-      tags: proxmox
     - role: my.proxmox
       tags: proxmox
 
@@ -91,292 +84,373 @@
       tags: smartd
 
   tasks:
+    # TODO move to my.essentials
+    - name: Check if source path exists
+      ansible.builtin.stat:
+        path: files/hosts/pve_hosts/
+      register: src_path_check
 
-    - name: "create bin directory"
+    - name: Copy scripts if source path exists
       become: true
-      become_user: "{{ user_username }}"
-      file:
-        path: ~/bin
-        state: directory
-        mode: 0755
-      tags: copy-scripts
-
-    - name: "copy scripts"
-      become: true
-      become_user: "{{ user_username }}"
-      copy:
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
         src: files/hosts/pve_hosts/
         dest: ~/bin/
-        mode: 0755
+        mode: "0755"
+      when: src_path_check.stat.exists
       tags: copy-scripts
 
+
 ## PROXMOX: CT & VMs
-- hosts: lxc, vm
+# ansible-playbook main.yml -l lxc, vm
+- name: Setup for Linux Containers and Virtual Machines
+  hosts: pve_lxc, pve_vm
 
   become: true
   become_user: root
 
   roles:
-
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
-    - role: bertvv.samba
+    - role: my.samba
       tags: samba
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
       tags: security
 
-## VPN-GATEWAYS
-- hosts: vpn_gw
+## ADBLOCKER
+# ansible-playbook main.yml -l adblocker
+- name: Setup for Adblock
+  hosts: adblock
 
   become: true
   become_user: root
 
-  tasks:
+  roles:
+    - role: my.pihole
+      tags: pihole
 
-    - name: Setup static ip address configuration
-      template:
-        src: dhcpcd.conf-static-ip.j2
-        dest: "/etc/dhcpcd.conf"
-        owner: root
-        group: root
-        mode: 0644
-      tags: setup-static-ip-address
+## VPN-GATEWAYS
+# ansible-playbook main.yml -l vpn_gw_ext
+- name: Setup for VPN Gateways (external)
+  hosts: vpn_gw_ext
 
-    - name: Create custom.list (local dns records for pihole)
-      template:
-        src: pihole/custom.list.j2
-        dest: "/etc/pihole/custom.list"
-        owner: root
-        group: root
-        mode: 0644
-      become: true
+  # TODO add role my.docker
+  # TODO add role my.wireguard
+
+  become: true
+  become_user: root
 
   roles:
-    
-    ## pihole (https://github.com/r-pufky/ansible_pihole)
-    - role: r_pufky.pihole
+    - role: my.pihole
       tags: pihole
 
-  post_tasks:
-
-    - name: 'Update pihole gravity database'
-      ansible.builtin.command: 'pihole -g'
-      register: myoutput
-      changed_when: myoutput.rc != 0
-      tags: pihole
-
-## Synology NAS
-- hosts: nas
-
-  #become: true
-  #become_user: root
-
-  #tags: 
-
-  #roles:
+    # TODO package docker-ce not available - maybe with Debian 12?
+    # - role: my.docker
+    #  tags: docker
 
   tasks:
-
-    - name: add SSH public keys
-      import_tasks: tasks/ssh_authorized_keys.yml
-
-    - name: "copy arp.sh for wakeonlan"
+    # TODO use role my.essentials if ready
+    # Network configuration
+    - name: Setup static ip address configuration
       become: true
-      become_user: "{{ user_username }}"
-      copy:
-        src: files/hosts/loki/arp.sh
-        dest: ~/bin/
-        mode: 0777
-      tags: crontab, crontab-arp, copy-scripts
+      ansible.builtin.template:
+        src: dhcpcd.conf-static-ip.j2
+        dest: /etc/dhcpcd.conf
+        owner: root
+        group: root
+        mode: "0644"
+      tags: setup-static-ip-address
+
+## NAS
+# ansible-playbook main.yml -l nas
+- name: Setup for Synology NAS
+  hosts: nas
+
+  # become: true
+  # become_user: root
+
+  # tags:
+
+  # roles:
+
+  tasks:
+    - name: Copy files
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
+        src: files/hosts/odin/
+        dest: /volume1/homes/{{ my_essentials_user_username }}/bin
+        mode: "0755"
+      tags: copy-files
+
+## MACOS
+# ansible-playbook main.yml -l macos
+- name: Setup for MacOS
+  hosts: os_macos
+
+  environment:
+    # https://github.com/geerlingguy/ansible-collection-mac/issues/86
+    PATH: /opt/homebrew/bin:{{ lookup('ansible.builtin.env', 'PATH') }}
+
+  roles:
+    - role: my.macos
+    - role: my.ssh
 
 ####################################################
 # CLIENT SPECIFIC CONFIGURATIONS
 ####################################################
 
 ## pve-ct-iobroker (Ubuntu)
-- hosts: pve-ct-iobroker
+# ansible-playbook main.yml -i pve-ct-iobroker
+- name: Setup for pve-ct-iobroker
+  hosts: pve-ct-iobroker
 
   become: true
   become_user: root
 
   tags: pve-ct-iobroker
 
+  # TODO add role my.iobroker
   roles:
+    - role: my.smartmeter
+      tags: smartmeter
 
   tasks:
+    # TODO move to my.essentials
+    - name: Check if source path exists
+      ansible.builtin.stat:
+        path: files/hosts/pve_hosts/
+      register: src_path_check
 
-    - name: "create bin directory"
+    - name: Copy scripts if source path exists
       become: true
-      become_user: "{{ user_username }}"
-      file:
-        path: ~/bin
-        state: directory
-        mode: 0755
-      tags: copy-scripts
-
-    - name: "copy scripts"
-      become: true
-      become_user: "{{ user_username }}"
-      copy:
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
         src: files/hosts/pve-ct-iobroker/
         dest: ~/bin/
-        mode: 0755
+        mode: "0755"
+      when: src_path_check.stat.exists
       tags: copy-scripts
 
-    - name: "create cronjob for iface metric @ reboot"
+    - name: Create cronjob for iface metric @ reboot
       ansible.builtin.cron:
-        name: "iface metric"
+        name: iface metric
         special_time: reboot
-        job: "ifmetric eth0 100 && ifmetric eth1 200"
+        job: ifmetric eth0 100 && ifmetric eth1 200
       tags: crontab
 
-    ### copy restart-smartmeter.sh
-    - name: "copy restart-smartmeter.sh"
-      copy:
-        src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
-        dest: ~/bin/
-        mode: 0755
-      tags: copy-scripts, smartmeter
-
-    - name: Create a symbolic for /usr/bin/restart-smartmeter.sh
-      ansible.builtin.file:
-        src: /home/darkiop/bin/restart-smartmeter.sh
-        dest: /usr/bin/restart-smartmeter.sh
-        owner: darkiop
-        group: darkiop
-        state: link
-      tags: copy-scripts, smartmeter
-
-    ### Restart SmartMeter 
-    - name: Restart ser2net.service @loki, socat.service @pve-ct-iobroker and smartmeter.0/1 instances @ioBroker
-      command: bash /usr/bin/restart-smartmeter.sh
-      tags: smartmeter, restart-smartmeter
-
     ### copy rsync-backups.sh
-    - name: "copy rsync-backups.sh"
+    - name: Copy rsync-backups.sh
       become: true
-      become_user: "{{ user_username }}"
-      copy:
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
         src: files/hosts/pve-ct-iobroker/rsync-backups.sh
         dest: ~/bin/rsync-backups.sh
-        mode: 0755
+        mode: "0755"
       tags: copy-scripts, rsync-backups
 
-    - name: "create cronjob for rsync-backups.sh"
+    - name: Create cronjob for rsync-backups.sh
       ansible.builtin.cron:
-        name: "setup crontab for rsync-backups.sh"
-        minute: "02"
-        hour: "19"
-        job: "/home/darkiop/bin/rsync-backups.sh >/dev/null 2>&1"
+        name: setup crontab for rsync-backups.sh
+        minute: "00"
+        hour: "10"
+        job: /home/darkiop/bin/rsync-backups.sh >/dev/null 2>&1
       tags: crontab, crontab-rsync-backups, rsync-backups
 
-## loki (Raspbian)
-- hosts: loki
+## pve-ct-pihole (Ubuntu)
+# ansible-playbook main.yml -i pve-ct-pihole
+- name: Setup for pve-ct-pihole
+  hosts: pve-ct-pihole
 
   become: true
   become_user: root
 
-  tags: loki
-
   roles:
 
+    ## Pi-hole
+    - role: my.pihole
+      tags: pihole
+
+## loki-new (Raspbian)
+# ansible-playbook main.yml -l loki-new
+- name: Setup for loki-new
+  hosts: loki-new
+
+  become: true
+  become_user: root
+
+  roles:
+    # TODO add role my.named
+    # TODO add role my.tailscale
+
+    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
+    - role: geerlingguy.security
+      tags: security
+
+    ## Pi-hole
+    - role: my.pihole
+      tags: pihole
+
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    - role: my.samba
+      tags: samba
+
+    ## SMARTMETER
+    - role: my.smartmeter
+      tags: smartmeter
+
+    ## DOCKER (https://github.com/geerlingguy/ansible-role-docker)
+    - role: my.docker
+      tags: docker
+
   tasks:
+    - name: Disable Wifi
+      ansible.builtin.lineinfile:
+        path: /boot/firmware/config.txt
+        line: dtoverlay=disable-wifi
+        insertafter: "[all]"
+        create: true
+        mode: "0755"
+      tags: rpi-config
 
-    - name: Setup static ip address configuration
-      template:
-        src: dhcpcd.conf-static-ip.j2
-        dest: "/etc/dhcpcd.conf"
-        owner: root
-        group: root
-        mode: 0644
-      tags: setup-static-ip-address
+    - name: Disable BT
+      ansible.builtin.lineinfile:
+        path: /boot/firmware/config.txt
+        line: dtoverlay=disable-bt
+        insertafter: "[all]"
+        create: true
+        mode: "0755"
+      tags: rpi-config
 
-    - name: "copy ser2net.yaml to /etc/ser2net.yaml"
-      copy:
-        src: files/hosts/loki/ser2net.yaml
-        dest: /etc/ser2net.yaml
-        mode: 0644
-      tags: ser2net
-
-    - name: Reload service ser2net
-      service:
-        name: ser2net
-        state: restarted
-      tags: ser2net
-
-    - name: "Copy restart-smartmeter.sh to /usr/local/bin/restart-smartmeter.sh"
-      copy:
-        src: files/hosts/pve-ct-iobroker/restart-smartmeter.sh
-        dest: /usr/local/bin/restart-smartmeter.sh
-        mode: 0755
-      tags: smartmeter, copy-scripts
-
-    - name: Creates an entry like "@reboot /usr/local/bin/restart-smartmeter.sh"
-      ansible.builtin.cron:
-        name: "run restart-smartmeter.sh after reboot via crontable"
-        special_time: reboot
-        job: "/usr/local/bin/restart-smartmeter.sh"
-      tags: crontab, crontab-smartmeter, smartmeter
-
-    - name: Create a symbolic link for private nopw ssh key
-      ansible.builtin.file:
-        src: /home/darkiop/.ssh/darkiop@loki_ed25519_nopw
-        dest: /home/darkiop/.ssh/id_rsa
-        owner: darkiop
-        group: darkiop
-        state: link
-      tags: ssh
-
-    - name: Create a symbolic link for public nopw ssh key
-      ansible.builtin.file:
-        src: /home/darkiop/.ssh/darkiop@loki_ed25519_nopw.pub
-        dest: /home/darkiop/.ssh/id_rsa.pub
-        owner: darkiop
-        group: darkiop
-      tags: ssh
-
-    ### arp cron for wakeonlan
-    - name: "create bin directory"
+    - name: Copy arp.sh for wakeonlan
       become: true
-      become_user: "{{ user_username }}"
-      file:
-        path: ~/bin
-        state: directory
-        mode: 0755
-      tags: crontab, crontab-arp, copy-scripts
-
-    - name: "copy arp.sh for wakeonlan"
-      become: true
-      become_user: "{{ user_username }}"
-      copy:
-        src: files/hosts/loki/arp.sh
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
+        src: files/hosts/loki/scripts/arp.sh
         dest: ~/bin/
-        mode: 0777
+        mode: "0777"
       tags: crontab, crontab-arp, copy-scripts
 
-    - name: "create cronjob for arp -s (needed for wakeonlan)"
+    - name: Create cronjob for arp -s (needed for wakeonlan)
       ansible.builtin.cron:
-        name: "setup crontab for arp for wakeonlan"
+        name: setup crontab for arp for wakeonlan
         minute: "*"
         hour: "*"
-        job: "/home/darkiop/bin/arp.sh >/dev/null 2>&1"
+        job: /home/darkiop/bin/arp.sh >/dev/null 2>&1
       tags: crontab, crontab-arp
 
-    ### rsync named backups to odin
-    - name: "copy backup_bind.sh"
+    - name: Copy backup_bind.sh
       become: true
-      become_user: "{{ user_username }}"
-      copy:
-        src: files/hosts/loki/backup_bind.sh
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
+        src: files/hosts/loki/scripts/backup_bind.sh
         dest: ~/bin/
-        mode: 0755
+        mode: "0755"
       tags: bind-backup, copy-scripts
 
-    - name: "create cronjob for backup_bind.sh"
+    - name: Create cronjob for backup_bind.sh
       ansible.builtin.cron:
-        name: "setup crontab for backup_bind.sh"
+        name: setup crontab for backup_bind.sh
         minute: "00"
         hour: "12"
-        job: "/home/darkiop/bin/backup_bind.sh >/dev/null 2>&1"
+        job: /home/darkiop/bin/backup_bind.sh >/dev/null 2>&1
       tags: crontab, crontab-bind-backup, bind-backup
+
+## pbs-odin
+# ansible-playbook main.yml -l pbs-odin
+- name: Setup for pbs-odin
+  hosts: pbs-odin
+
+  roles:
+    - role: my.pbs
+
+  tasks:
+    - name: Mount odin:/pbs-pve and ensure it is present in /etc/fstab
+      become: true
+      ansible.posix.mount:
+        path: /mnt/pbs-odin
+        src: 192.168.1.30:/volume1/pbs-pve
+        fstype: nfs
+        opts: defaults
+        state: mounted
+      tags: proxmox-backup-server-config, mount
+
+    - name: Create Proxmox-Backup-Server datastore.cfg
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/proxmox-backup/datastore.cfg
+        owner: root
+        group: backup
+        mode: "0640"
+        content: |
+          datastore: pbs-odin
+            gc-schedule sat 10:00
+            path /mnt/pbs-odin
+      tags: proxmox-backup-server-config
+
+## pbs-freya
+# ansible-playbook main.yml -l pbs-freya
+# TODO add copy of scripts to role
+- name: Setup for pbs-freya
+  hosts: pbs-freya
+
+  roles:
+    - role: my.pbs
+
+  tasks:
+    - name: Create Proxmox-Backup-Server datastore.cfg
+      become: true
+      ansible.builtin.copy:
+        dest: /etc/proxmox-backup/datastore.cfg
+        owner: root
+        group: backup
+        mode: "0640"
+        content: |
+          datastore: pbs-freya
+            gc-schedule daily
+            path /data
+            prune-schedule daily
+      tags: proxmox-backup-server-config
+
+## vpn-hetzner
+# ansible-playbook main.yml -l vpn-hetzner
+# TODO role: my.wireguard
+- name: Setup for VPN Gateway @ Hetzner
+  hosts: vpn_gw_hetzner
+
+  become: true
+
+  roles:
+    - role: my.docker
+      tags: docker
+
+## Ansible Tests
+- name: Setup for Playbook tests
+  hosts:
+    - test-host
+  become: true
+  become_user: root
+  roles:
+    - role: my.essentials
+      tags: role-essentials
+    - role: my.ssh # ✅
+      tags: role-ssh
+    # - role: my.mqtt # ✅
+    #   tags: role-mqtt
+    - role: my.docker # ✅
+      tags: role-docker
+    # - role: my.pihole # ✅
+    #   tags: role-pihole
+    # - role: my.keepalived # ✅
+    #   tags: role-keepalived
+    # - role: my.zabbix-agent-new
+    #   tags: zabbix-agent
+    # - role: my.pbs
+    #   tags: pbs
+    # - role: my.smartmeter # ✅
+    #   tags: role-smartmeter
+    # - role: my.samba # ✅
+    #   tags: role-samba
+    # - role: my.pbs # TODO test with VM
+    #   tags: role-pbs
