@@ -3,7 +3,9 @@
 - name: "Playbook: debug.yml"
 
   hosts: all
+
   tasks:
+
     - name: Show vars
       ansible.builtin.debug:
         var: ansible_architecture
