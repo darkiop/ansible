@@ -1,0 +1,23 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run Current Ansible Playbook",
+      "type": "shell",
+      "command": "ansible-playbook",
+      "args": [
+        "${file}",
+        "-i",
+        "hosts.yml"
+      ],
+      "presentation": {
+        "reveal": "always"
+      },
+      "problemMatcher": [],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
