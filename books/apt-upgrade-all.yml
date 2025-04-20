@@ -2,11 +2,12 @@
 # ansible-playbook books/apt-upgrade-all.yml -i hosts.yml -l lxc, vm
 ---
 - name: Playbook apt-upgrade.yml
+
   hosts:
     - pve_hosts
-    - lxc
-    - vm
-    - vpn_gw
+    - pve_lxc
+    - pve_vm
+    - vpn_gw_ext
 
   become: true
   become_user: root
