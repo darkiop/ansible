@@ -2,6 +2,7 @@
 # ansible-playbook books/facts.yml -i hosts.yml -l lxc, vm
 ---
 - name: "Playbook: facts.yml"
+
   hosts: all
 
   become: true
