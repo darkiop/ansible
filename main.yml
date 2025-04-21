@@ -289,7 +289,7 @@
       tags: security
 
     ## Pi-hole
-    - role: my.pihole
+    - role: my.pihole # TODO Port 53 in use by pihole and named
       tags: pihole
 
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
@@ -299,6 +299,10 @@
     ## SMARTMETER
     - role: my.smartmeter
       tags: smartmeter
+
+    ## SMARTMETER
+    - role: my.named-slave # TODO Port 53 in use by pihole and named
+      tags: named-slave
 
     ## DOCKER (https://github.com/geerlingguy/ansible-role-docker)
     - role: my.docker
@@ -425,32 +429,58 @@
     - role: my.docker
       tags: docker
 
+# TODO TEST ALL ROLES AND COMMIT CHANGES
 ## Ansible Tests
-- name: Setup for Playbook tests
+- name: Setup for Playbook tests (ubuntu)
   hosts:
-    - test-host
+    - test-host-ubuntu
   become: true
   become_user: root
   roles:
-    - role: my.essentials
+    - role: my.essentials                 # Ubuntu: ✅
       tags: role-essentials
-    - role: my.ssh # ✅
+    - role: my.ssh                        # Ubuntu: ✅
       tags: role-ssh
-    # - role: my.mqtt # ✅
-    #   tags: role-mqtt
-    - role: my.docker # ✅
+    - role: my.mqtt                       # Ubuntu: ✅
+      tags: role-mqtt
+    - role: my.named-slave                # Ubuntu: ✅
+      tags: role-named-slave
+    - role: my.docker                     # Ubuntu: ✅
       tags: role-docker
-    # - role: my.pihole # ✅
-    #   tags: role-pihole
-    # - role: my.keepalived # ✅
-    #   tags: role-keepalived
-    # - role: my.zabbix-agent-new
-    #   tags: zabbix-agent
-    # - role: my.pbs
-    #   tags: pbs
-    # - role: my.smartmeter # ✅
-    #   tags: role-smartmeter
-    # - role: my.samba # ✅
-    #   tags: role-samba
-    # - role: my.pbs # TODO test with VM
-    #   tags: role-pbs
+    - role: my.pihole                     # Ubuntu: ✅ TODO Upgrade to pihole V6
+      tags: role-pihole
+    - role: my.pbs                        # Ubuntu: ⚠️ Only for Debian based systems
+      tags: role-pbs
+    - role: my.smartmeter                 # Ubuntu: ✅
+      tags: role-smartmeter
+    - role: my.samba                      # Ubuntu: ✅
+      tags: role-samba
+    - role: my.pdm                        # Ubuntu: ⚠️ Only for Debian based systems
+      tags: role-pdm
+
+- name: Setup for Playbook tests (debian)
+  hosts:
+    - test-host-debian
+  become: true
+  become_user: root
+  roles:
+    - role: my.essentials                 # Debain: ✅
+      tags: role-essentials
+    - role: my.ssh                        # Debian: ✅
+      tags: role-ssh
+    - role: my.mqtt                       # Debian: ✅
+      tags: role-mqtt
+    - role: my.named-slave                # Debian: ❌ TODO No Zone Transfer?
+      tags: role-named-slave
+    - role: my.docker                     # Debian: ✅
+      tags: role-docker
+    - role: my.pihole                     # Debian: ✅ TODO Upgrade to pihole V6
+      tags: role-pihole
+    - role: my.pbs                        # Debian: ⚠️ TODO Skipped?
+      tags: role-pbs
+    - role: my.smartmeter                 # Debian: ✅
+      tags: role-smartmeter
+    - role: my.samba                      # Debian: ✅
+      tags: role-samba
+    - role: my.pdm                        # Debian: ✅
+      tags: role-pdm
