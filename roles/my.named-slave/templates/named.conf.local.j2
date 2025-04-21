@@ -1,0 +1,11 @@
+# {{ ansible_managed }}
+
+// Slave zones pulled from {{ bind_master_ip }}
+{% for zone in bind_zones %}
+zone "{{ zone }}" {
+  type slave;
+  file "{{ bind_base_dir }}/db.{{ zone }}";
+  allow-query { any; };
+  masters { {{ bind_master_ip }}; };
+};
+{% endfor %}

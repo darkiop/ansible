@@ -1,0 +1,5 @@
+# roles/bind_secondary/handlers/main.yml
+- name: restart bind
+  ansible.builtin.service:
+    name: bind9
+    state: restarted
