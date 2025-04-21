@@ -13,7 +13,7 @@ pihole_ipv4_address: "{{ vault_dhcpcd_static_ip_address }}/24"
 pihole_ipv6_address: ""
 pihole_pihole_dns_1: "{{ vault_dhcpcd_static_routers }}#53"
 pihole_pihole_dns_2: ""
-pihole_update_enable: true
+pihole_update_enable: false
 
 # Role: my.essentials - apt install aditional_software task
 # TODO remove and use my.docker role?
