@@ -1,9 +1,0 @@
-# https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
-
-# Role: my.ssh
-vault_ssh_public_keys:
-  - ""
-
-# Role: geerlingguy.mac.mas
-vault_mas_email: ""
-vault_mas_password: ""
