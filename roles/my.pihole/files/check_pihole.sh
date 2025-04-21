@@ -1,5 +1,5 @@
 #!/bin/bash
-# This script checks if the Pi-hole service is running and if the web interface is reachable
+# This script checks if the Pi-hole service is running and if the web interface is reachable. It is needed for keeoalive checks.
 
 # Define the IP and port of the Pi-hole instance
 PIHOLE_IP="127.0.0.1"
