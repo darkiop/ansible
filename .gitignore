@@ -4,3 +4,5 @@ roles/my.pihole/files/generate_*
 .trunk
 wip_*
 host_vars/test*
+notes
+books/show-os-release-results.txt
