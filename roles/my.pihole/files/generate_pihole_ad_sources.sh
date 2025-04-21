@@ -8,22 +8,24 @@ input_file="generate_pihole_ad_sources-input.txt"
 output_file="generate_pihole_ad_sources-output.yaml"
 
 # Initialize YAML file with the header
-echo "pihole_ad_sources:" >"${output_file}"
+printf "pihole_ad_sources:\n" >"${output_file}"
 
 # Initialize ID counter
 id_counter=1
 
 # Read each line from the input file
 while IFS= read -r url; do
-	# Add entry to the YAML file
-	# trunk-ignore(shellcheck/SC2129)
-	echo "  - id: ${id_counter}" >>"${output_file}"
-	echo "    address: ${url}" >>"${output_file}"
-	echo "    enabled: true" >>"${output_file}"
-	echo "    comment: ansible adlist" >>"${output_file}"
+    # Trim trailing spaces from the URL
+    url=$(echo "$url" | sed 's/[[:space:]]*$//')
 
-	# Increment the ID counter
-	id_counter=$((id_counter + 1))
+    # Add entry to the YAML file
+    printf "  - id: %d\n" "${id_counter}" >>"${output_file}"
+    printf "    address: %s\n" "${url}" >>"${output_file}"
+    printf "    enabled: true\n" >>"${output_file}"
+    printf "    comment: ansible adlist\n" >>"${output_file}"
+
+    # Increment the ID counter
+    id_counter=$((id_counter + 1))
 done <"${input_file}"
 
 # Output the generated YAML file
