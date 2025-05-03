@@ -1,0 +1,98 @@
+- name: Collect service facts
+  ansible.builtin.service_facts:
+
+- name: Stop & disable systemd‑resolved if installed and running
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+  when:
+    - "'systemd-resolved.service' in ansible_facts.services"
+    - ansible_facts.services['systemd-resolved.service'].state   == 'running'
+      or ansible_facts.services['systemd-resolved.service'].status == 'enabled'
+
+- name: Deploy /etc/resolv.conf
+  ansible.builtin.template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Install named/bind9
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - bind9
+      - bind9-utils
+      - python3-dnspython
+    state: present
+
+- name: Ensure zone directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_slave_base_dir }}"
+    state: directory
+    owner: "{{ my_named_slave_bind_user }}"
+    group: "{{ my_named_slave_bind_user }}"
+    mode: "0750"
+
+- name: Ensure log directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_slave_log_dir }}"
+    state: directory
+    owner: "{{ my_named_slave_bind_user }}"
+    group: "{{ my_named_slave_bind_user }}"
+    mode: "0750"
+
+# ── Configuration files (templates) ─────────────────────────────────────
+- name: Deploy named.conf (master include file)
+  ansible.builtin.template:
+    src: named.conf.j2
+    dest: /etc/bind/named.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy named.conf.options
+  ansible.builtin.template:
+    src: named.conf.options.j2
+    dest: /etc/bind/named.conf.options
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy named.conf.local
+  ansible.builtin.template:
+    src: named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy named.conf.default‑zones
+  ansible.builtin.template:
+    src: named.conf.default-zones.j2
+    dest: /etc/bind/named.conf.default-zones
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Deploy named.conf.logging
+  ansible.builtin.template:
+    src: named.conf.logging.j2
+    dest: /etc/bind/named.conf.logging
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Call handler to restart bind service
+  ansible.builtin.meta: flush_handlers
+
+# ── Post‑deployment health check ────────────────────────────────────────
+- name: Wait until TCP 53 answers (run from control node)
+  ansible.builtin.wait_for:
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 53
+    state: started
+    timeout: 60
+  delegate_to: localhost # executes on ansible controller

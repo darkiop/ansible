@@ -1,0 +1,14 @@
+# {{ ansible_managed }}
+
+{% if my_named_slave_resolv_conf_search_domain is defined %}
+search {{ my_named_slave_resolv_conf_search_domain }}
+{% endif %}
+{% if my_named_slave_resolv_conf_nameservers is defined %}
+{% for ns in my_named_slave_resolv_conf_nameservers %}
+nameserver {{ ns }}
+{% endfor %}
+{% endif %}
+
+# Additional options (optional)
+options rotate
+options timeout:2

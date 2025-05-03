@@ -1,0 +1,90 @@
+# ── General ──────────────────────────────────────────────────────────────
+my_named_slave_mode: [] # master or slave
+my_named_slave_base_dir: /var/cache/bind
+my_named_slave_log_dir: /var/log/named
+my_named_slave_bind_user: bind
+my_named_slave_enable_ipv6: true
+
+# ── Settings ─────────────────────────────────────────────────────────────
+my_named_slave_master_ip: []
+my_named_slave_zones: [] # e.g. ['example.com', '1.168.192.in-addr.arpa']
+my_named_slave_forwarders:
+  - 1.1.1.1
+  - 8.8.8.8
+my_named_slave_querys_allowed_by: []
+my_named_slave_transfers_allowed_by: []
+
+my_named_slave_resolv_conf_search_domain: "{{ local_fqdn }}"
+my_named_slave_resolv_conf_nameservers:
+  - 192.168.1.53
+
+my_named_slave_logging_channels:
+  - name: default_file
+    file: /var/log/named/default.log
+  - name: general_file
+    file: /var/log/named/general.log
+  - name: database_file
+    file: /var/log/named/database.log
+  - name: security_file
+    file: /var/log/named/security.log
+  - name: config_file
+    file: /var/log/named/config.log
+  - name: resolver_file
+    file: /var/log/named/resolver.log
+  - name: xfer-in_file
+    file: /var/log/named/xfer-in.log
+  - name: xfer-out_file
+    file: /var/log/named/xfer-out.log
+  - name: notify_file
+    file: /var/log/named/notify.log
+  - name: client_file
+    file: /var/log/named/client.log
+  - name: unmatched_file
+    file: /var/log/named/unmatched.log
+  - name: queries_file
+    file: /var/log/named/queries.log
+  - name: network_file
+    file: /var/log/named/network.log
+  - name: update_file
+    file: /var/log/named/update.log
+  - name: dispatch_file
+    file: /var/log/named/dispatch.log
+  - name: dnssec_file
+    file: /var/log/named/dnssec.log
+  - name: lame-servers_file
+    file: /var/log/named/lame-servers.log
+my_named_slave_logging_categories:
+  - name: default
+    channels: [default_file]
+  - name: general
+    channels: [general_file]
+  - name: database
+    channels: [database_file]
+  - name: security
+    channels: [security_file]
+  - name: config
+    channels: [config_file]
+  - name: resolver
+    channels: [resolver_file]
+  - name: xfer-in
+    channels: [xfer-in_file]
+  - name: xfer-out
+    channels: [xfer-out_file]
+  - name: notify
+    channels: [notify_file]
+  - name: client
+    channels: [client_file]
+  - name: unmatched
+    channels: [unmatched_file]
+  - name: queries
+    channels: [queries_file]
+  - name: network
+    channels: [network_file]
+  - name: update
+    channels: [update_file]
+  - name: dispatch
+    channels: [dispatch_file]
+  - name: dnssec
+    channels: [dnssec_file]
+  - name: lame-servers
+    channels: [lame-servers_file]

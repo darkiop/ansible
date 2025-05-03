@@ -1,0 +1,45 @@
+# {{ ansible_managed }}
+
+{% if my_named_slave_mode == 'master' %}
+{% if my_named_slave_querys_allowed_by is defined %}
+acl querys-allowed-by {
+{% for ab in my_named_slave_querys_allowed_by %}
+  {{ ab }};
+{% endfor %}
+};
+{% endif %}
+
+{% if my_named_slave_transfers_allowed_by is defined %}
+acl transfers-allowed-by {
+{% for ta in my_named_slave_transfers_allowed_by %}
+  {{ ta }};
+{% endfor %}
+};
+{% endif %}
+
+options {
+
+  directory "{{ my_named_slave_base_dir }}";
+
+  allow-query { querys-allowed-by; };
+{% else %}
+  allow-query { any; };
+  allow-transfer { none; };
+{% endif %}
+
+  forwarders {
+{% for ns in my_named_slave_forwarders %}
+    {{ ns }};
+{% endfor %}
+  };
+
+  dnssec-validation auto;
+
+  listen-on { any; };
+{% if my_named_slave_enable_ipv6 %}
+  listen-on-v6 { any; };
+{% else %}
+  listen-on-v6 { none; };
+{% endif %}
+
+};

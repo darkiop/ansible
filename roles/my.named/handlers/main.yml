@@ -1,0 +1,8 @@
+- name: Restart bind
+  ansible.builtin.service:
+    name: named
+    state: restarted
+
+- name: Reboot machine
+  ansible.builtin.reboot:
+    reboot_timeout: 300
