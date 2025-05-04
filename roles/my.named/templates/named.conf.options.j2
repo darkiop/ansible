@@ -1,6 +1,5 @@
 # {{ ansible_managed }}
 
-{% if my_named_mode == 'master' %}
 {% if my_named_querys_allowed_by is defined %}
 acl querys-allowed-by {
 {% for ab in my_named_querys_allowed_by %}
@@ -21,9 +20,10 @@ options {
 
   directory "{{ my_named_base_dir }}";
 
+{% if my_named_mode == 'master' %}
   allow-query { querys-allowed-by; };
 {% else %}
-  allow-query { any; };
+  allow-query { querys-allowed-by; };
   allow-transfer { none; };
 {% endif %}
 
