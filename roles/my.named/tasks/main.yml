@@ -85,11 +85,13 @@
     group: root
     mode: "0644"
 
-- name: Call handler to restart bind service
-  ansible.builtin.meta: flush_handlers
+- name: Restart bind
+  ansible.builtin.service:
+    name: named
+    state: restarted
 
 # ── Post‑deployment health check ────────────────────────────────────────
-- name: Wait until TCP 53 answers (run from control node)
+- name: Wait until TCP 53 answers
   ansible.builtin.wait_for:
     host: "{{ ansible_host | default(inventory_hostname) }}"
     port: 53
