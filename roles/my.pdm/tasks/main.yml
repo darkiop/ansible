@@ -1,0 +1,24 @@
+- name: "Role: my.pdm - Check if the system is Debian-based"
+  ansible.builtin.fail:
+    msg: This playbook only supports Debian-based systems
+  when: ansible_distribution != 'Debian'
+
+- name: "Role: my.pdm - enable pdm gpg key"
+  ansible.builtin.apt_key:
+    url: https://enterprise.proxmox.com/debian/proxmox-release-{{ ansible_distribution_release }}.gpg
+    keyring: /etc/apt/trusted.gpg.d/proxmox-release-{{ ansible_distribution_release }}.gpg
+
+- name: "Role: my.pdm - enable pbs-no-subscription repo"
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.proxmox.com/debian/pdm {{ ansible_distribution_release }} pdm-test"
+    filename: pdm
+    state: present
+    update_cache: true
+
+- name: "Role: my.pdm - install Proxmox-Datacenter-Manager"
+  ansible.builtin.apt:
+    name: proxmox-datacenter-manager
+
+- name: "Role: my.pdm - install Proxmox-Datacenter-Manager Ui"
+  ansible.builtin.apt:
+    name: proxmox-datacenter-manager-ui
