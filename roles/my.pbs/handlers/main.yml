@@ -1,0 +1,6 @@
+- name: Restart proxmox-backup-proxy.service
+  become: true
+  become_user: root
+  ansible.builtin.service:
+    name: proxmox-backup-proxy.service
+    state: restarted

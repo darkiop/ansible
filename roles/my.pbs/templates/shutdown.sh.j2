@@ -1,0 +1,34 @@
+#!/bin/bash
+
+debug=true
+sshuser=darkiop
+storageid=nfs-freya
+pvehost=pve01
+
+fancy_echo() {
+	local color="$1"
+	shift
+	local fmt="$1"
+	shift
+	local color_code
+	case "${color}" in
+		red) color_code="1;31" ;;
+		green) color_code="1;32" ;;
+		blue) color_code="1;34" ;;
+		orange) color_code="1;33" ;;
+		*) color_code="0" ;;
+	esac
+	printf "\n\033[${color_code}m$fmt\033[0m\n" "$@"
+}
+
+function debug_msg() {
+	local color="$1"
+	local msg="$2"
+	if [[ "${debug}" = "true" ]]; then fancy_echo "${color}" "${msg}"; fi
+}
+
+debug_msg blue "----- shutdown.sh for ${storageid} -----"
+
+debug_msg orange "deactivate storage:${storageid}@${pvehost}"
+
+ssh "${sshuser}"@"${pvehost}" bash -c "'sudo /usr/sbin/pvesm set --disable true ${storageid}'"

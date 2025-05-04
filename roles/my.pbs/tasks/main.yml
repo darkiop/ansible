@@ -1,0 +1,44 @@
+- name: Show ansible_distribution
+  ansible.builtin.debug:
+    var: ansible_distribution
+
+- name: "Role: my.pbs - Check if the system is Debian-based"
+  ansible.builtin.fail:
+    msg: This playbook only supports Debian-based systems
+  when: ansible_distribution != "Debian"
+
+- name: "Role: my.pbs - enable PBS gpg key"
+  ansible.builtin.apt_key:
+    url: https://enterprise.proxmox.com/debian/proxmox-release-{{ ansible_distribution_release }}.gpg
+    keyring: /etc/apt/trusted.gpg.d/proxmox-release-{{ ansible_distribution_release }}.gpg
+
+- name: "Role: my.pbs - disable pbs-enterprise repo"
+  ansible.builtin.file:
+    path: /etc/apt/sources.list.d/pbs-enterprise.list
+    state: absent
+
+- name: "Role: my.pbs - enable pbs-no-subscription repo"
+  ansible.builtin.apt_repository:
+    repo: "deb http://download.proxmox.com/debian/pbs {{ ansible_distribution_release }} pbs-no-subscription"
+    filename: pbs
+    state: present
+    update_cache: true
+
+- name: "Role: my.pbs - install Proxmox-Backup-Server"
+  ansible.builtin.apt:
+    name: proxmox-backup-server
+
+- name: "Role: my.pbs - Remove no-subscription popup"
+  become: true
+  become_user: root
+  ansible.builtin.command:
+    cmd: 'sed -Ezi.bak "s/(function\(orig_cmd\) \{)/\1\n\torig_cmd\(\);\n\treturn;/g" /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js'
+  args:
+    creates: /usr/share/javascript/proxmox-widget-toolkit/proxmoxlib.js.bak
+  register: output
+  changed_when: false
+  notify: Restart proxmox-backup-proxy.service
+  tags: remove-no-subscription-popup
+
+# TODO add boot-up.sh.j2 and shutdown.sh.j2
+# TODO add and configure datastore
