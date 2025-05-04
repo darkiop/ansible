@@ -1,24 +1,25 @@
 # ── General ──────────────────────────────────────────────────────────────
-my_named_slave_mode: [] # master or slave
-my_named_slave_base_dir: /var/cache/bind
-my_named_slave_log_dir: /var/log/named
-my_named_slave_bind_user: bind
-my_named_slave_enable_ipv6: true
+my_named_mode: [] # master or slave
+my_named_base_dir: /var/cache/bind
+my_named_log_dir: /var/log/named
+my_named_bind_user: bind
+my_named_enable_ipv6: true
 
 # ── Settings ─────────────────────────────────────────────────────────────
-my_named_slave_master_ip: []
-my_named_slave_zones: [] # e.g. ['example.com', '1.168.192.in-addr.arpa']
-my_named_slave_forwarders:
+my_named_master_ip: []
+my_named_zones: [] # e.g. ['example.com', '1.168.192.in-addr.arpa']
+my_named_forwarders:
   - 1.1.1.1
   - 8.8.8.8
-my_named_slave_querys_allowed_by: []
-my_named_slave_transfers_allowed_by: []
+my_named_querys_allowed_by: []
+my_named_transfers_allowed_by: []
 
-my_named_slave_resolv_conf_search_domain: "{{ local_fqdn }}"
-my_named_slave_resolv_conf_nameservers:
+my_named_resolv_conf_search_domain: "{{ local_fqdn }}"
+my_named_resolv_conf_nameservers:
   - 192.168.1.53
 
-my_named_slave_logging_channels:
+# ── Logging ──────────────────────────────────────────────────────────────
+my_named_logging_channels:
   - name: default_file
     file: /var/log/named/default.log
   - name: general_file
@@ -53,7 +54,7 @@ my_named_slave_logging_channels:
     file: /var/log/named/dnssec.log
   - name: lame-servers_file
     file: /var/log/named/lame-servers.log
-my_named_slave_logging_categories:
+my_named_logging_categories:
   - name: default
     channels: [default_file]
   - name: general

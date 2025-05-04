@@ -30,18 +30,18 @@
 
 - name: Ensure zone directory exists and is writable by bind
   ansible.builtin.file:
-    path: "{{ my_named_slave_base_dir }}"
+    path: "{{ my_named_base_dir }}"
     state: directory
-    owner: "{{ my_named_slave_bind_user }}"
-    group: "{{ my_named_slave_bind_user }}"
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
     mode: "0750"
 
 - name: Ensure log directory exists and is writable by bind
   ansible.builtin.file:
-    path: "{{ my_named_slave_log_dir }}"
+    path: "{{ my_named_log_dir }}"
     state: directory
-    owner: "{{ my_named_slave_bind_user }}"
-    group: "{{ my_named_slave_bind_user }}"
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
     mode: "0750"
 
 # ── Configuration files (templates) ─────────────────────────────────────
