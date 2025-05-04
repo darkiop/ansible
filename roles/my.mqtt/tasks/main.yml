@@ -23,18 +23,9 @@
 
 - name: "Role: my.mqtt - run mosquitto_passwd command and capture the output"
   become: true
-  ansible.builtin.shell: mosquitto_passwd -b /etc/mosquitto/passwd "{{ my_mqtt_username }}" "{{ my_mqtt_password }}"
+  ansible.builtin.command: mosquitto_passwd -b /etc/mosquitto/passwd "{{ my_mqtt_username }}" "{{ my_mqtt_password }}"
   register: passwd_output
   changed_when: false
-
-# - name: "Role: my.mqtt - read the content of /etc/mosquitto/passwd"
-#  become: true
-#  shell: cat /etc/mosquitto/passwd
-#  register: passwd_content
-
-# - name: "Role: my.mqtt - display the content of /etc/mosquitto/passwd"
-#  debug:
-#    msg: "Content of /etc/mosquitto/passwd:\n{{ passwd_content.stdout }}"
 
 - name: "Role: my.mqtt - create custom config file for mosquitto"
   ansible.builtin.copy:
@@ -47,11 +38,3 @@
       allow_anonymous false
       password_file /etc/mosquitto/passwd
   notify: Restart mosquitto
-# - name: "Role: my.mqtt - read the content of /etc/mosquitto/conf.d/custom.conf"
-#  become: true
-#  shell: cat /etc/mosquitto/conf.d/custom.conf
-#  register: custom_conf_content
-
-# - name: "Role: my.mqtt - display the content of /etc/mosquitto/passwd"
-#  debug:
-#    msg: "Content of /etc/mosquitto/conf.d/custom.conf:\n{{ custom_conf_content.stdout }}"
