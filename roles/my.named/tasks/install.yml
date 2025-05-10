@@ -1,0 +1,24 @@
+- name: Install named/bind9
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - bind9
+      - bind9-utils
+      - python3-dnspython
+    state: present
+
+- name: Ensure zone directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_base_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0750"
+
+- name: Ensure log directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_log_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0750"

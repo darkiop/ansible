@@ -1,11 +1,12 @@
 # {{ ansible_managed }}
 
 {% if my_named_mode == 'master' %}
+
 {% for zone in my_named_zones %}
 zone "{{ zone }}" {
   type master;
   file "{{ my_named_base_dir }}/db.{{ zone }}";
-  allow-transfer { transfers-allowed-by };
+  allow-transfer { transfers-allowed-by; };
   allow-query { any; };
   notify yes;
 };
@@ -21,4 +22,5 @@ zone "{{ zone }}" {
   masters { {{ my_named_master_ip }}; };
 };
 {% endfor %}
+
 {% endif %}

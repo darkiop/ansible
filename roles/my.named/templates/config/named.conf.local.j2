@@ -1,0 +1,59 @@
+# {{ ansible_managed }}
+
+{# ---------------------------------------------------------------------------
+   MODE: MASTER
+   ------------------------------------------------------------------------ #}
+{% if my_named_mode == 'master' %}
+
+{# -- forward master zones -------------------------------------------------- #}
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+    type master;
+    file "{{ my_named_base_dir }}/db.{{ zone }}";
+    allow-transfer { transfers-allowed-by; };
+    allow-query    { any; };
+    notify yes;
+};
+{% endfor %}
+
+{# -- reverse master zones (auto‑generated) --------------------------------- #}
+{% if my_named_reverse_zone_definitions is defined %}
+{% for rv in my_named_reverse_zone_definitions %}
+zone "{{ rv.content.name }}" {
+    type master;
+    file "{{ my_named_base_dir }}/db.{{ rv.content.name }}";
+    allow-transfer { transfers-allowed-by; };
+    allow-query    { any; };
+    notify yes;
+};
+{% endfor %}
+{% endif %}
+
+{# ---------------------------------------------------------------------------
+   MODE: SLAVE
+   ------------------------------------------------------------------------ #}
+{% else %}
+
+{# -- forward slave zones --------------------------------------------------- #}
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+    type slave;
+    file "{{ my_named_base_dir }}/db.{{ zone }}";
+    allow-query { any; };
+    masters { {{ my_named_master_ip }}; };
+};
+{% endfor %}
+
+{# -- reverse slave zones (only if provided) -------------------------------- #}
+{% if my_named_reverse_zone_definitions is defined %}
+{% for rv in my_named_reverse_zone_definitions %}
+zone "{{ rv.content.name }}" {
+    type slave;
+    file "{{ my_named_base_dir }}/db.{{ rv.content.name }}";
+    allow-query { any; };
+    masters { {{ my_named_master_ip }}; };
+};
+{% endfor %}
+{% endif %}
+
+{% endif %}

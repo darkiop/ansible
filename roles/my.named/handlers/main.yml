@@ -1,3 +1,8 @@
+- name: Reload bind
+  ansible.builtin.command: rndc reload
+  notify: Restart bind # fall back to full restart if rndc fails
+  ignore_errors: true
+
 - name: Restart bind
   ansible.builtin.service:
     name: named

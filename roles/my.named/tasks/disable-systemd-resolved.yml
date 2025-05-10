@@ -1,0 +1,17 @@
+- name: Stop & disable systemd‑resolved if installed and running
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+  when:
+    - "'systemd-resolved.service' in ansible_facts.services"
+    - ansible_facts.services['systemd-resolved.service'].state   == 'running'
+      or ansible_facts.services['systemd-resolved.service'].status == 'enabled'
+
+- name: Deploy /etc/resolv.conf
+  ansible.builtin.template:
+    src: config/resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
