@@ -1,0 +1,24 @@
+$TTL {{ item.ttl | default(86400) }}
+@   IN  SOA {{ item.soa.mname }} {{ item.soa.rname }} (
+        {{ item.soa.serial }}   ; serial
+        {{ item.soa.refresh  | default('1h') }}
+        {{ item.soa.retry    | default('15m') }}
+        {{ item.soa.expire   | default('1w') }}
+        {{ item.soa.minimum  | default('1h') }}
+)
+
+{# NS records inherited from the forward zone #}
+{% for ns in item.ns %}
+@   IN  NS  {{ ns }}
+{% endfor %}
+
+{# PTR records for this /24 prefix #}
+{% for rec in all_reverse_records
+     if rec.value is match('^' ~ item.prefix ~ '\\.\\d+$') %}
+{% set last_octet = rec.value.split('.')[-1] %}
+{% if rec.name == '@' %}
+{{ last_octet }}    IN  PTR {{ rec.zone }}.
+{% else %}
+{{ last_octet }}    IN  PTR {{ rec.name }}.{{ rec.zone }}.
+{% endif %}
+{% endfor %}

@@ -14,6 +14,10 @@
     group: bind
     mode: "0644"
 
+- name: Debug reverse definitions
+  ansible.builtin.debug:
+    var: my_named_reverse_zone_definitions
+
 - name: Deploy named.conf.local
   ansible.builtin.template:
     src: config/named.conf.local.j2
@@ -21,6 +25,10 @@
     owner: bind
     group: bind
     mode: "0644"
+
+- name: Debug reverse definitions
+  ansible.builtin.debug:
+    var: my_named_reverse_zone_definitions
 
 - name: Deploy named.conf.default‑zones
   ansible.builtin.template:

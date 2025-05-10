@@ -9,28 +9,28 @@
   include_tasks: install.yml
 
 # ── Configuration files (templates) ──────────────────────────────────────────────────────────────
-- name: Include named.conf creation tasks
-  include_tasks: named.conf.yml
-
 - name: Include forward zonefile tasks when enabled
   include_tasks: zonefiles-forward.yml
   when: my_named_mode == 'master'
 
-# TODO
-# - name: Include reverse zonefile tasks when enabled
-#   include_tasks: zonefiles-reverse.yml
-#   when: my_named_mode == 'master'
+- name: Include reverse zonefile tasks when enabled
+  include_tasks: zonefiles-reverse.yml
+  when: my_named_mode == 'master'
 
-- name: Restart bind
-  ansible.builtin.service:
-    name: named
-    state: restarted
+- name: Include named.conf creation tasks
+  include_tasks: named.conf.yml
+  notify: Reload bind
 
-# ── Post‑deployment health check ─────────────────────────────────────────────────────────────────
+# - name: Restart bind
+#   ansible.builtin.service:
+#     name: named
+#     state: restarted
+
+# ── Post-deployment health check ──────────────────────────────────────────────────────────────────
 - name: Wait until TCP 53 answers
   ansible.builtin.wait_for:
     host: "{{ ansible_host | default(inventory_hostname) }}"
     port: 53
     state: started
     timeout: 60
-  delegate_to: localhost # executes on ansible controller
+  delegate_to: localhost

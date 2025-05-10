@@ -1,0 +1,83 @@
+---
+# roles/my.named/tasks/zonefiles-reverse.yml
+
+- name: Ensure zone directory exists
+  ansible.builtin.file:
+    path: "{{ my_named_zone_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0755"
+
+- name: Collect all A records with source zone
+  ansible.builtin.set_fact:
+    all_reverse_records: >-
+      {{
+        (all_reverse_records | default([]))
+        + (item.records
+            | selectattr('type','equalto','A')
+            | map('combine', {'zone': item.name})
+            | list
+          )
+      }}
+  loop: "{{ my_named_zone_definitions }}"
+
+- name: Debug all_reverse_records
+  ansible.builtin.debug:
+    var: all_reverse_records
+
+- name: Derive unique /24 network prefixes
+  ansible.builtin.set_fact:
+    reverse_networks: "{{ all_reverse_records
+      | map(attribute='value')
+      | map('regex_replace','^(\\d+\\.\\d+\\.\\d+)\\.\\d+$','\\1')
+      | unique
+      | list }}"
+
+- name: Debug reverse_networks
+  ansible.builtin.debug:
+    var: reverse_networks
+
+- name: Build reverse zone definitions with SOA/NS from first matching forward zone
+  ansible.builtin.set_fact:
+    my_named_reverse_zone_definitions: >-
+      {%- set defs = [] -%}
+      {%- for prefix in reverse_networks -%}
+        {%- set recs = all_reverse_records
+             | selectattr('value','match','^' ~ prefix ~ '\\.\\d+$')
+             | list -%}
+        {%- if recs -%}
+          {%- set first = recs[0] -%}
+          {%- set fwd = (my_named_zone_definitions
+                     | selectattr('name','equalto', first.zone)
+                     | list)[0] -%}
+          {%- set _ = defs.append({
+                 'name':   prefix ~ '.in-addr.arpa',
+                 'prefix': prefix,
+                 'soa':    fwd.soa,
+                 'ns':     fwd.ns
+               }) -%}
+        {%- endif -%}
+      {%- endfor -%}
+      {{ defs }}
+
+- name: Debug reverse definitions
+  ansible.builtin.debug:
+    var: my_named_reverse_zone_definitions
+
+- name: Render reverse zone files
+  ansible.builtin.template:
+    src: zones/reverse.j2
+    dest: "{{ my_named_zone_dir }}/db.{{ item.name }}"
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0640"
+  loop: "{{ my_named_reverse_zone_definitions }}"
+  notify: Reload bind
+
+- name: Validate reverse zones with named-checkzone
+  ansible.builtin.command: >
+    named-checkzone {{ item.name }} {{ my_named_zone_dir }}/db.{{ item.name }}
+  loop: "{{ my_named_reverse_zone_definitions }}"
+  register: reverse_zonecheck
+  changed_when: false

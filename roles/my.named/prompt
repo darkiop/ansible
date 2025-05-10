@@ -1,0 +1,525 @@
+<role>
+You are my ansible expert.
+</role>
+
+<context>
+this is a named role which creates an named with forward roles. i want to have an zonefiles-reverse.yml file which creates automatically the reverse zone files. the template for the reverse zones should ne defined in zones/reverse.j2
+</context>
+
+<instructions>
+- You will always output each file in TOTAL if it has been modified and you always use the ENTIRE function.
+- Unchanged files do not need to be printed.
+- Make sure that you do not lose any feature of the given code!
+- You will first ask questions to make sure you have understood everything correctly and ask for further information, such as documentation, files, ... if necessary.
+- In the second call you will output the files.
+</instructions>
+
+<detailed_requirement_description>
+1. The code should be well documented, structured, commented, formatted and readable.
+</detailed_requirement_description>
+
+
+
+### attched files start, each line with a starting // defines a new file / filename ###
+
+// roles/my.named/defaults/main.yml
+
+# ── General ──────────────────────────────────────────────────────────────
+my_named_mode: [] # master or slave
+my_named_base_dir: /var/cache/bind
+my_named_log_dir: /var/log/named
+my_named_zone_dir: "{{ my_named_base_dir }}"
+my_named_bind_user: bind
+my_named_enable_ipv6: true
+
+# ── Settings ─────────────────────────────────────────────────────────────
+my_named_master_ip: [] # need to be setup on slaves
+my_named_zones: [] # e.g. ['example.com', '1.168.192.in-addr.arpa']
+my_named_forwarders:
+  - 1.1.1.1
+  - 8.8.8.8
+my_named_querys_allowed_by: []
+my_named_transfers_allowed_by: []
+my_named_resolv_conf_search_domain: "{{ local_fqdn }}"
+my_named_resolv_conf_nameservers:
+  - 192.168.1.53
+
+# ── Logging ──────────────────────────────────────────────────────────────
+my_named_logging_channels:
+  - name: default_file
+    file: "{{ my_named_log_dir }}/default.log"
+  - name: general_file
+    file: /var/log/named/general.log
+  - name: database_file
+    file: /var/log/named/database.log
+  - name: security_file
+    file: /var/log/named/security.log
+  - name: config_file
+    file: /var/log/named/config.log
+  - name: resolver_file
+    file: /var/log/named/resolver.log
+  - name: xfer-in_file
+    file: /var/log/named/xfer-in.log
+  - name: xfer-out_file
+    file: /var/log/named/xfer-out.log
+  - name: notify_file
+    file: /var/log/named/notify.log
+  - name: client_file
+    file: /var/log/named/client.log
+  - name: unmatched_file
+    file: /var/log/named/unmatched.log
+  - name: queries_file
+    file: /var/log/named/queries.log
+  - name: network_file
+    file: /var/log/named/network.log
+  - name: update_file
+    file: /var/log/named/update.log
+  - name: dispatch_file
+    file: /var/log/named/dispatch.log
+  - name: dnssec_file
+    file: /var/log/named/dnssec.log
+  - name: lame-servers_file
+    file: /var/log/named/lame-servers.log
+
+my_named_logging_categories:
+  - name: default
+    channels: [default_file]
+  - name: general
+    channels: [general_file]
+  - name: database
+    channels: [database_file]
+  - name: security
+    channels: [security_file]
+  - name: config
+    channels: [config_file]
+  - name: resolver
+    channels: [resolver_file]
+  - name: xfer-in
+    channels: [xfer-in_file]
+  - name: xfer-out
+    channels: [xfer-out_file]
+  - name: notify
+    channels: [notify_file]
+  - name: client
+    channels: [client_file]
+  - name: unmatched
+    channels: [unmatched_file]
+  - name: queries
+    channels: [queries_file]
+  - name: network
+    channels: [network_file]
+  - name: update
+    channels: [update_file]
+  - name: dispatch
+    channels: [dispatch_file]
+  - name: dnssec
+    channels: [dnssec_file]
+  - name: lame-servers
+    channels: [lame-servers_file]
+
+
+// roles/my.named/handlers/main.yml
+
+- name: Reload bind
+  ansible.builtin.command: rndc reload
+  notify: Restart bind # fall back to full restart if rndc fails
+  ignore_errors: true
+
+- name: Restart bind
+  ansible.builtin.service:
+    name: named
+    state: restarted
+
+- name: Reboot machine
+  ansible.builtin.reboot:
+    reboot_timeout: 300
+
+
+// roles/my.named/tasks/disable-systemd-resolved.yml
+
+- name: Stop & disable systemd‑resolved if installed and running
+  ansible.builtin.systemd:
+    name: systemd-resolved
+    state: stopped
+    enabled: false
+  when:
+    - "'systemd-resolved.service' in ansible_facts.services"
+    - ansible_facts.services['systemd-resolved.service'].state   == 'running'
+      or ansible_facts.services['systemd-resolved.service'].status == 'enabled'
+
+- name: Deploy /etc/resolv.conf
+  ansible.builtin.template:
+    src: config/resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: "0644"
+
+
+// roles/my.named/tasks/install.yml
+
+- name: Install named/bind9
+  ansible.builtin.apt:
+    update_cache: true
+    pkg:
+      - bind9
+      - bind9-utils
+      - python3-dnspython
+    state: present
+
+- name: Ensure zone directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_base_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0750"
+
+- name: Ensure log directory exists and is writable by bind
+  ansible.builtin.file:
+    path: "{{ my_named_log_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0750"
+
+
+// roles/my.named/tasks/main.yml
+
+- name: Collect service facts
+  ansible.builtin.service_facts:
+
+# ── Installation ─────────────────────────────────────────────────────────────────────────────────
+- name: Include disable-systemd-resolved.yml tasks
+  include_tasks: disable-systemd-resolved.yml
+
+- name: Include install.yml tasks
+  include_tasks: install.yml
+
+# ── Configuration files (templates) ──────────────────────────────────────────────────────────────
+- name: Include named.conf creation tasks
+  include_tasks: named.conf.yml
+
+- name: Include forward zonefile tasks when enabled
+  include_tasks: zonefiles-forward.yml
+  when: my_named_mode == 'master'
+
+# TODO
+# - name: Include reverse zonefile tasks when enabled
+#   include_tasks: zonefiles-reverse.yml
+#   when: my_named_mode == 'master'
+
+- name: Restart bind
+  ansible.builtin.service:
+    name: named
+    state: restarted
+
+# ── Post‑deployment health check ─────────────────────────────────────────────────────────────────
+- name: Wait until TCP 53 answers
+  ansible.builtin.wait_for:
+    host: "{{ ansible_host | default(inventory_hostname) }}"
+    port: 53
+    state: started
+    timeout: 60
+  delegate_to: localhost # executes on ansible controller
+
+
+// roles/my.named/tasks/named.conf.yml
+
+- name: Deploy named.conf (master include file)
+  ansible.builtin.template:
+    src: config/named.conf.j2
+    dest: /etc/bind/named.conf
+    owner: bind
+    group: bind
+    mode: "0644"
+
+- name: Deploy named.conf.options
+  ansible.builtin.template:
+    src: config/named.conf.options.j2
+    dest: /etc/bind/named.conf.options
+    owner: bind
+    group: bind
+    mode: "0644"
+
+- name: Deploy named.conf.local
+  ansible.builtin.template:
+    src: config/named.conf.local.j2
+    dest: /etc/bind/named.conf.local
+    owner: bind
+    group: bind
+    mode: "0644"
+
+- name: Deploy named.conf.default‑zones
+  ansible.builtin.template:
+    src: config/named.conf.default-zones.j2
+    dest: /etc/bind/named.conf.default-zones
+    owner: bind
+    group: bind
+    mode: "0644"
+
+- name: Deploy named.conf.logging
+  ansible.builtin.template:
+    src: config/named.conf.logging.j2
+    dest: /etc/bind/named.conf.logging
+    owner: bind
+    group: bind
+    mode: "0644"
+
+
+// roles/my.named/tasks/zonefiles-forward.yml
+
+- name: Ensure zone directory exists
+  ansible.builtin.file:
+    path: "{{ my_named_zone_dir }}"
+    state: directory
+    owner: bind
+    group: bind
+    mode: "0755"
+
+- name: Render forward zone files
+  ansible.builtin.template:
+    src: zones/forward.j2
+    dest: "{{ my_named_zone_dir }}/{{ item.file }}"
+    owner: bind
+    group: bind
+    mode: "0640"
+  loop: "{{ my_named_zone_definitions }}"
+  notify: Reload bind
+
+- name: Validate forward zones with named‑checkzone
+  ansible.builtin.command: >
+    named-checkzone {{ item.name }} {{ my_named_zone_dir }}/{{ item.file }}
+  loop: "{{ my_named_zone_definitions }}"
+  register: zonecheck
+  changed_when: false
+
+
+// roles/my.named/templates/config/named.conf.default-zones.j2
+
+# {{ ansible_managed }}
+
+// prime the server with knowledge of the root servers
+zone "." {
+  type hint;
+  file "/usr/share/dns/root.hints";
+};
+
+// be authoritative for the localhost forward and reverse zones, and for
+// broadcast zones as per RFC 1912
+zone "localhost" { type master; file "/etc/bind/db.local"; };
+zone "127.in-addr.arpa" { type master; file "/etc/bind/db.127"; };
+zone "0.in-addr.arpa" { type master; file "/etc/bind/db.0"; };
+zone "255.in-addr.arpa" { type master; file "/etc/bind/db.255"; };
+
+
+// roles/my.named/templates/config/named.conf.j2
+
+# {{ ansible_managed }}
+
+include "/etc/bind/named.conf.options";
+include "/etc/bind/named.conf.local";
+include "/etc/bind/named.conf.default-zones";
+include "/etc/bind/named.conf.logging";
+
+
+// roles/my.named/templates/config/named.conf.local copy.j2
+
+# {{ ansible_managed }}
+
+{% if my_named_mode == 'master' %}
+
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+  type master;
+  file "{{ my_named_base_dir }}/db.{{ zone }}";
+  allow-transfer { transfers-allowed-by; };
+  allow-query { any; };
+  notify yes;
+};
+{% endfor %}
+
+{% else %}
+
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+  type slave;
+  file "{{ my_named_base_dir }}/db.{{ zone }}";
+  allow-query { any; };
+  masters { {{ my_named_master_ip }}; };
+};
+{% endfor %}
+
+{% endif %}
+
+// roles/my.named/templates/config/named.conf.local.j2
+
+# {{ ansible_managed }}
+
+{# ---------------------------------------------------------------------------
+   MODE: MASTER
+   ------------------------------------------------------------------------ #}
+{% if my_named_mode == 'master' %}
+
+{# -- forward master zones -------------------------------------------------- #}
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+    type master;
+    file "{{ my_named_base_dir }}/db.{{ zone }}";
+    allow-transfer { transfers-allowed-by; };
+    allow-query    { any; };
+    notify yes;
+};
+{% endfor %}
+
+{# -- reverse master zones (auto‑generated) --------------------------------- #}
+{% if my_named_reverse_zone_definitions is defined %}
+{% for rv in my_named_reverse_zone_definitions %}
+zone "{{ rv.content.name }}" {
+    type master;
+    file "{{ my_named_base_dir }}/db.{{ rv.content.name }}";
+    allow-transfer { transfers-allowed-by; };
+    allow-query    { any; };
+    notify yes;
+};
+{% endfor %}
+{% endif %}
+
+{# ---------------------------------------------------------------------------
+   MODE: SLAVE
+   ------------------------------------------------------------------------ #}
+{% else %}
+
+{# -- forward slave zones --------------------------------------------------- #}
+{% for zone in my_named_zones %}
+zone "{{ zone }}" {
+    type slave;
+    file "{{ my_named_base_dir }}/db.{{ zone }}";
+    allow-query { any; };
+    masters { {{ my_named_master_ip }}; };
+};
+{% endfor %}
+
+{# -- reverse slave zones (only if provided) -------------------------------- #}
+{% if my_named_reverse_zone_definitions is defined %}
+{% for rv in my_named_reverse_zone_definitions %}
+zone "{{ rv.content.name }}" {
+    type slave;
+    file "{{ my_named_base_dir }}/db.{{ rv.content.name }}";
+    allow-query { any; };
+    masters { {{ my_named_master_ip }}; };
+};
+{% endfor %}
+{% endif %}
+
+{% endif %}
+
+
+// roles/my.named/templates/config/named.conf.logging.j2
+
+# {{ ansible_managed }}
+
+logging {
+{% for channel in my_named_logging_channels %}
+  channel {{ channel.name }} {
+    file "{{ channel.file }}" versions 3 size 5m;
+    severity dynamic;
+    print-time yes;
+  };
+{% endfor %}
+
+{% for category in my_named_logging_categories %}
+  category {{ category.name }} { {{ category.channels | join("; ") }}; };
+{% endfor %}
+};
+
+
+// roles/my.named/templates/config/named.conf.options.j2
+
+# {{ ansible_managed }}
+
+{% if my_named_querys_allowed_by is defined %}
+acl querys-allowed-by {
+{% for ab in my_named_querys_allowed_by %}
+  {{ ab }};
+{% endfor %}
+};
+{% endif %}
+
+{% if my_named_transfers_allowed_by is defined %}
+acl transfers-allowed-by {
+{% for ta in my_named_transfers_allowed_by %}
+  {{ ta }};
+{% endfor %}
+};
+{% endif %}
+
+options {
+
+  directory "{{ my_named_base_dir }}";
+
+{% if my_named_mode == 'master' %}
+  allow-query { querys-allowed-by; };
+{% else %}
+  allow-query { querys-allowed-by; };
+  allow-transfer { none; };
+{% endif %}
+
+  forwarders {
+{% for ns in my_named_forwarders %}
+    {{ ns }};
+{% endfor %}
+  };
+
+  dnssec-validation auto;
+
+  listen-on { any; };
+{% if my_named_enable_ipv6 %}
+  listen-on-v6 { any; };
+{% else %}
+  listen-on-v6 { none; };
+{% endif %}
+
+};
+
+
+// roles/my.named/templates/config/resolv.conf.j2
+
+# {{ ansible_managed }}
+
+{% if my_named_resolv_conf_search_domain is defined %}
+search {{ my_named_resolv_conf_search_domain }}
+{% endif %}
+{% if my_named_resolv_conf_nameservers is defined %}
+{% for ns in my_named_resolv_conf_nameservers %}
+nameserver {{ ns }}
+{% endfor %}
+{% endif %}
+
+# Additional options (optional)
+options rotate
+options timeout:2
+
+// roles/my.named/templates/zones/forward.j2
+
+$TTL {{ item.ttl | default(86400) }}
+{% set serial = item.soa.serial %}
+@   IN  SOA {{ item.soa.mname }} {{ item.soa.rname }} (
+        {{ serial }}   ; serial
+        {{ item.soa.refresh | default('1h') }}
+        {{ item.soa.retry   | default('15m') }}
+        {{ item.soa.expire  | default('1w') }}
+        {{ item.soa.minimum | default('1h') }}
+)
+
+{# NS records #}
+{% for ns in item.ns %}
+@   IN  NS  {{ ns }}
+{% endfor %}
+
+{# Resource records #}
+{% for rr in item.records %}
+{{ rr.name }}   IN  {{ rr.type }}{% if rr.type == 'MX' %} {{ rr.preference }}{% endif %} {{ rr.value }}
+{% endfor %}
+
+### attched files end ###
