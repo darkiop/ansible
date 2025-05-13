@@ -23,37 +23,37 @@ my_named_logging_channels:
   - name: default_file
     file: "{{ my_named_log_dir }}/default.log"
   - name: general_file
-    file: /var/log/named/general.log
+    file: "{{ my_named_log_dir }}/general.log"
   - name: database_file
-    file: /var/log/named/database.log
+    file: "{{ my_named_log_dir }}/database.log"
   - name: security_file
-    file: /var/log/named/security.log
+    file: "{{ my_named_log_dir }}/security.log"
   - name: config_file
-    file: /var/log/named/config.log
+    file: "{{ my_named_log_dir }}/config.log"
   - name: resolver_file
-    file: /var/log/named/resolver.log
+    file: "{{ my_named_log_dir }}/resolver.log"
   - name: xfer-in_file
-    file: /var/log/named/xfer-in.log
+    file: "{{ my_named_log_dir }}/xfer-in.log"
   - name: xfer-out_file
-    file: /var/log/named/xfer-out.log
+    file: "{{ my_named_log_dir }}/xfer-out.log"
   - name: notify_file
-    file: /var/log/named/notify.log
+    file: "{{ my_named_log_dir }}/notify.log"
   - name: client_file
-    file: /var/log/named/client.log
+    file: "{{ my_named_log_dir }}/client.log"
   - name: unmatched_file
-    file: /var/log/named/unmatched.log
+    file: "{{ my_named_log_dir }}/unmatched.log"
   - name: queries_file
-    file: /var/log/named/queries.log
+    file: "{{ my_named_log_dir }}/queries.log"
   - name: network_file
-    file: /var/log/named/network.log
+    file: "{{ my_named_log_dir }}/network.log"
   - name: update_file
-    file: /var/log/named/update.log
+    file: "{{ my_named_log_dir }}/update.log"
   - name: dispatch_file
-    file: /var/log/named/dispatch.log
+    file: "{{ my_named_log_dir }}/dispatch.log"
   - name: dnssec_file
-    file: /var/log/named/dnssec.log
+    file: "{{ my_named_log_dir }}/dnssec.log"
   - name: lame-servers_file
-    file: /var/log/named/lame-servers.log
+    file: "{{ my_named_log_dir }}/lame-servers.log"
 
 my_named_logging_categories:
   - name: default
@@ -90,3 +90,24 @@ my_named_logging_categories:
     channels: [dnssec_file]
   - name: lame-servers
     channels: [lame-servers_file]
+
+# define this host_vars or group_vars
+# my_named_zones:
+#   - example.local
+
+# my_named_zone_definitions:
+#   - name: example.local
+#     file: db.example.local
+#     ttl: 86400
+#     soa:
+#       mname: ns1.example.local.
+#       rname: hostmaster.example.local.
+#       serial: 2025051005
+#     ns:
+#       - ns1.example.local.
+#       - ns2.example.local.
+#     records:
+#       - { name: "@", type: A, value: 192.168.2.10 }
+#       - { name: ns1, type: A, value: 192.168.2.11 }
+#       - { name: ns2, type: A, value: 192.168.2.12 }
+#       - { name: test, type: A, value: 192.168.2.13 }

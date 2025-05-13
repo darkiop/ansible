@@ -3,30 +3,28 @@
 
 # ── Installation ─────────────────────────────────────────────────────────────────────────────────
 - name: Include disable-systemd-resolved.yml tasks
-  include_tasks: disable-systemd-resolved.yml
+  ansible.builtin.include_tasks: disable-systemd-resolved.yml
 
 - name: Include install.yml tasks
-  include_tasks: install.yml
+  ansible.builtin.include_tasks: install.yml
 
 # ── Configuration files (templates) ──────────────────────────────────────────────────────────────
 - name: Include forward zonefile tasks when enabled
-  include_tasks: zonefiles-forward.yml
+  ansible.builtin.include_tasks: zonefiles-forward.yml
   when: my_named_mode == 'master'
 
+# the zonefiles-reverse.yml includes also the definition of the variable my_named_reverse_zone_definitions
+# which is used in named.conf.j2
 - name: Include reverse zonefile tasks when enabled
-  include_tasks: zonefiles-reverse.yml
-  when: my_named_mode == 'master'
+  ansible.builtin.include_tasks: zonefiles-reverse.yml
 
 - name: Include named.conf creation tasks
-  include_tasks: named.conf.yml
-  notify: Reload bind
+  ansible.builtin.include_tasks: named.conf.yml
 
-# - name: Restart bind
-#   ansible.builtin.service:
-#     name: named
-#     state: restarted
+# ── Post-deployment health check ─────────────────────────────────────────────────────────────────
+- name: Reboot all hosts
+  ansible.builtin.reboot:
 
-# ── Post-deployment health check ──────────────────────────────────────────────────────────────────
 - name: Wait until TCP 53 answers
   ansible.builtin.wait_for:
     host: "{{ ansible_host | default(inventory_hostname) }}"

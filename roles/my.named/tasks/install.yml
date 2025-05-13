@@ -22,3 +22,11 @@
     owner: "{{ my_named_bind_user }}"
     group: "{{ my_named_bind_user }}"
     mode: "0750"
+
+- name: Ensure zone directory exists
+  ansible.builtin.file:
+    path: "{{ my_named_zone_dir }}"
+    state: directory
+    owner: "{{ my_named_bind_user }}"
+    group: "{{ my_named_bind_user }}"
+    mode: "0755"

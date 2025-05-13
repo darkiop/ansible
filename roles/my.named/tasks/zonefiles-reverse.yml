@@ -1,14 +1,3 @@
----
-# roles/my.named/tasks/zonefiles-reverse.yml
-
-- name: Ensure zone directory exists
-  ansible.builtin.file:
-    path: "{{ my_named_zone_dir }}"
-    state: directory
-    owner: "{{ my_named_bind_user }}"
-    group: "{{ my_named_bind_user }}"
-    mode: "0755"
-
 - name: Collect all A records with source zone
   ansible.builtin.set_fact:
     all_reverse_records: >-
@@ -30,7 +19,7 @@
   ansible.builtin.set_fact:
     reverse_networks: "{{ all_reverse_records
       | map(attribute='value')
-      | map('regex_replace','^(\\d+\\.\\d+\\.\\d+)\\.\\d+$','\\1')
+      | map('regex_replace', '^(\\d+\\.\\d+\\.\\d+)\\.\\d+$', '\\1')
       | unique
       | list }}"
 
@@ -51,8 +40,10 @@
           {%- set fwd = (my_named_zone_definitions
                      | selectattr('name','equalto', first.zone)
                      | list)[0] -%}
+          {# Reverse the three‐octet prefix for the zone name #}
+          {%- set rev_octets = prefix.split('.') | reverse | join('.') -%}
           {%- set _ = defs.append({
-                 'name':   prefix ~ '.in-addr.arpa',
+                 'name':   rev_octets ~ '.in-addr.arpa',
                  'prefix': prefix,
                  'soa':    fwd.soa,
                  'ns':     fwd.ns
@@ -61,7 +52,7 @@
       {%- endfor -%}
       {{ defs }}
 
-- name: Debug reverse definitions
+- name: Debug my_named_reverse_zone_definitions
   ansible.builtin.debug:
     var: my_named_reverse_zone_definitions
 
@@ -73,7 +64,7 @@
     group: "{{ my_named_bind_user }}"
     mode: "0640"
   loop: "{{ my_named_reverse_zone_definitions }}"
-  notify: Reload bind
+  when: my_named_mode == 'master'
 
 - name: Validate reverse zones with named-checkzone
   ansible.builtin.command: >
@@ -81,3 +72,4 @@
   loop: "{{ my_named_reverse_zone_definitions }}"
   register: reverse_zonecheck
   changed_when: false
+  when: my_named_mode == 'master'
