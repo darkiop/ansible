@@ -1,0 +1,12 @@
+---
+- name: Test role
+
+  hosts:
+    - test-host-debian
+
+  become: true
+  become_user: root
+
+  roles:
+    - ../roles/my.proxmox-lxc
+ 
