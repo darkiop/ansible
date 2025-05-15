@@ -29,19 +29,19 @@
   roles:
     # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
     - role: my.essentials
-      tags: essentials
+      tags: role-essentials
 
     # SSH-Keys
     - role: my.ssh
-      tags: ssh
+      tags: role-ssh
 
     ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
     - role: chriswayg.msmtp-mailer
-      tags: msmtp
+      tags: role-msmtp
 
     ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
     - role: geerlingguy.ntp
-      tags: ntp
+      tags: role-ntp
 
   tasks:
     # TODO move to my.essentials
@@ -69,11 +69,11 @@
   roles:
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: my.samba
-      tags: samba
+      tags: role-samba
 
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
     - role: my.proxmox
-      tags: proxmox
+      tags: role-proxmox
 
     ## SMART (https://github.com/stuvusIT/smartd)
     - role: stuvusit.smartd
@@ -81,7 +81,7 @@
         /dev/nvme0n1:
           temperature_report_info: 55
           temperature_report_crit: 70
-      tags: smartd
+      tags: role-smartd
 
   tasks:
     # TODO move to my.essentials
@@ -112,11 +112,11 @@
   roles:
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: my.samba
-      tags: samba
+      tags: role-amba
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
-      tags: security
+      tags: role-security
 
 ## ADBLOCKER
 # ansible-playbook main.yml -l adblocker
@@ -128,7 +128,7 @@
 
   roles:
     - role: my.pihole
-      tags: pihole
+      tags: role-pihole
 
 ## VPN-GATEWAYS
 # ansible-playbook main.yml -l vpn_gw_ext
@@ -143,7 +143,7 @@
 
   roles:
     - role: my.pihole
-      tags: pihole
+      tags: role-pihole
 
     # TODO package docker-ce not available - maybe with Debian 12?
     # - role: my.docker
@@ -195,7 +195,9 @@
 
   roles:
     - role: my.macos
+      tags: role-macos
     - role: my.ssh
+      tags: role-ssh
 
 ####################################################
 # CLIENT SPECIFIC CONFIGURATIONS
@@ -214,7 +216,7 @@
   # TODO add role my.iobroker
   roles:
     - role: my.smartmeter
-      tags: smartmeter
+      tags: role-smartmeter
 
   tasks:
     # TODO move to my.essentials
@@ -270,7 +272,7 @@
 
     ## Pi-hole
     - role: my.pihole
-      tags: pihole
+      tags: role-pihole
 
 ## loki-new (Raspbian)
 # ansible-playbook main.yml -l loki-new
@@ -286,27 +288,27 @@
 
     ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
     - role: geerlingguy.security
-      tags: security
+      tags: role-security
 
     ## Pi-hole
     - role: my.pihole # TODO Port 53 in use by pihole and named
-      tags: pihole
+      tags: role-pihole
 
     ## SAMBA (https://github.com/bertvv/ansible-role-samba)
     - role: my.samba
-      tags: samba
+      tags: role-samba
 
     ## SMARTMETER
     - role: my.smartmeter
-      tags: smartmeter
+      tags: role-smartmeter
 
     ## SMARTMETER
-    - role: my.named-slave # TODO Port 53 in use by pihole and named
-      tags: named-slave
+    - role: my.named # TODO Port 53 in use by pihole and named
+      tags: role-named
 
     ## DOCKER (https://github.com/geerlingguy/ansible-role-docker)
     - role: my.docker
-      tags: docker
+      tags: role-docker
 
   tasks:
     - name: Disable Wifi
@@ -368,6 +370,7 @@
 
   roles:
     - role: my.pbs
+      tags: role-pbs
 
   tasks:
     - name: Mount odin:/pbs-pve and ensure it is present in /etc/fstab
@@ -401,6 +404,7 @@
 
   roles:
     - role: my.pbs
+      tags: role-pbs
 
   tasks:
     - name: Create Proxmox-Backup-Server datastore.cfg
@@ -421,7 +425,7 @@
 # ansible-playbook main.yml -l vpn-hetzner
 # TODO role: my.wireguard
 - name: Setup for VPN Gateway @ Hetzner
-  hosts: vpn_gw_hetzner
+  hosts: hetzner_cloud
 
   become: true
 
@@ -443,19 +447,19 @@
       tags: role-ssh
     - role: my.mqtt                       # Ubuntu: ✅
       tags: role-mqtt
-    - role: my.named-slave                # Ubuntu: ✅
-      tags: role-named-slave
+    - role: my.named                      # Ubuntu: ✅
+      tags: role-named
     - role: my.docker                     # Ubuntu: ✅
       tags: role-docker
     - role: my.pihole                     # Ubuntu: ✅ TODO Upgrade to pihole V6
       tags: role-pihole
-    - role: my.pbs                        # Ubuntu: ⚠️ Only for Debian based systems
+    - role: my.pbs                        # Ubuntu: ⚠️ Only for Debian systems
       tags: role-pbs
     - role: my.smartmeter                 # Ubuntu: ✅
       tags: role-smartmeter
     - role: my.samba                      # Ubuntu: ✅
       tags: role-samba
-    - role: my.pdm                        # Ubuntu: ⚠️ Only for Debian based systems
+    - role: my.pdm                        # Ubuntu: ⚠️ Only for Debian systems
       tags: role-pdm
 
 - name: Setup for Playbook tests (debian)
@@ -470,13 +474,13 @@
       tags: role-ssh
     - role: my.mqtt                       # Debian: ✅
       tags: role-mqtt
-    - role: my.named-slave                # Debian: ❌ TODO No Zone Transfer?
-      tags: role-named-slave
+    - role: my.named                      # Debian: ✅
+      tags: role-named
     - role: my.docker                     # Debian: ✅
       tags: role-docker
     - role: my.pihole                     # Debian: ✅ TODO Upgrade to pihole V6
       tags: role-pihole
-    - role: my.pbs                        # Debian: ⚠️ TODO Skipped?
+    - role: my.pbs                        # Debian: ✅
       tags: role-pbs
     - role: my.smartmeter                 # Debian: ✅
       tags: role-smartmeter
@@ -484,3 +488,5 @@
       tags: role-samba
     - role: my.pdm                        # Debian: ✅
       tags: role-pdm
+    - role: my.tailscale
+      tags: role-tailscale
