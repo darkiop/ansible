@@ -8,6 +8,7 @@
     - pve_lxc
     - pve_vm
     - vpn_gw_ext
+    - rpi
 
   become: true
   become_user: root
