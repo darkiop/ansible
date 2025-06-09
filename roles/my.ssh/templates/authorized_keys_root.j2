@@ -1,7 +1,7 @@
 # {{ ansible_managed }}
 
 {% if my_ssh_authorized_keys_root %}
-  {% for key in my_ssh_authorized_keys_root %}
-  {{ key }}
-  {% endfor %}
+{% for key in my_ssh_authorized_keys_root %}
+{{ key }}
+{% endfor %}
 {% endif %}

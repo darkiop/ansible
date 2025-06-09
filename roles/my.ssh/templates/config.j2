@@ -2,7 +2,8 @@
 
 {% for (host,config) in my_ssh_ssh_config.items() %}
 Host {{host}}
-  {% for (k,v) in config.items() %}
-  {{k}} {{v}}
-  {% endfor %}
+{% for (k,v) in config.items() %}
+{{k}} {{v}}
+{% endfor %}
+
 {% endfor %}
