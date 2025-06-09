@@ -3,10 +3,6 @@
 		{
 			"name": "github-darkiop-ansible",
 			"path": "/home/darkiop/github/darkiop/ansible"
-		},
-		{
-			"name": ".ansible",
-			"path": "/home/darkiop/.ansible"
 		}
 	],
 	"settings": {
@@ -29,7 +25,9 @@
 			"redhat.ansible",
 			"ikbengeenrobot.ansible-variable-lookup",
 			"gruntfuggly.todo-tree",
-			"redhat.vscode-yaml"
+			"redhat.vscode-yaml",
+			"alefragnani.bookmarks",
+			"edwinkofler.vscode-assorted-languages"
 		]
 	}
 }
