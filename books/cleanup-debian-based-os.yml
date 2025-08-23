@@ -12,6 +12,17 @@
   become_user: root
 
   tasks:
+
+    - name: Remove orphaned packages (config remnants)
+      ansible.builtin.command: apt purge '~c' -y
+      register: purge_config
+      changed_when: "'0 upgraded' not in purge_config.stdout"
+
+    - name: Remove obsolete packages
+      ansible.builtin.command: apt purge '~o' -y
+      register: purge_obsolete
+      changed_when: "'0 upgraded' not in purge_obsolete.stdout"
+
     - name: Register journalctl installation status
       ansible.builtin.command: which journalctl
       changed_when: false
