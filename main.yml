@@ -104,7 +104,7 @@
 ## PROXMOX: CT & VMs
 # ansible-playbook main.yml -l lxc, vm
 - name: Setup for Linux Containers and Virtual Machines
-  hosts: pve_lxc, pve_vm
+  hosts: pve_lxc, pve_vm, test_hosts
 
   become: true
   become_user: root
