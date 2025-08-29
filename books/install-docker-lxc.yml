@@ -106,6 +106,30 @@
       loop: "{{ docker_users }}"
       when: docker_users | length > 0
 
+    # --- Post-install test: validate Docker with hello-world ---
+    - name: Check if 'hello-world' image exists
+      ansible.builtin.command:
+        cmd: docker image inspect hello-world
+      register: docker_hello_image
+      changed_when: false
+      failed_when: false
+
+    - name: Pull 'hello-world' image if missing
+      ansible.builtin.command:
+        cmd: docker pull hello-world
+      when: docker_hello_image.rc != 0
+      changed_when: false
+
+    - name: Run Docker hello-world test
+      ansible.builtin.command:
+        cmd: docker run --rm hello-world
+      register: docker_hello_run
+      changed_when: false
+
+    - name: Show hello-world output (for logs)
+      ansible.builtin.debug:
+        msg: "{{ docker_hello_run.stdout | default('') | trim if docker_hello_run is defined else '' }}"
+
   handlers:
     - name: Restart Docker
       ansible.builtin.systemd:
