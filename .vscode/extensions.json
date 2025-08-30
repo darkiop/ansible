@@ -1,3 +1,6 @@
 {
-  "recommendations": []
+  "recommendations": [
+    "redhat.ansible",
+    "ikbengeenrobot.ansible-variable-lookup"
+  ]
 }
