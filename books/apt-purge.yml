@@ -8,6 +8,7 @@
     - pve_vm
     - vpn_gw_ext
     - rpi
+    - test_hosts
 
   become: true
   become_user: root

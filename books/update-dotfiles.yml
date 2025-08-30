@@ -7,12 +7,15 @@
     - pve_lxc
     - pve_vm
     - vpn_gw_ext
+    - rpi
+    - test_hosts
+
   become: true
   become_user: root
 
   tasks:
     # my_essentials_user_username
-    - name: "Playbook: dotfiles - clone the latest dotfiles repo to {{ my_essentials_user_username }}/dotfiles"
+    - name: "Playbook: dotfiles - clone the latest dotfiles repo to ~/dotfiles"
       become: true
       become_user: "{{ my_essentials_user_username }}"
       ansible.builtin.git:

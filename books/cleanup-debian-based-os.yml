@@ -7,6 +7,7 @@
     - pve_lxc
     - pve_vm
     - vpn_gw_ext
+    - test_hosts
 
   become: true
   become_user: root
