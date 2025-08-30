@@ -3,7 +3,7 @@
 
   hosts: all
   gather_facts: false
- 
+
   tasks:
     - name: Read /etc/os-release
       ansible.builtin.slurp:
