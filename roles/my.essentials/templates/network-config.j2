@@ -20,7 +20,9 @@ iface {{ my_essentials_network_interface_name }} inet static
 {% endif %}
 {% endif %}
 {% endif %}
+
 {% if ansible_facts['distribution'] == "Ubuntu" %}
+
 {% if my_essentials_network_mode == 'static' %}
 hostname
 clientid
@@ -31,6 +33,7 @@ option classless_static_routes
 option interface_mtu
 require dhcp_server_identifier
 slaac private
+
 interface eth0
 static ip_address={{ my_essentials_network_static_ip_1 }}
 static routers={{ my_essentials_network_gateway }}
@@ -45,5 +48,7 @@ static domain_name={{ my_essentials_network_domain_name }}
 static domain_search={{ my_essentials_network_domain_search }}
 static domain_name_servers={{ my_essentials_network_dns_1 }}
 {% endif %}
+
 {% endif %}
+
 {% endif %}
