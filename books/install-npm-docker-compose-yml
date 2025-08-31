@@ -1,0 +1,58 @@
+---
+- name: Deploy Nginx Proxy Manager via Docker Compose
+  hosts: temp      # <- Passe deine Host-/Gruppenbezeichnung an
+  become: true
+  gather_facts: false
+
+  collections:
+    - community.docker
+
+  vars:
+    # Zielverzeichnis für Compose-Projekt
+    project_dir: /opt/containers/npm
+
+    # Ports können bei Bedarf angepasst/überschrieben werden (-e beim Aufruf)
+    npm_http_port: 80
+    npm_https_port: 443
+    npm_admin_port: 81
+
+    # IPv6 auf Wunsch deaktivieren
+    disable_ipv6: false
+
+    # Besitzer/Gruppen-ID für Datenordner (z.B. 1000:1000 für deinen Standarduser)
+    data_uid: 0
+    data_gid: 0
+
+  tasks:
+    - name: Ensure project directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+        owner: "{{ data_uid }}"
+        group: "{{ data_gid }}"
+        mode: "0755"
+      loop:
+        - "{{ project_dir }}"
+        - "{{ project_dir }}/data"
+        - "{{ project_dir }}/letsencrypt"
+
+    - name: Drop docker-compose.yml from template
+      template:
+        src: ../templates/docker-compose.yml.j2
+        dest: "{{ project_dir }}/docker-compose.yml"
+        owner: root
+        group: root
+        mode: "0644"
+
+    - name: Pull & start NPM stack (docker compose up -d)
+      community.docker.docker_compose_v2:
+        project_src: "{{ project_dir }}"
+        state: present       # sorgt für up -d
+        recreate: auto       # nur bei Änderungen neu erstellen
+        remove_orphans: true # alte, nicht mehr definierte Services aufräumen
+        pull: always         # Images updaten
+      register: compose_result
+
+    - name: Show compose changes
+      debug:
+        var: compose_result
