@@ -1,8 +1,10 @@
 ---
 # books/install-docker-lxc.yml
 - name: Install Docker CE inside LXC
-  hosts: temp
+
+  hosts: all
   become: true
+
   vars:
     docker_storage_driver: overlay2 # Alternativ: "fuse-overlayfs" bei unprivilegiert
     docker_users: [] # z.B. ["deinuser"]
