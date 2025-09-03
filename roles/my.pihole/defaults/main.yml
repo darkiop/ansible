@@ -9,6 +9,7 @@ my_keepalived_priority: 255
 my_keepalived_virtual_ipv4:
 
 # Role: my.pihole
+my_pihole_setup_keepalived: true
 my_pihole_custom_list_use: false
 my_pihole_custom_list:
   - 192.168.1.30 odin.{{ local_fqdn }}

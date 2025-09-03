@@ -15,6 +15,9 @@ pihole_pihole_dns_1: "{{ vault_dhcpcd_static_routers }}#53"
 pihole_pihole_dns_2: ""
 pihole_update_enable: false
 
+# Role: my.pihole
+my_pihole_setup_keepalived: false
+
 # Role: my.essentials - apt install aditional_software task
 # TODO remove and use my.docker role?
 my_essentials_apt_aditional_packages:
