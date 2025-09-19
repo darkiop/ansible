@@ -1,21 +1,72 @@
-- name: "Role: my.essentials - apt-install.yml - install default software"
-  become: true
-  become_user: root
-  ansible.builtin.apt:
-    name: "{{ my_essentials_apt_default_packages }}"
-    state: present
-    update_cache: false
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  register: apt_output
-  ignore_errors: true
+- block:
+    # --- Variablen robust normalisieren (None / nicht definiert / falscher Typ absichern) ---
+    - name: "Normalize essentials package lists"
+      ansible.builtin.set_fact:
+        _essentials_default: >-
+          {{ (my_essentials_apt_default_packages
+              if (my_essentials_apt_default_packages is defined and my_essentials_apt_default_packages is sequence)
+              else []) | list }}
+        _essentials_additional: >-
+          {{ (my_essentials_apt_aditional_packages
+              if (my_essentials_apt_aditional_packages is defined and my_essentials_apt_aditional_packages is sequence)
+              else []) | list }}
 
-- name: "Role: my.essentials - apt-install.yml - install aditional software"
-  become: true
-  become_user: root
-  ansible.builtin.apt:
-    name: "{{ my_essentials_apt_aditional_packages }}"
-    state: present
-    update_cache: false
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'Ubuntu'
-  register: apt_output
-  ignore_errors: true
+    # === Default Packages ===
+    - name: "Role: my.essentials - apt-install.yml - install default software (per package)"
+      become: true
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+      loop: "{{ _essentials_default | flatten | select('string') | map('trim') | unique | list }}"
+      loop_control:
+        label: "{{ item }}"
+      when: _essentials_default | length > 0
+      register: apt_default
+      failed_when: >
+        (apt_default is failed) and
+        ('No package matching' not in (apt_default.msg | default(''))) and
+        ('Unable to locate package' not in (apt_default.msg | default('')))
+
+    - name: "Show default packages that were not found"
+      ansible.builtin.debug:
+        msg: "Not found (default): {{ missing_default | default([]) }}"
+      vars:
+        missing_default: >-
+          {{ (apt_default.results | default([]))
+             | selectattr('msg', 'defined')
+             | selectattr('msg', 'search', 'No package matching|Unable to locate package')
+             | map(attribute='item')
+             | list }}
+      when: apt_default is defined
+
+    # === Additional Packages ===
+    - name: "Role: my.essentials - apt-install.yml - install additional software (per package)"
+      become: true
+      ansible.builtin.apt:
+        name: "{{ item }}"
+        state: present
+        update_cache: false
+      loop: "{{ _essentials_additional | flatten | select('string') | map('trim') | unique | list }}"
+      loop_control:
+        label: "{{ item }}"
+      when: _essentials_additional | length > 0
+      register: apt_additional
+      failed_when: >
+        (apt_additional is failed) and
+        ('No package matching' not in (apt_additional.msg | default(''))) and
+        ('Unable to locate package' not in (apt_additional.msg | default('')))
+
+    - name: "Show additional packages that were not found"
+      ansible.builtin.debug:
+        msg: "Not found (additional): {{ missing_additional | default([]) }}"
+      vars:
+        missing_additional: >-
+          {{ (apt_additional.results | default([]))
+             | selectattr('msg', 'defined')
+             | selectattr('msg', 'search', 'No package matching|Unable to locate package')
+             | map(attribute='item')
+             | list }}
+      when: apt_additional is defined
+
+  when: ansible_distribution in ['Debian', 'Ubuntu']
