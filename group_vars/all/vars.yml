@@ -14,14 +14,12 @@ my_essentials_install_dysk: true
 my_essentials_install_vimrc: true
 
 # Role: my.essentials - apt install default_software task
-# TODO Split for Debian/Ubuntu
-# TODO remove commented / find correct package
 my_essentials_apt_default_packages:
+  - sudo
   - git
   - curl
   - vim
   - python3-pip
-  - sudo
   - build-essential
   - bash-completion
   - unattended-upgrades
@@ -33,18 +31,16 @@ my_essentials_apt_default_packages:
   - unzip
   - rsync
   - plocate
-  # - btop
-  # - dategrep # not available for debain
+  - btop
   - lsd
   - bat
-  # - fd-find
+  - fd-find
   - glances
   - powerline
   - html2text
   - lsof
   - procps
   - man
-  - neofetch
   - needrestart
   - tree
   - lshw
@@ -71,9 +67,11 @@ my_essentials_apt_default_packages:
   - mtr
   - fzf
   - sqlite3
+  - neofetch
+  - dategrep
 
 # Role: my.essentials - apt install aditional_software task
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
   # - name
 
 # Role: my.essentials - pip install

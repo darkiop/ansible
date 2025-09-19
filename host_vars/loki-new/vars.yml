@@ -17,7 +17,7 @@ my_essentials_install_dysk: false
 my_essentials_install_vimrc: false
 
 # Role: my.essentials - apt install aditional_software task
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
 #  -
 
 # Role: geerlingguy.security

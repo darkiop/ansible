@@ -10,7 +10,7 @@ my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 }}"
 my_essentials_network_dns_2: "{{ vault_my_essentials_network_dns_2 }}"
 
 # Role: my.essentials - apt install aditional_software task
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
   - ser2net
 
 # Role: geerlingguy.security

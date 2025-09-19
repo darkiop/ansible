@@ -2,7 +2,7 @@
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme, /usr/sbin/pvesm
 
 # Role: my.essentials - apt install aditional_software task
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
   # - name
 
 # Role: my.essentials - pip install
