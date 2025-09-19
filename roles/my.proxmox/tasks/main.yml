@@ -18,12 +18,24 @@
     - remove-no-subscription-popup
     - skip_ansible_lint
 
-- name: "Role: my.proxmox - setup wakeonlan interface"
-  ansible.builtin.command:
-    cmd: pvenode config set -wakeonlan {{ my_proxmox_wol_iface }}
-  changed_when: false
-  when: my_proxmox_wol_iface|length > 0
-  tags: wol-interface
+- block:
+    - name: "Role: my.proxmox - setup wakeonlan interface"
+    # läuft nur, wenn Guard (unten) erfüllt ist
+      ansible.builtin.command:
+        argv:
+          - pvenode
+          - config
+          - set
+          - -wakeonlan
+          - "{{ my_proxmox_wol_iface | trim }}"
+      changed_when: false
+      tags: wol-interface
+  when:
+    - my_proxmox_wol_iface is defined
+    - my_proxmox_wol_iface is not none
+    - my_proxmox_wol_iface | type_debug == 'str'
+    - (my_proxmox_wol_iface | trim | length) > 0
+    - my_proxmox_wol_iface | trim is match("^(?i)([0-9A-F]{2}:){5}[0-9A-F]{2}$")
 
 - name: "Role: my.proxmox - disable enterprise repo"
   ansible.builtin.apt_repository:
