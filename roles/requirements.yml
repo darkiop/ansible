@@ -20,10 +20,11 @@ roles:
   - name: sbaerlocher.snmp # https://galaxy.ansible.com/ui/standalone/roles/sbaerlocher/snmp/
   - name: r_pufky.pihole # https://galaxy.ansible.com/ui/standalone/roles/r_pufky/pihole/
   - name: githubixx.ansible_role_wireguard # https://galaxy.ansible.com/ui/standalone/roles/githubixx/ansible_role_wireguard/
-  - name: artis3n.tailscale # https://galaxy.ansible.com/ui/standalone/roles/artis3n/tailscale/
   - name: elliotweiser.osx-command-line-tools # needed for collection geerlingguy.mac
 
 collections:
   - name: community.docker # https://docs.ansible.com/ansible/latest/collections/community/docker/index.html
   - name: geerlingguy.mac # https://galaxy.ansible.com/ui/repo/published/geerlingguy/mac/
   - name: hifis.toolkit # https://galaxy.ansible.com/ui/repo/published/hifis/toolkit/
+  - name: artis3n.tailscale # https://galaxy.ansible.com/ui/repo/published/artis3n/tailscale/
+  - name: community.windows # https://galaxy.ansible.com/ui/repo/published/community/windows/
