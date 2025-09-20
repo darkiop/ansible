@@ -34,7 +34,7 @@ oh_my_tmux_conf="${dir}/modules/oh-my-tmux/.tmux.conf"
 tmux_conf_local="${dir}/config/tmux.conf.local"
 
 if [[ -f "${oh_my_tmux_conf}" ]]; then
-  ln -sf -- "${oh_my_tmux_conf}" "${HOME}/.tmux.conf"+
+  ln -sf -- "${oh_my_tmux_conf}" "${HOME}/.tmux.conf"
 else
   echo "Error: ${oh_my_tmux_conf} not found." >&2
 fi
