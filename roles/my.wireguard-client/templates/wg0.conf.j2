@@ -1,13 +1,13 @@
 # {{ ansible_managed }}
 
 [Interface]
-Address = {{ wg_address_ipv4 }}
-ListenPort = {{ wg_listen_port }}
-PrivateKey = {{ wg_private_key }}
-PostUp = iptables -A FORWARD -i {{ wg_interface }} -j ACCEPT; iptables -t nat -A POSTROUTING -o {{ wg_interface }} -j MASQUERADE
-PostDown = iptables -D FORWARD -i {{ wg_interface }} -j ACCEPT; iptables -t nat -D POSTROUTING -o {{ wg_interface }} -j MASQUERADE
+Address = {{ my_wireguard_client_wg_address_ipv4 }}
+ListenPort = {{ my_wireguard_client_wg_listen_port }}
+PrivateKey = {{ my_wireguard_client_wg_private_key }}
+PostUp = iptables -A FORWARD -i {{ my_wireguard_client_wg_interface }} -j ACCEPT; iptables -t nat -A POSTROUTING -o {{ my_wireguard_client_wg_interface }} -j MASQUERADE
+PostDown = iptables -D FORWARD -i {{ my_wireguard_client_wg_interface }} -j ACCEPT; iptables -t nat -D POSTROUTING -o {{ my_wireguard_client_wg_interface }} -j MASQUERADE
 
-{% for peer in wg_peers %}
+{% for peer in my_wireguard_client_wg_peers %}
 [Peer]
 # {{ peer.name }}
 PublicKey = {{ peer.public_key }}

@@ -1,11 +1,11 @@
-wg_interface: wg0
+my_wireguard_client_wg_interface: wg0
 lan_iface: eth0
 
-wg_listen_port: 51820
-wg_address_ipv4:
-wg_private_key:
+my_wireguard_client_wg_listen_port: 51820
+my_wireguard_client_wg_address_ipv4:
+my_wireguard_client_wg_private_key:
 
-wg_peers:
+my_wireguard_client_wg_peers:
   - name:
     public_key:
     preshared_key:

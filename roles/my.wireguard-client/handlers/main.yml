@@ -1,6 +1,6 @@
 - name: Restart wg-quick
   ansible.builtin.systemd:
-    name: "wg-quick@{{ wg_interface }}"
+    name: "wg-quick@{{ my_wireguard_client_wg_interface }}"
     state: restarted
     enabled: true
     daemon_reload: true

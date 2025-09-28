@@ -25,14 +25,14 @@
 - name: Render /etc/wireguard/*.conf
   ansible.builtin.template:
     src: wg0.conf.j2
-    dest: "/etc/wireguard/{{ wg_interface }}.conf"
+    dest: "/etc/wireguard/{{ my_wireguard_client_wg_interface }}.conf"
     owner: root
     group: root
     mode: "0600"
   notify: Restart wg-quick
 
-- name: Enable and start wg-quick@{{ wg_interface }}
+- name: Enable and start wg-quick@{{ my_wireguard_client_wg_interface }}
   ansible.builtin.systemd:
-    name: "wg-quick@{{ wg_interface }}"
+    name: "wg-quick@{{ my_wireguard_client_wg_interface }}"
     enabled: true
     state: started
