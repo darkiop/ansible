@@ -1,0 +1,38 @@
+- name: Ensure packages present (WireGuard + tools)
+  ansible.builtin.package:
+    name:
+      - wireguard
+      - wireguard-tools
+    state: present
+
+- name: Enable IPv4 forwarding
+  ansible.builtin.sysctl:
+    name: net.ipv4.ip_forward
+    value: "1"
+    state: present
+    sysctl_file: /etc/sysctl.d/99-wireguard.conf
+    reload: true
+
+# - name: Enable IPv6 forwarding (if IPv6 configured)
+#   ansible.builtin.sysctl:
+#     name: net.ipv6.conf.all.forwarding
+#     value: "1"
+#     state: present
+#     sysctl_file: /etc/sysctl.d/99-wireguard.conf
+#     reload: true
+#   when: wg_address_ipv6 | length > 0
+
+- name: Render /etc/wireguard/*.conf
+  ansible.builtin.template:
+    src: wg0.conf.j2
+    dest: "/etc/wireguard/{{ wg_interface }}.conf"
+    owner: root
+    group: root
+    mode: "0600"
+  notify: Restart wg-quick
+
+- name: Enable and start wg-quick@{{ wg_interface }}
+  ansible.builtin.systemd:
+    name: "wg-quick@{{ wg_interface }}"
+    enabled: true
+    state: started

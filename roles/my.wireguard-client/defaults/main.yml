@@ -1,0 +1,14 @@
+wg_interface: wg0
+lan_iface: eth0
+
+wg_listen_port: 51820
+wg_address_ipv4:
+wg_private_key:
+
+wg_peers:
+  - name:
+    public_key:
+    preshared_key:
+    allowed_ips:
+    endpoint:
+    persistent_keepalive: 25
