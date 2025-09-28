@@ -9,7 +9,8 @@
 		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
 		"editor.tabSize": 2,
 		"workbench.colorTheme": "Dark Bash",
-		"ansible.python.interpreterPath": "/bin/python3.12"
+		"ansible.python.interpreterPath": "/bin/python3.12",
+		"todo-tree.tree.scanMode": "workspace only"
 	},
 	"extensions": {
 		"recommendations": [
