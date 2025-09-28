@@ -12,7 +12,7 @@ my_essentials_install_vimrc: true
 # Install Software
 my_essentials_apt_upgrade: false
 my_essentials_apt_default_packages:
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
 my_essentials_pip_packages:
 
 # User Setup
@@ -27,7 +27,7 @@ my_essentials_user_email:
 my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password }}"
 
 # Network Configuration
-setup_network: false
+#setup_network: false
 my_essentials_network_mode: dhcp # static/dhcp - default = dhcp
 my_essentials_network_interface_name:
 my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 }}"

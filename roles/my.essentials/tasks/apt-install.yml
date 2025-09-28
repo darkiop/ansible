@@ -7,8 +7,8 @@
               if (my_essentials_apt_default_packages is defined and my_essentials_apt_default_packages is sequence)
               else []) | list }}
         _essentials_additional: >-
-          {{ (my_essentials_apt_aditional_packages
-              if (my_essentials_apt_aditional_packages is defined and my_essentials_apt_aditional_packages is sequence)
+          {{ (my_essentials_apt_additional_packages
+              if (my_essentials_apt_additional_packages is defined and my_essentials_apt_additional_packages is sequence)
               else []) | list }}
 
     # === Default Packages ===
