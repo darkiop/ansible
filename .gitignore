@@ -10,4 +10,6 @@ books/get-os-release-file-result.txt
 compare-1
 compare-2
 prompt
-prompt-gen.py/*
+"prompt-gen.py/"
+_*/
+.git
