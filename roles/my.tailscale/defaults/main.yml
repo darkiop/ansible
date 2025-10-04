@@ -1,22 +1,22 @@
 # REQUIRED: Tailscale auth key (e.g. TSKEY-xxxxxxxxxxxxxxxx)
-tailscale_auth_key: "{{ vault_tailscale_auth_key }}"
+my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key }}"
 
 # Accepts list OR comma-separated string
-tailscale_advertise_routes: ["10.4.0.0/24", "192.168.1.0/24"]
+my_tailscale_advertise_routes: ["10.4.0.0/24", "192.168.1.0/24"]
 
 # Offer this node as an exit node?
-tailscale_advertise_exit_node: true
+my_tailscale_advertise_exit_node: true
 
 # Additional flags for `tailscale up` (prefer list)
-tailscale_extra_flags: ["--accept-dns=false"]
+my_tailscale_extra_flags: ["--accept-dns=false"]
 
 # Re-apply robustness
-tailscale_restart_daemon_before_up: true
-tailscale_up_auto_reset_on_failure: true
+my_tailscale_restart_daemon_before_up: true
+my_tailscale_up_auto_reset_on_failure: true
 
 # Polling for online verification
-tailscale_wait_retries: 20
-tailscale_wait_delay_seconds: 3
+my_tailscale_wait_retries: 20
+my_tailscale_wait_delay_seconds: 3
 
 # Debug: print masked command
-tailscale_debug: false
+my_tailscale_debug: false

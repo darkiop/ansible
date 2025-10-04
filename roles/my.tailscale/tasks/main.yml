@@ -33,8 +33,8 @@
 - name: Fail if no auth key provided
   ansible.builtin.assert:
     that:
-      - (tailscale_auth_key | default('') | length) > 0
-    fail_msg: "tailscale_auth_key is required (key-only authentication enforced)."
+      - (my_tailscale_auth_key | default('') | length) > 0
+    fail_msg: "my_tailscale_auth_key is required (key-only authentication enforced)."
     success_msg: "Auth key present."
 
 # -------------------------
@@ -44,9 +44,9 @@
   ansible.builtin.set_fact:
     _ts_routes_raw_str: >-
       {{
-        (tailscale_advertise_routes | join(','))
-        if (tailscale_advertise_routes is sequence and (tailscale_advertise_routes is not string))
-        else (tailscale_advertise_routes | default('') | string)
+        (my_tailscale_advertise_routes | join(','))
+        if (my_tailscale_advertise_routes is sequence and (my_tailscale_advertise_routes is not string))
+        else (my_tailscale_advertise_routes | default('') | string)
       }}
 
 - name: Normalize routes into list
@@ -64,9 +64,9 @@
   ansible.builtin.set_fact:
     _ts_extra_flags_list: >-
       {{
-        (tailscale_extra_flags
-          if (tailscale_extra_flags is sequence and (tailscale_extra_flags is not string))
-          else (tailscale_extra_flags | default('') | string | split())
+        (my_tailscale_extra_flags
+          if (my_tailscale_extra_flags is sequence and (my_tailscale_extra_flags is not string))
+          else (my_tailscale_extra_flags | default('') | string | split())
         )
       }}
 
@@ -83,7 +83,7 @@
             | ternary(['--advertise-routes=' + (_ts_routes_list | join(','))], [])
           )
         + (
-            tailscale_advertise_exit_node
+            my_tailscale_advertise_exit_node
             | ternary(['--advertise-exit-node'], [])
           )
         + (
@@ -120,16 +120,16 @@
   ansible.builtin.systemd:
     name: tailscaled.service
     state: restarted
-  when: tailscale_restart_daemon_before_up | default(true) | bool
+  when: my_tailscale_restart_daemon_before_up | default(true) | bool
 
 # ---------------------------------------
 # Build exec/public commands (split across tasks!)
 # ---------------------------------------
 - name: Build command parts with auth key
   ansible.builtin.set_fact:
-    _ts_cmd_parts_exec: "{{ _ts_cmd_parts_base + ['--auth-key=' ~ tailscale_auth_key] }}"
+    _ts_cmd_parts_exec: "{{ _ts_cmd_parts_base + ['--auth-key=' ~ my_tailscale_auth_key] }}"
     _ts_cmd_parts_public: "{{ _ts_cmd_parts_base + ['--auth-key=********'] }}"
-    _ts_cmd_parts_exec_reset: "{{ _ts_cmd_parts_base + ['--auth-key=' ~ tailscale_auth_key, '--reset'] }}"
+    _ts_cmd_parts_exec_reset: "{{ _ts_cmd_parts_base + ['--auth-key=' ~ my_tailscale_auth_key, '--reset'] }}"
 
 - name: Join exec/public commands
   ansible.builtin.set_fact:
@@ -140,7 +140,7 @@
 - name: Show built tailscale up command (masked)
   ansible.builtin.debug:
     msg: "tailscale command: {{ _tailscale_up_cmd_public }}"
-  when: tailscale_debug | bool
+  when: my_tailscale_debug | bool
 
 # ---------------------------------------
 # First attempt: tailscale up
@@ -168,7 +168,7 @@
   no_log: true
   when:
     - _ts_up_try.rc | int != 0
-    - tailscale_up_auto_reset_on_failure | default(true) | bool
+    - my_tailscale_up_auto_reset_on_failure | default(true) | bool
 
 - name: Fail early if both 'up' attempts failed
   ansible.builtin.fail:
@@ -181,7 +181,7 @@
          ~ '; stdout="' ~ (_ts_up_try_reset.stdout | default('') | regex_replace('\\n',' ') | trim)
          ~ '"; stderr="' ~ (_ts_up_try_reset.stderr | default('') | regex_replace('\\n',' ') | trim) ~ '"'
          if (_ts_up_try_reset is defined) else '' }}
-      Check flags in tailscale_extra_flags / routes / exit-node and server policies.
+      Check flags in my_tailscale_extra_flags / routes / exit-node and server policies.
   when:
     - _ts_up_try.rc | int != 0
     - (_ts_up_try_reset is not defined or _ts_up_try_reset.rc | int != 0)
@@ -196,8 +196,8 @@
   until: >
     (_ts_status_json.stdout | default('')) != '' and
     ((_ts_status_json.stdout | from_json).Self.Online | default(false))
-  retries: "{{ tailscale_wait_retries | default(20) }}"
-  delay: "{{ tailscale_wait_delay_seconds | default(3) }}"
+  retries: "{{ my_tailscale_wait_retries | default(20) }}"
+  delay: "{{ my_tailscale_wait_delay_seconds | default(3) }}"
 
 - name: Assert node is online/authorized
   ansible.builtin.assert:
