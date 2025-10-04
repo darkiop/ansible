@@ -1,5 +1,4 @@
 my_wireguard_client_wg_interface: wg0
-lan_iface: eth0
 
 my_wireguard_client_wg_listen_port: 51820
 my_wireguard_client_wg_address_ipv4:

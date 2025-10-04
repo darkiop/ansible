@@ -1,0 +1,21 @@
+- name: Ensure forwarding sysctl config exists
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-forwarding.conf
+    owner: root
+    group: root
+    mode: '0644'
+    content: |
+      # Enable IPv4/IPv6 forwarding (managed by Ansible)
+      net.ipv4.ip_forward = 1
+      net.ipv6.conf.all.forwarding = 1
+  notify: Apply sysctl now
+
+- name: Apply IPv4 forwarding immediately
+  ansible.builtin.command: sysctl -w net.ipv4.ip_forward=1
+  changed_when: "'= 1' in (result.stdout | default(''))"
+  register: result
+
+- name: Apply IPv6 forwarding immediately
+  ansible.builtin.command: sysctl -w net.ipv6.conf.all.forwarding=1
+  changed_when: "'= 1' in (result6.stdout | default(''))"
+  register: result6

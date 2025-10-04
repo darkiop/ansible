@@ -1,26 +1,12 @@
+- name: "Import ip-forwarding.yml"
+  ansible.builtin.import_tasks: ip-forwarding.yml
+
 - name: Ensure packages present (WireGuard + tools)
   ansible.builtin.package:
     name:
       - wireguard
       - wireguard-tools
     state: present
-
-- name: Enable IPv4 forwarding
-  ansible.posix.sysctl:
-    name: net.ipv4.ip_forward
-    value: "1"
-    state: present
-    sysctl_file: /etc/sysctl.d/99-wireguard.conf
-    reload: true
-
-# - name: Enable IPv6 forwarding (if IPv6 configured)
-#   ansible.posix.sysctl:
-#     name: net.ipv6.conf.all.forwarding
-#     value: "1"
-#     state: present
-#     sysctl_file: /etc/sysctl.d/99-wireguard.conf
-#     reload: true
-#   when: wg_address_ipv6 | length > 0
 
 - name: Render /etc/wireguard/*.conf
   ansible.builtin.template:
