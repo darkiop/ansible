@@ -1,0 +1,30 @@
+- name: Docker Compose in Ansible
+
+  hosts: vpn_gw_ext_new
+
+  become: true
+
+  tasks:
+
+    - name: Check if docker is running
+      become: true
+      ansible.builtin.service:
+        name: docker
+        state: started
+        enabled: true
+
+    - name: Add SSH-User to docker-group
+      become: true
+      ansible.builtin.user:
+        name: "{{ ansible_user }}"
+        groups: docker
+        append: true
+
+    - name: Reset connection to update group assignment
+      ansible.builtin.meta: reset_connection
+
+    - name: Create and start docker compose services
+      community.docker.docker_compose_v2:
+        # path with compose file
+        project_src: /opt/docker/pihole
+        state: present
