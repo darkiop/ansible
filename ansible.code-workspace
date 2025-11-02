@@ -8,8 +8,8 @@
 	"settings": {
 		"ansible.ansibleLint.path": "/usr/bin/ansible-lint",
 		"editor.tabSize": 2,
-		"workbench.colorTheme": "Dark Bash",
-		"ansible.python.interpreterPath": "/bin/python3.12",
+		"workbench.colorTheme": "Obsidian Dark",
+		"ansible.python.interpreterPath": "/usr/bin/python3",
 		"todo-tree.tree.scanMode": "workspace only"
 	},
 	"extensions": {
