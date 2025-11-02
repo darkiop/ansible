@@ -42,3 +42,4 @@
 
 # TODO add boot-up.sh.j2 and shutdown.sh.j2
 # TODO add and configure datastore
+# TODO add copy of scripts to role
