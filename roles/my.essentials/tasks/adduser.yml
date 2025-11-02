@@ -11,7 +11,7 @@
     update_password: on_create
   with_items: "{{ my_essentials_user_username }}"
 
-- name: "Role: my.essentials - adduser.yml - ensure group '{{ my_essentials_user_username }}' exists"
+- name: "Role: my.essentials - adduser.yml - ensure group exists for '{{ my_essentials_user_username }}'"
   become: true
   ansible.builtin.group:
     name: "{{ item }}"
