@@ -1,35 +1,39 @@
----
-- name: Install homebrew
-  include_role:
-    name: geerlingguy.mac.homebrew
+# https://github.com/TalkingQuickly/ansible-osx-setup
 
-- name: Install mas
-  include_role:
-    name: geerlingguy.mac.mas
+# - name: Install homebrew
+#  include_role:
+#    name: geerlingguy.mac.homebrew
+
+# - name: Install mas
+#  include_role:
+#    name: geerlingguy.mac.mas
 
 - name: Get the path to ZSH
-  become: false
-  local_action: command which zsh
+  ansible.builtin.command: which zsh
   register: zsh_path
+  changed_when: false
 
-- name: "Ensure homebrew zsh is in allowed shells"
-  lineinfile:
+- name: Ensure homebrew zsh is in allowed shells
+  ansible.builtin.lineinfile:
     path: /etc/shells
     line: "{{ zsh_path.stdout }}"
   become: true
 
 - name: Install Oh My ZSH
-  shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+  ansible.builtin.shell: sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
   args:
     creates: "/Users/{{ lookup('env', 'USER') }}/.oh-my-zsh"
 
 - name: Set ZSH as the default shell
-  shell: chsh -s $(which zsh) {{ lookup('env', 'USER') }}
+  ansible.builtin.shell: chsh -s $(which zsh) {{ lookup('env', 'USER') }}
+  register: output
+  changed_when: false
   become: true
 
-- name: "Create a default ZSH configuration"
-  template:
+- name: Create a default ZSH configuration
+  ansible.builtin.template:
     src: templates/.zshrc.j2
     dest: /Users/{{ lookup('env', 'USER') }}/.zshrc
     owner: "{{ lookup('env', 'USER') }}"
-    force: yes
+    force: true
+    mode: "0755"

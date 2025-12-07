@@ -1,7 +1,6 @@
-# Role: my.macos
 brew_install_if_missing: true
 brew_upgrade_packages: true
-brew_default_packages: 
+brew_default_packages:
   - git
 brew_default_packages_cask:
   - iterm2
