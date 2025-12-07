@@ -1,0 +1,16 @@
+- name: Setup for MacOS
+
+  hosts:
+    - os_macos
+
+  environment:
+    # https://github.com/geerlingguy/ansible-collection-mac/issues/86
+    PATH: /opt/homebrew/bin:{{ lookup('ansible.builtin.env', 'PATH') }}
+
+  roles:
+
+    - role: my.macos
+      tags: role-macos
+
+    - role: my.ssh
+      tags: role-ssh

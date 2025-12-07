@@ -1,0 +1,42 @@
+- name: Essential Setup
+
+  hosts:
+    # GROUPS
+    - pve_hosts
+    - pve_hosts_test
+    - pve_lxc
+    - pve_vm
+    - vpn_gw_ext
+    - pve_test_hosts
+    # CLIENTS
+    - loki-new
+
+  become: true
+
+  roles:
+    # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
+    - role: my.essentials
+      tags: role-essentials
+
+    # SSH-Keys
+    - role: my.ssh
+      tags: role-ssh
+
+    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
+    - role: chriswayg.msmtp-mailer
+      tags: role-msmtp
+
+    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
+    - role: geerlingguy.ntp
+      tags: role-ntp
+
+  tasks:
+    # TODO move to my.essentials
+    - name: Create bin directory
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.file:
+        path: ~/bin
+        state: directory
+        mode: "0755"
+      tags: create-bin-dir

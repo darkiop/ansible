@@ -1,0 +1,20 @@
+- name: Setup for Synology NAS
+
+  hosts:
+    - nas
+
+  # become: true
+
+  # tags:
+
+  # roles:
+
+  tasks:
+    - name: Copy files
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
+        src: files/synology/
+        dest: /volume1/homes/{{ my_essentials_user_username }}/bin
+        mode: "0755"
+      tags: copy-files

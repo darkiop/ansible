@@ -10,206 +10,50 @@
 # --ask-pass
 # --ask-become-pass
 
-####################################################
 # GENERAL CONFIGURATIONS
-####################################################
-- name: General Setup
-  hosts:
-    # GROUPS
-    - pve_hosts
-    - pve_lxc
-    - pve_vm
-    - vpn_gw_ext
-    # CLIENTS
-    - loki-new
+# ────────────────────────────────────────────────────────── #
+- name: Import setup-essentials.yml
+  import_playbook: setup-essentials.yml
 
-  become: true
-  become_user: root
+# GROUP SPECIFIC SETUP
+# ────────────────────────────────────────────────────────── #
 
-  roles:
-    # ESSENTIALS (Update/Upgrade System, User, dotfiles, Tools, timezone, sudo)
-    - role: my.essentials
-      tags: role-essentials
+#    PROXMOX: HOSTS
+- name: Import setup-proxmox-hosts.yml
+  import_playbook: setup-proxmox-hosts.yml
 
-    # SSH-Keys
-    - role: my.ssh
-      tags: role-ssh
+#    PROXMOX: CT & VMs
+- name: Import setup-lxc-vm.yml
+  import_playbook: setup-lxc-vm.yml
 
-    ## MSMTP (https://github.com/chriswayg/ansible-msmtp-mailer)
-    - role: chriswayg.msmtp-mailer
-      tags: role-msmtp
+#    ADBLOCK
+- name: Import setup-adblock.yml
+  import_playbook: setup-adblock.yml
 
-    ## NTP (https://github.com/geerlingguy/ansible-role-ntp)
-    - role: geerlingguy.ntp
-      tags: role-ntp
+#    VPN-GATEWAYS
+- name: Import setup-vpn_gw_ext.yml
+  import_playbook: setup-vpn_gw_ext.yml
 
-  tasks:
-    # TODO move to my.essentials
-    - name: Create bin directory
-      become: true
-      become_user: "{{ my_essentials_user_username }}"
-      ansible.builtin.file:
-        path: ~/bin
-        state: directory
-        mode: "0755"
-      tags: copy-scripts
+- name: Import setup-vpn_gw_hetzner.yml
+  import_playbook: setup-vpn_gw_hetzner.yml
 
-####################################################
-# GROUP SPECIFIC CONFIGURATIONS
-####################################################
+#    NAS
+- name: Import setup-nas.yml
+  import_playbook: setup-nas.yml
 
-## PROXMOX: HOSTS
-# ansible-playbook main.yml -l pve_hosts
-- name: Setup for Proxmox Hosts
-  hosts: pve_hosts
+#    MacOS
+- name: Improt setup-macos.yml
+  import_playbook: setup-macos.yml
 
-  become: true
-  become_user: root
-
-  roles:
-    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
-    - role: my.samba
-      tags: role-samba
-
-    ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
-    - role: my.proxmox
-      tags: role-proxmox
-
-    ## SMART (https://github.com/stuvusIT/smartd)
-    - role: stuvusit.smartd
-      smartd_devices:
-        /dev/nvme0n1:
-          temperature_report_info: 55
-          temperature_report_crit: 70
-      tags: role-smartd
-
-  tasks:
-    # TODO move to my.essentials
-    - name: Check if source path exists
-      ansible.builtin.stat:
-        path: files/hosts/pve_hosts/
-      register: src_path_check
-
-    - name: Copy scripts if source path exists
-      become: true
-      become_user: "{{ my_essentials_user_username }}"
-      ansible.builtin.copy:
-        src: files/hosts/pve_hosts/
-        dest: ~/bin/
-        mode: "0755"
-      when: src_path_check.stat.exists
-      tags: copy-scripts
-
-
-## PROXMOX: CT & VMs
-# ansible-playbook main.yml -l lxc, vm
-- name: Setup for Linux Containers and Virtual Machines
-  hosts: pve_lxc, pve_vm, test_hosts
-
-  become: true
-  become_user: root
-
-  roles:
-    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
-    - role: my.samba
-      tags: role-amba
-
-    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
-    - role: geerlingguy.security
-      tags: role-security
-
-## ADBLOCKER
-# ansible-playbook main.yml -l adblocker
-- name: Setup for Adblock
-  hosts: adblock
-
-  become: true
-  become_user: root
-
-  roles:
-    - role: my.pihole
-      tags: role-pihole
-
-## VPN-GATEWAYS
-# ansible-playbook main.yml -l vpn_gw_ext
-- name: Setup for VPN Gateways (external)
-  hosts: vpn_gw_ext
-
-  # TODO add role my.docker
-  # TODO add role my.wireguard
-
-  become: true
-  become_user: root
-
-  roles:
-    - role: my.pihole
-      tags: role-pihole
-
-    # TODO package docker-ce not available - maybe with Debian 12?
-    # - role: my.docker
-    #  tags: docker
-
-  tasks:
-    # TODO use role my.essentials if ready
-    # Network configuration
-    - name: Setup static ip address configuration
-      become: true
-      ansible.builtin.template:
-        src: dhcpcd.conf-static-ip.j2
-        dest: /etc/dhcpcd.conf
-        owner: root
-        group: root
-        mode: "0644"
-      tags: setup-static-ip-address
-
-## NAS
-# ansible-playbook main.yml -l nas
-- name: Setup for Synology NAS
-  hosts: nas
-
-  # become: true
-  # become_user: root
-
-  # tags:
-
-  # roles:
-
-  tasks:
-    - name: Copy files
-      become: true
-      become_user: "{{ my_essentials_user_username }}"
-      ansible.builtin.copy:
-        src: files/hosts/odin/
-        dest: /volume1/homes/{{ my_essentials_user_username }}/bin
-        mode: "0755"
-      tags: copy-files
-
-## MACOS
-# ansible-playbook main.yml -l macos
-- name: Setup for MacOS
-  hosts: os_macos
-
-  environment:
-    # https://github.com/geerlingguy/ansible-collection-mac/issues/86
-    PATH: /opt/homebrew/bin:{{ lookup('ansible.builtin.env', 'PATH') }}
-
-  roles:
-    - role: my.macos
-      tags: role-macos
-    - role: my.ssh
-      tags: role-ssh
-
-####################################################
 # CLIENT SPECIFIC CONFIGURATIONS
-####################################################
+# ────────────────────────────────────────────────────────── #
 
-## pve-ct-iobroker (Ubuntu)
-# ansible-playbook main.yml -i pve-ct-iobroker
 - name: Setup for pve-ct-iobroker
-  hosts: pve-ct-iobroker
+
+  hosts:
+    - pve-ct-iobroker
 
   become: true
-  become_user: root
 
   tags: pve-ct-iobroker
 
@@ -260,13 +104,12 @@
         job: /home/darkiop/bin/rsync-backups.sh >/dev/null 2>&1
       tags: crontab, crontab-rsync-backups, rsync-backups
 
-## pve-ct-pihole (Ubuntu)
-# ansible-playbook main.yml -i pve-ct-pihole
 - name: Setup for pve-ct-pihole
-  hosts: pve-ct-pihole
+
+  hosts:
+    - pve-ct-pihole
 
   become: true
-  become_user: root
 
   roles:
 
@@ -274,39 +117,37 @@
     - role: my.pihole
       tags: role-pihole
 
-## loki-new (Raspbian)
-# ansible-playbook main.yml -l loki-new
 - name: Setup for loki-new
   hosts: loki-new
 
   become: true
-  become_user: root
 
   roles:
+
     # TODO add role my.named
     # TODO add role my.tailscale
 
-    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
+    ## https://github.com/geerlingguy/ansible-role-security
     - role: geerlingguy.security
       tags: role-security
 
-    ## Pi-hole
     - role: my.pihole # TODO Port 53 in use by pihole and named
       tags: role-pihole
 
-    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    ## (https://github.com/bertvv/ansible-role-samba)
     - role: my.samba
       tags: role-samba
 
-    ## SMARTMETER
     - role: my.smartmeter
       tags: role-smartmeter
 
-    ## SMARTMETER
-    - role: my.named # TODO Port 53 in use by pihole and named
-      tags: role-named
+    - role: my.tailscale
+      tags: role-tailscale
 
-    ## DOCKER (https://github.com/geerlingguy/ansible-role-docker)
+    # - role: my.named # TODO Port 53 in use by pihole and named
+    #   tags: role-named
+
+    ## https://github.com/geerlingguy/ansible-role-docker
     - role: my.docker
       tags: role-docker
 
@@ -363,10 +204,10 @@
         job: /home/darkiop/bin/backup_bind.sh >/dev/null 2>&1
       tags: crontab, crontab-bind-backup, bind-backup
 
-## pbs-odin
-# ansible-playbook main.yml -l pbs-odin
 - name: Setup for pbs-odin
-  hosts: pbs-odin
+
+  hosts:
+    - pbs-odin
 
   roles:
     - role: my.pbs
@@ -396,11 +237,10 @@
             path /mnt/pbs-odin
       tags: proxmox-backup-server-config
 
-## pbs-freya
-# ansible-playbook main.yml -l pbs-freya
-# TODO add copy of scripts to role
 - name: Setup for pbs-freya
-  hosts: pbs-freya
+
+  hosts:
+    - pbs-freya
 
   roles:
     - role: my.pbs
@@ -421,72 +261,69 @@
             prune-schedule daily
       tags: proxmox-backup-server-config
 
-## vpn-hetzner
-# ansible-playbook main.yml -l vpn-hetzner
-# TODO role: my.wireguard
-- name: Setup for VPN Gateway @ Hetzner
-  hosts: hetzner_cloud
+# TEST
+# ────────────────────────────────────────────────────────── #
 
-  become: true
+- name: Setup for Playbook tests (ubuntu-based)
 
-  roles:
-    - role: my.docker
-      tags: docker
-
-# TODO TEST ALL ROLES AND COMMIT CHANGES
-## Ansible Tests
-- name: Setup for Playbook tests (ubuntu)
   hosts:
     - test-host-ubuntu
-  become: true
-  become_user: root
-  roles:
-    - role: my.essentials                 # Ubuntu: ✅
-      tags: role-essentials
-    - role: my.ssh                        # Ubuntu: ✅
-      tags: role-ssh
-    - role: my.mqtt                       # Ubuntu: ✅
-      tags: role-mqtt
-    - role: my.named                      # Ubuntu: ✅
-      tags: role-named
-    - role: my.docker                     # Ubuntu: ✅
-      tags: role-docker
-    - role: my.pihole                     # Ubuntu: ✅ TODO Upgrade to pihole V6
-      tags: role-pihole
-    - role: my.pbs                        # Ubuntu: ⚠️ Only for Debian systems
-      tags: role-pbs
-    - role: my.smartmeter                 # Ubuntu: ✅
-      tags: role-smartmeter
-    - role: my.samba                      # Ubuntu: ✅
-      tags: role-samba
-    - role: my.pdm                        # Ubuntu: ⚠️ Only for Debian systems
-      tags: role-pdm
 
-- name: Setup for Playbook tests (debian)
+  become: true
+
+  roles:
+    - role: my.essentials                   # Ubuntu: ✅
+      tags: role-essentials
+    - role: my.ssh                          # Ubuntu: ✅
+      tags: role-ssh
+    - role: my.wireguard-client             # Ubuntu: ✅
+      tags: role-wireguard-client
+    - role: my.tailscale                    # Ubuntu: ✅
+      tags: role-tailscale
+    # - role: my.mqtt                       # Ubuntu: ✅
+    #   tags: role-mqtt
+    # - role: my.named                      # Ubuntu: ✅
+    #   tags: role-named
+    # - role: my.docker                     # Ubuntu: ✅
+    #   tags: role-docker
+    # - role: my.pihole                     # Ubuntu: ✅ TODO Upgrade to pihole V6
+    #   tags: role-pihole
+    # - role: my.pbs                        # Ubuntu: ⚠️ Only for Debian systems
+    #   tags: role-pbs
+    # - role: my.smartmeter                 # Ubuntu: ✅
+    #   tags: role-smartmeter
+    # - role: my.samba                      # Ubuntu: ✅
+    #   tags: role-samba
+    # - role: my.pdm                        # Ubuntu: ⚠️ Only for Debian systems
+    #   tags: role-pdm
+
+- name: Setup for Playbook tests (debian-bassed)
+
   hosts:
     - test-host-debian
+
   become: true
-  become_user: root
+
   roles:
     - role: my.essentials                 # Debain: ✅
       tags: role-essentials
     - role: my.ssh                        # Debian: ✅
       tags: role-ssh
-    - role: my.mqtt                       # Debian: ✅
-      tags: role-mqtt
-    - role: my.named                      # Debian: ✅
-      tags: role-named
-    - role: my.docker                     # Debian: ✅
-      tags: role-docker
+    # - role: my.mqtt                       # Debian: ✅
+    #   tags: role-mqtt
+    # - role: my.named                      # Debian: ✅
+    #   tags: role-named
+    # # - role: my.docker                     # Debian: ✅
+    #   tags: role-docker
     - role: my.pihole                     # Debian: ✅ TODO Upgrade to pihole V6
       tags: role-pihole
-    - role: my.pbs                        # Debian: ✅
-      tags: role-pbs
-    - role: my.smartmeter                 # Debian: ✅
-      tags: role-smartmeter
-    - role: my.samba                      # Debian: ✅
-      tags: role-samba
-    - role: my.pdm                        # Debian: ✅
-      tags: role-pdm
-    - role: my.tailscale
-      tags: role-tailscale
+    # - role: my.pbs                        # Debian: ✅
+    #   tags: role-pbs
+    # - role: my.smartmeter                 # Debian: ✅
+    #   tags: role-smartmeter
+    # - role: my.samba                      # Debian: ✅
+    #   tags: role-samba
+    # - role: my.pdm                        # Debian: ✅
+    #   tags: role-pdm
+    # - role: my.tailscale
+    #   tags: role-tailscale

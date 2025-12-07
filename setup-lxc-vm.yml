@@ -1,0 +1,17 @@
+- name: General Setup for LXC and VM
+
+  hosts:
+    - pve_lxc
+    - pve_vm
+    - pve_test_hosts
+
+  become: true
+
+  roles:
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    - role: my.samba
+      tags: role-samba
+
+    ## SECURITY (https://github.com/geerlingguy/ansible-role-security)
+    - role: geerlingguy.security
+      tags: role-security

@@ -1,0 +1,13 @@
+- name: Setup for VPN Gateway @ Hetzner
+  hosts: hetzner_cloud
+
+  become: true
+
+  roles:
+    - role: my.docker
+      tags: docker
+
+    - role: my.tailscale
+      tags: role-tailscale
+      
+      # TODO role: my.wireguard-server

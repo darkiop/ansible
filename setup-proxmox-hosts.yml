@@ -1,0 +1,53 @@
+- name: Setup for Proxmox Hosts
+
+  hosts:
+    - pve_hosts
+    - pve_hosts_test
+
+  become: true
+
+  pre_tasks:
+
+    - name: "Check if /dev/nvme0n1 exists"
+      ansible.builtin.stat:
+        path: /dev/nvme0n1
+      register: nvme0n1_stat
+
+  roles:
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    - role: my.samba
+      tags: role-samba
+
+    ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
+    - role: my.proxmox
+      tags: role-proxmox
+
+    ## SMART (https://github.com/stuvusIT/smartd)
+    - role: stuvusit.smartd
+      smartd_devices:
+        /dev/nvme0n1:
+          temperature_report_info: 55
+          temperature_report_crit: 70
+      when: nvme0n1_stat.stat.exists
+      tags: role-smartd
+
+    # TODO add storage
+    # TODO add network config
+
+  tasks:
+
+    # Copy Scripts
+    - name: Check if source path exists
+      ansible.builtin.stat:
+        path: files/hosts/pve_hosts/
+      register: src_path_check
+
+    - name: Copy scripts if source path exists
+      become: true
+      become_user: "{{ my_essentials_user_username }}"
+      ansible.builtin.copy:
+        src: files/hosts/pve_hosts/
+        dest: ~/bin/
+        mode: "0755"
+      when: src_path_check.stat.exists
+      tags: copy-scripts

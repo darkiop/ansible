@@ -1,0 +1,46 @@
+- name: Setup for VPN Gateways (external) - new
+
+  hosts:
+    - vpn_gw_ext
+
+  become: true
+
+  roles:
+
+    - role: my.docker
+      tags: role-docker
+
+    - role: my.samba
+      tags: role-samba
+
+    - role: my.wireguard-client
+      tags: role-wireguard-client
+
+    - role: my.tailscale
+      tags: role-tailscale
+
+  tasks:
+
+    # TODO use role my.essentials for network config
+
+    # Network configuration NetwokManager
+    - name: Configure static IP address (using Network Manager).
+      community.general.nmcli: # https://docs.ansible.com/ansible/latest/collections/community/general/nmcli_module.html
+        conn_name: Wired connection 1
+        ifname: eth0
+        type: ethernet
+        ip4: "{{ dhcpcd_static_ip_address }}"
+        gw4: "{{ dhcpcd_static_routers }}"
+        dns4: "{{ vault_dhcpcd_static_domain_name_servers }}"
+        dns4_search: "{{ dhcpcd_static_domain_search }}"
+        dns6_ignore_auto: false
+        state: present
+      notify: Restart NetworkManager
+      tags: network
+
+  handlers:
+
+    - name: Restart NetworkManager
+      ansible.builtin.service:
+        name: NetworkManager
+        state: restarted
