@@ -40,6 +40,12 @@
 # -------------------------
 # Normalize user variables
 # -------------------------
+
+- name: Normalize advertise routes when unset/None
+  ansible.builtin.set_fact:
+    my_tailscale_advertise_routes: []
+  when: my_tailscale_advertise_routes is not defined or my_tailscale_advertise_routes is none
+
 - name: Normalize routes into raw string
   ansible.builtin.set_fact:
     _ts_routes_raw_str: >-
