@@ -1,5 +1,0 @@
-ansible_host: 10.4.0.136
-ansible_user: darkiop
-ansible_password: "{{ vault_ansible_password }}"
-
-my_essentials_install_dysk: false
