@@ -15,14 +15,15 @@
 
 - name: "Role: my.essentials - check if host specific sudoers file exists"
   ansible.builtin.stat:
-    path: ../files/sudoers.d/{{ inventory_hostname }}
+    path: "{{ role_path }}/files/sudoers.d/{{ inventory_hostname }}"
   register: file
+  delegate_to: localhost
 
 - name: "Role: my.essentials - Copy host specifig sudoers.d file"
   become: true
   become_user: root
   ansible.builtin.copy:
-    src: ../files/sudoers.d/{{ inventory_hostname }}
+    src: "sudoers.d/{{ inventory_hostname }}"
     dest: /etc/sudoers.d/{{ inventory_hostname }}
     mode: "0644"
   when: file.stat.exists

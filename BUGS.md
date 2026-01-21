@@ -2,12 +2,12 @@ BUGS.md - Potentielle Bugs (Scan)
 
 Stand: erster Scan, ohne Ausfuehrungstests.
 
-| ID | Schweregrad | Kurzbeschreibung | Datei |
-|----|-------------|------------------|-------|
-| BUG-001 | Hoch | Host-spezifische sudoers-Datei wird nie gefunden/kopiert | roles/my.essentials/tasks/sudoers.yml |
-| BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml |
-| BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml |
-| BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml |
+| ID | Schweregrad | Kurzbeschreibung | Datei | Status |
+|----|-------------|------------------|-------|--------|
+| BUG-001 | Hoch | Host-spezifische sudoers-Datei wird nie gefunden/kopiert | roles/my.essentials/tasks/sudoers.yml | behoben |
+| BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml | offen |
+| BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml | offen |
+| BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml | offen |
 
 Details und Hinweise
 
@@ -15,7 +15,7 @@ BUG-001
 - ansible.builtin.stat prueft einen lokalen Pfad, laeuft aber auf dem Zielhost.
 - Der Pfad "../files/..." existiert dort nicht, daher bleibt file.stat.exists false.
 - Folge: Host-spezifische sudoers-Dateien werden nie kopiert.
-- Fix: stat auf localhost oder Pfad via role_path; copy mit src "sudoers.d/{{ inventory_hostname }}".
+- Fix: stat auf localhost oder Pfad via role_path; copy mit src "sudoers.d/{{ inventory_hostname }}". (behoben)
 
 BUG-002
 - /etc/sudoers.d erwartet 0440; 0644 oder 0660 werden von sudo ggf. ignoriert.
