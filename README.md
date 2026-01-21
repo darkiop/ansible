@@ -18,7 +18,7 @@ my_essentials_install_vimrc: true
 
 ```yaml
 my_essentials_apt_default_packages:
-my_essentials_apt_aditional_packages:
+my_essentials_apt_additional_packages:
 my_essentials_pip_packages:
 ```
 
@@ -85,6 +85,14 @@ my_mqtt_username:
 my_mqtt_password:
 ```
 
+### my.named
+
+Installs bind9 (named)
+
+```yaml
+
+```
+
 ### my.pbs
 
 Installs the Proxmox Backup Server from the no-subscription repo
@@ -100,7 +108,6 @@ Installs the Proxmox Backup Server from the no-subscription repo
 Install Pi-hole based on <https://github.com/r-pufky/ansible_pihole> and creates a custom.list with local DNS records
 
 ```yaml
-my_pihole_custom_list_use:
 my_pihole_custom_list:
 
 # used vars from r_pufky.pihole

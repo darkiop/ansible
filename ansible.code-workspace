@@ -1,8 +1,7 @@
 {
 	"folders": [
 		{
-			"name": "github-darkiop-ansible",
-			"path": "/home/darkiop/github/darkiop/ansible"
+			"path": "."
 		}
 	],
 	"settings": {
