@@ -3,6 +3,15 @@
 # dhcpcd.conf
 vault_dhcpcd_static_ip_address: 
 vault_dhcpcd_static_routers: 
-vault_dhcpcd_static_domain_name: 
-vault_dhcpcd_static_domain_search: 
+vault_dhcpcd_static_domain_name: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
+vault_dhcpcd_static_domain_search: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
 vault_dhcpcd_static_domain_name_servers: 
+
+# Role: my.wireguard-client
+vault_my_wireguard_client_wg_private_key:
+vault_my_wireguard_client_public_key:
+vault_my_wireguard_client_preshared_key:
+vault_my_wireguard_client_endpoint:
+
+# Role: my.tailscale
+vault_my_tailscale_auth_key:

@@ -13,18 +13,57 @@ pihole_ipv4_address: "{{ vault_dhcpcd_static_ip_address }}/24"
 pihole_ipv6_address: ""
 pihole_pihole_dns_1: "{{ vault_dhcpcd_static_routers }}#53"
 pihole_pihole_dns_2: ""
-pihole_update_enable: false
+pihole_pihole_interface: eth0
+pihole_update_enable: true
+pihole_webpassword: "{{ vault_pihole_webpassword }}"
+pihole_ad_sources:
+  - id: 1
+    address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    enabled: true
+    comment: ansible adlist
+  - id: 2
+    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
+    enabled: true
+    comment: ansible adlist
+  - id: 3
+    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    enabled: true
+    comment: ansible adlist
+  - id: 4
+    address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+    enabled: true
+    comment: ansible adlist
+  - id: 5
+    address: https://v.firebog.net/hosts/Easyprivacy.txt
+    enabled: true
+    comment: ansible adlist
 
 # Role: my.pihole
 my_pihole_setup_keepalived: false
 
 # Role: my.essentials - apt install aditional_software task
-# TODO remove and use my.docker role?
 my_essentials_apt_additional_packages:
-  - docker
-  - docker-compose
 
 # Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp
 ntp_servers:
   - "{{ vault_dhcpcd_static_routers }}"
+
+# Role: my.wireguard-client
+my_wireguard_client_wg_interface: wg0
+my_wireguard_client_wg_listen_port: 51820
+my_wireguard_client_wg_address_ipv4: "172.31.0.5/24"
+my_wireguard_client_wg_private_key: "{{ vault_my_wireguard_client_wg_private_key }}"
+my_wireguard_client_wg_peers:
+  - name: "vpn-gw-bw17"
+    public_key: "{{  vault_my_wireguard_client_public_key }}"
+    preshared_key: "{{ vault_my_wireguard_client_preshared_key }}"
+    allowed_ips: 172.31.0.0/24, 192.168.1.30/32, 192.168.1.30/32, 192.168.1.31/32, 192.168.1.53/32, 10.4.0.14/32, 10.4.0.33/32
+    endpoint: "{{ vault_my_wireguard_client_endpoint }}"
+    persistent_keepalive: 25
+
+# Role: my.tailscale
+my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key }}"
+my_tailscale_advertise_routes: ["192.168.1.30/32"]
+my_tailscale_advertise_exit_node: true
+my_tailscale_extra_flags: ["--accept-dns=false"]

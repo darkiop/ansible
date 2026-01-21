@@ -57,3 +57,10 @@ pihole_rev_server: true
 pihole_rev_server_cidr: 10.4.0.0/24
 pihole_rev_server_target: 10.4.0.9
 pihole_rev_server_domain: "{{ vault_local_fqdn }}"
+
+# Role: my.tailscale
+my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key }}"
+my_tailscale_advertise_routes: ["192.168.1.0/24", "10.1.0.0/24", "10.4.0.0/24"]
+my_tailscale_advertise_exit_node: true
+my_tailscale_extra_flags: ["--accept-dns=false"]
+my_tailscale_debug: true
