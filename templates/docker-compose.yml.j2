@@ -1,0 +1,16 @@
+services:
+  npm:
+    image: jc21/nginx-proxy-manager:latest
+    restart: unless-stopped
+    ports:
+      - "{{ npm_http_port }}:80"
+      - "{{ npm_https_port }}:443"
+      - "{{ npm_admin_port }}:81"
+    environment:
+      DB_SQLITE_FILE: "/data/database.sqlite"
+{% if disable_ipv6 | bool %}
+      DISABLE_IPV6: 'true'
+{% endif %}
+    volumes:
+      - "{{ project_dir }}/data:/data"
+      - "{{ project_dir }}/letsencrypt:/etc/letsencrypt"

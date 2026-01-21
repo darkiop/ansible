@@ -1,0 +1,17 @@
+# {{ ansible_managed }}
+
+hostname
+clientid
+persistent
+option rapid_commit
+option domain_name_servers, domain_name, domain_search, host_name
+option classless_static_routes
+option interface_mtu
+require dhcp_server_identifier
+slaac private
+interface eth0
+static ip_address={{ dhcpcd_static_ip_address }}
+static routers={{ dhcpcd_static_routers }}
+static domain_name={{ dhcpcd_static_domain_name }}
+static domain_search={{ dhcpcd_static_domain_search }}
+static domain_name_servers={{ dhcpcd_static_domain_name_servers }}
