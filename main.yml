@@ -14,6 +14,7 @@
 # ────────────────────────────────────────────────────────── #
 - name: Import setup-essentials.yml
   import_playbook: setup-essentials.yml
+  tags: [setup-essentials, sudo]
 
 # GROUP SPECIFIC SETUP
 # ────────────────────────────────────────────────────────── #
@@ -29,6 +30,10 @@
 #    ADBLOCK
 - name: Import setup-adblock.yml
   import_playbook: setup-adblock.yml
+
+#    DOCKER
+- name: Import setup-docker.yml
+  import_playbook: setup-docker.yml
 
 #    VPN-GATEWAYS
 - name: Import setup-vpn_gw_ext.yml
@@ -131,8 +136,9 @@
     - role: geerlingguy.security
       tags: role-security
 
-    - role: my.pihole # TODO Port 53 in use by pihole and named
-      tags: role-pihole
+    # Adblock configuration in host: setup-adblock.yml
+    # - role: my.pihole # TODO Port 53 in use by pihole and named
+    #   tags: role-pihole
 
     ## (https://github.com/bertvv/ansible-role-samba)
     - role: my.samba

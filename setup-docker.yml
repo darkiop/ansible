@@ -1,0 +1,9 @@
+- name: Setup for Docker
+
+  hosts: docker
+
+  become: true
+
+  roles:
+    - role: my.docker
+      tags: role-docker
