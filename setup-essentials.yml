@@ -3,7 +3,6 @@
   hosts:
     # GROUPS
     - pve_hosts
-    - pve_hosts_test
     - pve_lxc
     - pve_vm
     - vpn_gw_ext

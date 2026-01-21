@@ -2,7 +2,6 @@
 
   hosts:
     - pve_hosts
-    - pve_hosts_test
 
   become: true
 

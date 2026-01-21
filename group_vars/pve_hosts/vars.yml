@@ -32,10 +32,8 @@ samba_shares:
 
 # Role: lae.proxmox
 # https://github.com/lae/ansible-role-proxmox
-pve_repository_line: deb http://download.proxmox.com/debian/pve bullseye pve-no-subscription
-pve_remove_subscription_warning: true
 pve_reboot_on_kernel_update: false
 pve_remove_old_kernels: false
 
-# Role: my.proxmox
+  # Role: my.proxmox
 my_proxmox_watchdog: iTCO_wdt # iTCO_wdt, softdog

@@ -1,0 +1,88 @@
+# Role: my.essentials - sudo
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff, /usr/sbin/pct, /usr/sbin/qm, /usr/local/bin/gstatus, /usr/sbin/gluster, /usr/sbin/nvme, /usr/sbin/pvesm
+
+# Role: my.essentials - apt install aditional_software task
+my_essentials_apt_additional_packages:
+  # - name
+
+# Role: my.essentials - pip install
+my_essentials_pip_packages:
+  # - name
+
+# Role: geerlingguy.security
+# https://github.com/geerlingguy/ansible-role-security
+security_ssh_permit_root_login: "yes"
+security_ssh_allowed_users:
+  - root
+  - "{{ my_essentials_user_username }}"
+
+# Role: bertvv.samba
+samba_shares:
+  - name: vz-dump
+    guest_ok: no
+    public: yes
+    read_only: no
+    writable: yes
+    browseable: yes
+    owner: "{{ my_essentials_user_username }}"
+    path: /var/lib/vz/dump
+    valid_users: "{{ my_essentials_user_username }}"
+    write_list: "{{ my_essentials_user_username }}"
+    group: "{{ my_essentials_user_username }}"
+
+  # Role: my.proxmox
+my_proxmox_watchdog: iTCO_wdt # iTCO_wdt, softdog
+
+# Role: lae.proxmox
+# https://github.com/lae/ansible-role-proxmox
+# pve_repository_line:
+pve_remove_subscription_warning: true
+pve_reboot_on_kernel_update: false
+pve_remove_old_kernels: false
+
+pve_storages:
+  - name: pbs-odin
+    type: pbs
+    content: [ "backup" ]
+    server: 192.168.1.31
+    username: root@pam
+    password: "{{ vault_pve_hosts_test_pbs_password }}"
+    datastore: pbs-odin
+    fingerprint: 65:25:a2:65:90:8c:60:1d:33:4a:23:e4:5c:16:0a:21:f8:b7:61:c0:55:04:58:37:71:72:c6:05:b3:1d:5e:5e
+    #namespace: Top/something # Optional
+    disable: false
+  - name: dir1
+    type: dir
+    content: [ "images", "iso", "backup" ]
+    path: /opt
+    prune_backups: 4
+    disable: false
+
+# pve_cluster_enabled: yes
+# pve_cluster_clustername: test
+# pve_manage_hosts_enabled: true
+
+# pve_group: pve-test-01
+
+# pve_groups:
+#   - name: ops
+#     comment: Operations Team
+
+# pve_users:
+#   - name: admin1@pam
+#     email: admin1@lab.local
+#     firstname: Admin
+#     lastname: User 1
+#     groups: [ "ops" ]
+#   - name: admin2@pam
+#     email: admin2@lab.local
+#     firstname: Admin
+#     lastname: User 2
+#     groups: [ "ops" ]
+
+# pve_acls:
+#   - path: /
+#     roles: [ "Administrator" ]
+#     groups: [ "ops" ]
+
+# pve_ssh_port: 22
