@@ -1,2 +1,17 @@
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/bin/docker
 my_essentials_install_dysk: false
+
+# Role: bertvv.samba
+samba_shares:
+  - name: opt-docker
+    guest_ok: false
+    public: true
+    read_only: false
+    writable: true
+    browseable: true
+    owner: "{{ my_essentials_user_username }}"
+    path: /opt/docker
+    valid_users: "{{ my_essentials_user_username }}"
+    write_list: "{{ my_essentials_user_username }}"
+    group: darkiop
+    user: darkiop
