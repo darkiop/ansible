@@ -1,0 +1,83 @@
+# Role: my.ssh
+my_ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
+
+# Role: geerlingguy.mac.homebrew
+# https://github.com/geerlingguy/ansible-collection-mac
+homebrew_cask_apps:
+  # Browser
+  - vivaldi
+  - google-chrome
+  - firefox
+  - firefox@developer-edition
+  - tor-browser
+  # Communication
+  - whatsapp
+  - telegram
+  - discord
+  # Tools
+  - yubico-authenticator
+  - wireshark
+  - tailscale
+  - the-unarchiver
+  # - iterm2 # deinstallieren, dann über Terminal per ssh auf pve-ct-dev gehen und ansible ausführen
+  - drawio
+  - cyberduck
+  - connectmenow
+  # - onedrive
+  - rectangle
+  - rustdesk
+  - tableplus
+  - raspberry-pi-imager
+  - maccy
+  # - bitwarden # via Mac AppStore -> Browser Extension
+  # - synology-drive
+  # - visual-studio-code
+  - microsoft-remote-desktop
+  # Multimedia
+  - vlc
+  - handbrake
+  - spotify
+  - mqtt-explorer
+  - vivid
+  - steam
+  # - Garmin BaseCamp
+  # - Garmin Express
+  # - Garmin MapInstal
+homebrew_installed_packages:
+  - git
+  - gh
+  - bat
+  - ncdu
+  - nmap
+  - navi
+  - starship
+  - tmux
+  - iperf3
+  - glances
+  - fping
+  - ansible
+  - zsh
+  - zsh-syntax-highlighting
+  - tree
+  - htop
+  - vim
+  # - fzf better install by dotfiles module
+  - lsd
+
+# Role: geerlingguy.mac.mas
+# https://github.com/geerlingguy/ansible-collection-mac
+mas_email: "{{ vault_mas_email }}"
+mas_password: "{{ vault_mas_password }}"
+mas_upgrade_all_apps: true
+mas_installed_apps:
+  - { id: 1452453066, name: Hidden Bar }
+  - { id: 1451685025, name: WireGuard }
+  - { id: 1352778147, name: Bitwarden }
+  - { id: 1193539993, name: Brother iPrint&Scan }
+  - { id: 1592917505, name: Noir }
+mas_uninstalled_apps:
+  - { id: 408981434, name: iMovie }
+  - { id: 409183694, name: Keynote }
+  - { id: 409201541, name: Pages }
+  - { id: 409203825, name: Numbers }
+  - { id: 682658836, name: GarageBand }

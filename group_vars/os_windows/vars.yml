@@ -1,0 +1,6 @@
+# Role: my.essentials - install tasks
+my_essentials_install_dotfiles: false
+my_essentials_install_navi: false
+my_essentials_install_chtsh: false
+my_essentials_install_dysk: false
+my_essentials_install_vimrc: false
