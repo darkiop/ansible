@@ -1,0 +1,36 @@
+---
+- name: Collect user and root crontabs
+  hosts: all
+  gather_facts: false
+  vars:
+    local_log_path: "{{ playbook_dir }}/check-crontabs.log"
+  tasks:
+    - name: Read user crontab (darkiop)
+      ansible.builtin.command: crontab -l
+      become: true
+      become_user: darkiop
+      register: user_crontab
+      changed_when: false
+      failed_when: false
+
+    - name: Read root crontab
+      ansible.builtin.command: crontab -l
+      become: true
+      register: root_crontab
+      changed_when: false
+      failed_when: false
+
+    - name: Write crontab output to local log
+      ansible.builtin.blockinfile:
+        path: "{{ local_log_path }}"
+        create: true
+        marker: "# {mark} ANSIBLE CRONTABS {{ inventory_hostname }}"
+        block: |
+          [host] {{ inventory_hostname }}
+          [user] darkiop
+          {{ user_crontab.stdout | default('') }}
+          {{ user_crontab.stderr | default('') }}
+          [root]
+          {{ root_crontab.stdout | default('') }}
+          {{ root_crontab.stderr | default('') }}
+      delegate_to: localhost

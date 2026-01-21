@@ -1,0 +1,223 @@
+---
+- name: Setup Gitea on LXC
+  hosts: all
+  become: true
+  vars:
+    gitea_version: "1.25.3"
+    gitea_arch: "linux-amd64"
+    gitea_download_url: "https://dl.gitea.com/gitea/{{ gitea_version }}/gitea-{{ gitea_version }}-{{ gitea_arch }}"
+    gitea_user: git
+    gitea_group: git
+    gitea_home: /home/git
+    gitea_work_dir: /var/lib/gitea
+    gitea_config_dir: /etc/gitea
+    gitea_http_port: 3000
+    gitea_domain: gitea.deine-domain.de
+    gitea_root_url: "http://{{ gitea_domain }}:{{ gitea_http_port }}/"
+    gitea_ssh_domain: "{{ gitea_domain }}"
+    gitea_ssh_port: 2222
+    gitea_db_path: "{{ gitea_work_dir }}/data/gitea.db"
+    gitea_secret_file: "{{ gitea_config_dir }}/secret_key"
+    gitea_admin_username: admin
+    gitea_admin_password: "change-me"
+    gitea_admin_email: "admin@example.com"
+
+  tasks:
+    - name: Update apt cache and upgrade packages
+      ansible.builtin.apt:
+        update_cache: true
+        upgrade: dist
+
+    - name: Install required packages
+      ansible.builtin.apt:
+        name:
+          - wget
+          - git
+          - sqlite3
+          - ca-certificates
+          - openssl
+          - curl
+          - nginx-full
+          - ufw
+        state: present
+
+    - name: Allow SSH/HTTP/HTTPS/Gitea ports in UFW
+      ansible.builtin.command: "ufw allow {{ item }}"
+      loop:
+        - "22/tcp"
+        - "80/tcp"
+        - "443/tcp"
+        - "{{ gitea_http_port }}/tcp"
+        - "2222/tcp"
+      changed_when: false
+
+    - name: Enable UFW
+      ansible.builtin.command: ufw --force enable
+      changed_when: false
+
+    - name: Ensure Gitea system group exists
+      ansible.builtin.group:
+        name: "{{ gitea_group }}"
+        system: true
+
+    - name: Ensure Gitea system user exists
+      ansible.builtin.user:
+        name: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        shell: /bin/bash
+        home: "{{ gitea_home }}"
+        system: true
+        create_home: true
+
+    - name: Create Gitea directories in home
+      ansible.builtin.file:
+        path: "{{ gitea_home }}/{{ item }}"
+        state: directory
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        mode: "0755"
+      loop:
+        - custom
+        - data
+        - log
+
+    - name: Create Gitea working directories
+      ansible.builtin.file:
+        path: "{{ gitea_work_dir }}/{{ item }}"
+        state: directory
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        mode: "0755"
+      loop:
+        - .
+        - custom
+        - data
+        - log
+
+    - name: Download Gitea binary
+      ansible.builtin.get_url:
+        url: "{{ gitea_download_url }}"
+        dest: "{{ gitea_home }}/gitea"
+        mode: "0755"
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+
+    - name: Symlink Gitea into /usr/local/bin
+      ansible.builtin.file:
+        src: "{{ gitea_home }}/gitea"
+        dest: /usr/local/bin/gitea
+        state: link
+
+    - name: Install systemd service for Gitea
+      ansible.builtin.copy:
+        dest: /etc/systemd/system/gitea.service
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Gitea
+          After=syslog.target rsyslog.service
+          After=network-online.target postgresql.service mariadb.service
+
+          [Service]
+          Type=simple
+          User={{ gitea_user }}
+          Group={{ gitea_group }}
+          WorkingDirectory={{ gitea_work_dir }}/
+          Environment=USER={{ gitea_user }} HOME={{ gitea_home }} GITEA_WORK_DIR={{ gitea_work_dir }}
+          ExecStart=/usr/local/bin/gitea web --config {{ gitea_config_dir }}/app.ini
+          Restart=always
+          RestartSec=2s
+          StartupTimeout=20s
+
+          [Install]
+          WantedBy=multi-user.target
+
+    - name: Reload systemd
+      ansible.builtin.systemd:
+        daemon_reload: true
+
+    - name: Ensure Gitea config directory exists
+      ansible.builtin.file:
+        path: "{{ gitea_config_dir }}"
+        state: directory
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        mode: "0755"
+
+    - name: Generate secret key if missing
+      ansible.builtin.shell: "openssl rand -base64 48 > {{ gitea_secret_file }}"
+      args:
+        creates: "{{ gitea_secret_file }}"
+
+    - name: Ensure secret key permissions
+      ansible.builtin.file:
+        path: "{{ gitea_secret_file }}"
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        mode: "0600"
+
+    - name: Load secret key
+      ansible.builtin.slurp:
+        src: "{{ gitea_secret_file }}"
+      register: gitea_secret_slurp
+
+    - name: Write Gitea config
+      ansible.builtin.copy:
+        dest: "{{ gitea_config_dir }}/app.ini"
+        owner: "{{ gitea_user }}"
+        group: "{{ gitea_group }}"
+        mode: "0640"
+        content: |
+          [server]
+          DOMAIN           = {{ gitea_domain }}
+          HTTP_ADDR        = 0.0.0.0
+          HTTP_PORT        = {{ gitea_http_port }}
+          ROOT_URL         = {{ gitea_root_url }}
+          SSH_DOMAIN       = {{ gitea_ssh_domain }}
+          SSH_PORT         = {{ gitea_ssh_port }}
+
+          [database]
+          DB_TYPE  = sqlite3
+          PATH     = {{ gitea_db_path }}
+
+          [security]
+          INSTALL_LOCK = true
+          SECRET_KEY   = {{ gitea_secret_slurp.content | b64decode | trim }}
+
+    - name: Ensure Gitea admin user exists
+      ansible.builtin.command:
+        argv:
+          - runuser
+          - -u
+          - "{{ gitea_user }}"
+          - --
+          - /usr/local/bin/gitea
+          - admin
+          - user
+          - create
+          - --admin
+          - --username
+          - "{{ gitea_admin_username }}"
+          - --password
+          - "{{ gitea_admin_password }}"
+          - --email
+          - "{{ gitea_admin_email }}"
+          - --config
+          - "{{ gitea_config_dir }}/app.ini"
+      become: true
+      register: gitea_admin_create
+      changed_when: gitea_admin_create.rc == 0
+      failed_when:
+        - gitea_admin_create.rc != 0
+        - "'user already exists' not in (gitea_admin_create.stderr | lower)"
+
+    - name: Enable and start Gitea
+      ansible.builtin.systemd:
+        name: gitea
+        enabled: true
+        state: started
+
+    - name: Restart Gitea after config changes
+      ansible.builtin.systemd:
+        name: gitea
+        state: restarted
