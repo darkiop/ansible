@@ -5,7 +5,7 @@ Stand: erster Scan, ohne Ausfuehrungstests.
 | ID | Schweregrad | Kurzbeschreibung | Datei | Status |
 |----|-------------|------------------|-------|--------|
 | BUG-001 | Hoch | Host-spezifische sudoers-Datei wird nie gefunden/kopiert | roles/my.essentials/tasks/sudoers.yml | behoben |
-| BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml | offen |
+| BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml | behoben |
 | BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml | offen |
 | BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml | offen |
 
@@ -21,7 +21,7 @@ BUG-002
 - /etc/sudoers.d erwartet 0440; 0644 oder 0660 werden von sudo ggf. ignoriert.
 - Betroffen: disable_mail_badpass (lineinfile) und host-spezifische Copy.
 - Risiko: sudo bricht mit "bad permissions" oder ignoriert Eintraege.
-- Fix: mode "0440" fuer alle Dateien unter /etc/sudoers.d.
+- Fix: mode "0440" fuer alle Dateien unter /etc/sudoers.d. (behoben)
 
 BUG-003
 - npm Modul kommt aus community.general.

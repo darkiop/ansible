@@ -25,7 +25,7 @@
   ansible.builtin.copy:
     src: "sudoers.d/{{ inventory_hostname }}"
     dest: /etc/sudoers.d/{{ inventory_hostname }}
-    mode: "0644"
+    mode: "0440"
   when: file.stat.exists
 
 - name: Apply sudoers defaults configuration
@@ -47,7 +47,7 @@
     create: true
     state: present
     validate: visudo -cf %s
-    mode: "0644"
+    mode: "0440"
 
 # https://github.com/arillso/ansible.sudoers
 # https://github.com/GROG/ansible-role-sudo
