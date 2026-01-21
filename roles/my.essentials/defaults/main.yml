@@ -14,6 +14,7 @@ my_essentials_apt_upgrade: false
 my_essentials_apt_default_packages:
 my_essentials_apt_additional_packages:
 my_essentials_pip_packages:
+my_essentials_npm_packages:
 
 # User Setup
 my_essentials_user_username:

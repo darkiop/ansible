@@ -1,0 +1,62 @@
+# - name: Perform an action if the file does not exist
+#   ansible.builtin.debug:
+#     msg: "2222222222222222"
+
+- name: "Role: my.essentials - Create a sudoers file for {{ my_essentials_user_username }}"
+  become: true
+  become_user: root
+  ansible.builtin.template:
+    src: sudoers.user.d.j2
+    dest: /etc/sudoers.d/{{ my_essentials_user_username }}
+    owner: root
+    group: root
+    mode: ug+rwX,o=
+    force: true
+
+- name: "Role: my.essentials - check if host specific sudoers file exists"
+  ansible.builtin.stat:
+    path: ../files/sudoers.d/{{ inventory_hostname }}
+  register: file
+
+- name: "Role: my.essentials - Copy host specifig sudoers.d file"
+  become: true
+  become_user: root
+  ansible.builtin.copy:
+    src: ../files/sudoers.d/{{ inventory_hostname }}
+    dest: /etc/sudoers.d/{{ inventory_hostname }}
+    mode: "0644"
+  when: file.stat.exists
+
+- name: Apply sudoers defaults configuration
+  ansible.builtin.template:
+    src: "sudoers.defaults.j2"
+    dest: "{{ sudo_sudoersd_dir }}/00defaults"
+    owner: "{{ sudo_sudoersd_owner }}"
+    group: "{{ sudo_sudoersd_group }}"
+    mode: "0440"
+    validate: visudo -cf %s
+  when: sudo_defaults|length > 0
+
+# echo 'Defaults !mail_badpass' | sudo tee /etc/sudoers.d/disable_mail_badpass
+
+- name: Ensure 'Defaults !mail_badpass' is in /etc/sudoers.d/disable_mail_badpass
+  ansible.builtin.lineinfile:
+    path: /etc/sudoers.d/disable_mail_badpass
+    line: Defaults !mail_badpass
+    create: true
+    state: present
+    validate: visudo -cf %s
+    mode: "0644"
+
+# https://github.com/arillso/ansible.sudoers
+# https://github.com/GROG/ansible-role-sudo
+
+# group_vars - all:
+# Task: tasks/sudoers.d.yml
+# sudo_sudoersd_dir: /etc/sudoers.d
+# sudo_sudoersd_owner: root
+# sudo_sudoersd_group: root
+# sudo_defaults:
+#  - env_reset
+#  - secure_path="/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
+#  - use_pty

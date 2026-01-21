@@ -24,6 +24,11 @@
   ansible.builtin.include_tasks: pip-install.yml
   tags: pip-install
 
+# npm-install
+- name: "Role my.essentials: npm-install"
+  ansible.builtin.include_tasks: npm-install.yml
+  tags: npm-install
+
 # locales
 - name: "Role my.essentials: locales"
   ansible.builtin.include_tasks: set-locales.yml
@@ -73,10 +78,10 @@
   when: my_essentials_install_vimrc | default(false)
 
 # dysk - https://github.com/Canop/dysk/releases
-- name: "Role my.essentials: install-dysk"
-  ansible.builtin.include_tasks: install-dysk.yml
-  tags: install-dysk
-  when: my_essentials_install_dysk | default(false)
+# - name: "Role my.essentials: install-dysk"
+#   ansible.builtin.include_tasks: install-dysk.yml
+#   tags: install-dysk
+#   when: my_essentials_install_dysk | default(false)
 
 #
 # TODO: wip
@@ -88,7 +93,7 @@
 #  when: setup_network | default(false)
 
 # sudoers
-# - name: "Role: my.essentials: Setup and Install sudo"
-#   ansible.builtin.include_tasks:
-#     file: wip__sudoers.yml
-#   tags: sudo
+- name: "Role: my.essentials: Setup and Install sudo"
+  ansible.builtin.include_tasks:
+    file: sudoers.yml
+  tags: sudo

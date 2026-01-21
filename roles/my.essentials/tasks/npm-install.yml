@@ -1,0 +1,22 @@
+# - name: "Role: my.essentails - npm-install.yml - npm-install"
+#   become: true
+#   become_user: root
+#   community.general.npm:
+#     name: "{{ my_essentials_npm_packages }}"
+#     state: present
+
+- name: Ensure node and npm are installed (Beispiel über apt)
+  ansible.builtin.apt:
+    name:
+      - nodejs
+      - npm
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Install npm package openai globally
+  community.general.npm:
+    name: openai          # oder @openai/codex falls existiert
+    global: true
+    state: present
+  become: true

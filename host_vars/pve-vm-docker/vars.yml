@@ -1,2 +1,3 @@
 # Role: my.essentials - sudo
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/bin/docker
+my_essentials_npm_packages: []
