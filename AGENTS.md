@@ -52,6 +52,7 @@ Linting und Tests
 Dokumentation
 - README.md aktualisieren, wenn neue Rollen/Variablen entstehen.
 - Kommentare kurz halten; nur bei komplexer Logik.
+- IDEAS.md stets pflegen: Teil 1 Tabelle (Backlog) und Teil 2 Detail-Beschreibung; bei Aenderungen beides konsistent halten.
 
 Git und Commits
 - Kleine, thematisch klare Commits.
