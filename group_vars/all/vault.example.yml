@@ -21,9 +21,6 @@ vault_samba_password:
 # proxmox
 vault_pve_password:
 
-# wireguard
-vault_wireguard_endpoint:
-
 # Role: my.ssh
 vault_ssh_public_keys:
 vault_ssh_public_keys_root:

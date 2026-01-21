@@ -34,7 +34,7 @@ my_essentials_apt_default_packages:
   - btop
   - lsd
   - bat
-  - fd-find
+  # - fd-find
   - glances
   - powerline
   - html2text
@@ -65,7 +65,7 @@ my_essentials_apt_default_packages:
   - tmux
   - atop
   - mtr
-  - fzf
+  # - fzf better install by dotfiles module
   - sqlite3
   - neofetch
   - dategrep
@@ -87,8 +87,8 @@ my_essentials_user_timezone: Europe/Berlin
 # my_essentials_user_locale: en_US.UTF-8
 my_essentials_user_locale: C
 my_essentials_user_keyboard_layout: de
-my_essentials_user_email: darkiop@gmail.com
-my_essentials_user_email_password: "{{ vault_user_email_password }}"
+my_essentials_user_email: "{{ vault_my_essentials_user_email }}"
+my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password }}"
 
 # Role: my.ssh
 my_ssh_authorized_keys: "{{ vault_ssh_public_keys }}"
