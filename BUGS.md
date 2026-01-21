@@ -6,7 +6,7 @@ Stand: erster Scan, ohne Ausfuehrungstests.
 |----|-------------|------------------|-------|--------|
 | BUG-001 | Hoch | Host-spezifische sudoers-Datei wird nie gefunden/kopiert | roles/my.essentials/tasks/sudoers.yml | behoben |
 | BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml | behoben |
-| BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml | offen |
+| BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml | behoben |
 | BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml | offen |
 
 Details und Hinweise
@@ -27,7 +27,7 @@ BUG-003
 - npm Modul kommt aus community.general.
 - roles/requirements.yml listet community.general nicht.
 - Folge: Playbooks schlagen mit "module not found" fehl.
-- Fix: collection community.general in roles/requirements.yml aufnehmen.
+- Fix: collection community.general in roles/requirements.yml aufnehmen. (behoben)
 
 BUG-004
 - books/check-crontabs.yml schreibt von allen Hosts parallel in eine lokale Datei.
