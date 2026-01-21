@@ -7,7 +7,7 @@ Stand: erster Scan, ohne Ausfuehrungstests.
 | BUG-001 | Hoch | Host-spezifische sudoers-Datei wird nie gefunden/kopiert | roles/my.essentials/tasks/sudoers.yml | behoben |
 | BUG-002 | Mittel | Falsche Rechte in /etc/sudoers.d koennen sudo brechen | roles/my.essentials/tasks/sudoers.yml | behoben |
 | BUG-003 | Mittel | community.general fehlt, npm-Module schlagen fehl | roles/requirements.yml, roles/my.essentials/tasks/npm-install.yml, books/install-codex.yml | behoben |
-| BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml | offen |
+| BUG-004 | Niedrig | Parallel-Write auf lokales Log kann Datei korrumpieren | books/check-crontabs.yml | behoben |
 
 Details und Hinweise
 
@@ -33,4 +33,4 @@ BUG-004
 - books/check-crontabs.yml schreibt von allen Hosts parallel in eine lokale Datei.
 - Bei paralleler Ausfuehrung sind Race-Conditions moeglich.
 - Ergebnis: gemischte/teilweise ueberschriebene Log-Blocks.
-- Fix: serial: 1, throttle: 1 oder run_once mit loop und delegate_to.
+- Fix: serial: 1, throttle: 1 oder run_once mit loop und delegate_to. (behoben)
