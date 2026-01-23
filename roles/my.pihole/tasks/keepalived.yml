@@ -5,7 +5,9 @@
     owner: root
     group: root
     mode: "0755"
-  tags: check_pihole
+  tags:
+    - role-my.pihole
+    - check_pihole
 
 - name: Enable nonlocal IP binding for keepalived
   ansible.builtin.blockinfile:

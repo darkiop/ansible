@@ -1,17 +1,23 @@
 # ser2net
 - name: "Role: my.smartmeter - import install-ser2net.yml"
   ansible.builtin.import_tasks: install-ser2net.yml
-  tags: ser2net
+  tags:
+    - role-my.smartmeter
+    - ser2net
   when: my_smartmeter_ser2net_install | default(true)
 
 # Script: restart-smartmeter.sh
 - name: "Role: my.smartmeter - import install-restart-smartmeter.sh.yml"
   ansible.builtin.import_tasks: install-restart-smartmeter.sh.yml
-  tags: restart-smartmeter
+  tags:
+    - role-my.smartmeter
+    - restart-smartmeter
   when: my_smartmeter_restart_smartmeter_install | default(true)
 
 # socat
 - name: "Role: my.smartmeter - import install-socat.yml"
   ansible.builtin.import_tasks: install-socat.yml
-  tags: socat
+  tags:
+    - role-my.smartmeter
+    - socat
   when: my_smartmeter_socat_install | default(false)

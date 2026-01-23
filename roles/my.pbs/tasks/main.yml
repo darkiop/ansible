@@ -38,7 +38,9 @@
   register: output
   changed_when: false
   notify: Restart proxmox-backup-proxy.service
-  tags: remove-no-subscription-popup
+  tags:
+    - role-my.pbs
+    - remove-no-subscription-popup
 
 # TODO add boot-up.sh.j2 and shutdown.sh.j2
 # TODO add and configure datastore

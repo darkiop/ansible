@@ -15,6 +15,7 @@
   changed_when: false
   notify: Restart pveproxy.service
   tags:
+    - role-my.proxmox
     - remove-no-subscription-popup
     - skip_ansible_lint
 
@@ -29,7 +30,9 @@
           - -wakeonlan
           - "{{ my_proxmox_wol_iface | trim }}"
       changed_when: false
-      tags: wol-interface
+      tags:
+        - role-my.proxmox
+        - wol-interface
   when:
     - my_proxmox_wol_iface is defined
     - my_proxmox_wol_iface is not none

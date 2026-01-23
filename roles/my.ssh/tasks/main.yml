@@ -14,11 +14,15 @@
 
 - name: "Role: my.ssh - import user-config.yml"
   ansible.builtin.import_tasks: user-config.yml
-  tags: ssh-user-config
+  tags:
+    - role-my.ssh
+    - ssh-user-config
 
 - name: "Role: my.ssh - import authorized-keys.yml"
   ansible.builtin.import_tasks: authorized-keys.yml
-  tags: ssh-authorized-keys
+  tags:
+    - role-my.ssh
+    - ssh-authorized-keys
 # TODO add private keys
 # - import_tasks: private-keys.yml
 #  tags: private-keys

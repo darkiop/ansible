@@ -21,6 +21,7 @@
     force: true
   with_items: "{{ users }}"
   tags:
+    - role-my.essentials
     - skip_ansible_lint
 
 - name: "Role: my.essentials - install-vimrc.yml - run the Vim installation script"
