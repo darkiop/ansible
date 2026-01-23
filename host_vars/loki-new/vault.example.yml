@@ -4,9 +4,10 @@
 vault_pihole_webpassword:
 
 # Network Configuration
-vault_network_static_ip_address:
-vault_network_static_ip_address_2:
-vault_network_static_routers:
-vault_network_static_domain_name: "{{ vault_local_fqdn }}"
-vault_network_static_domain_search: "{{ vault_local_fqdn }}"
-vault_network_static_domain_name_servers:
+vault_my_essentials_network_static_ip_1:
+vault_my_essentials_network_static_ip_2:
+vault_my_essentials_network_gateway:
+vault_my_essentials_network_domain_name: "{{ vault_local_fqdn }}"
+vault_my_essentials_network_domain_search: "{{ vault_local_fqdn }}"
+vault_my_essentials_network_dns_1:
+vault_my_essentials_network_dns_2:

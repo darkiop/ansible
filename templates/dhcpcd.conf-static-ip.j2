@@ -10,8 +10,8 @@ option interface_mtu
 require dhcp_server_identifier
 slaac private
 interface eth0
-static ip_address={{ dhcpcd_static_ip_address }}
-static routers={{ dhcpcd_static_routers }}
-static domain_name={{ dhcpcd_static_domain_name }}
-static domain_search={{ dhcpcd_static_domain_search }}
-static domain_name_servers={{ dhcpcd_static_domain_name_servers }}
+static ip_address={{ my_essentials_network_static_ip_1 | default(dhcpcd_static_ip_address) }}
+static routers={{ my_essentials_network_gateway | default(dhcpcd_static_routers) }}
+static domain_name={{ my_essentials_network_domain_name | default(dhcpcd_static_domain_name) }}
+static domain_search={{ my_essentials_network_domain_search | default(dhcpcd_static_domain_search) }}
+static domain_name_servers={{ my_essentials_network_dns_1 | default(dhcpcd_static_domain_name_servers) }}

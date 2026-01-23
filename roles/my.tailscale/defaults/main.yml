@@ -1,5 +1,5 @@
 # REQUIRED: Tailscale auth key (e.g. TSKEY-xxxxxxxxxxxxxxxx)
-my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key }}"
+my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key | default(vault_tailscale_auth_key) }}"
 
 # Accepts list OR comma-separated string
 my_tailscale_advertise_routes: ["10.4.0.0/24", "192.168.1.0/24"]

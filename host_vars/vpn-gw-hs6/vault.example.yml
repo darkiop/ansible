@@ -1,11 +1,11 @@
 # https://docs.ansible.com/ansible/latest/user_guide/playbooks_best_practices.html#tip-for-variables-and-vaults
 
 # dhcpcd.conf
-vault_dhcpcd_static_ip_address:
-vault_dhcpcd_static_routers:
-vault_dhcpcd_static_domain_name: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
-vault_dhcpcd_static_domain_search: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
-vault_dhcpcd_static_domain_name_servers:
+vault_my_essentials_network_static_ip_1:
+vault_my_essentials_network_gateway:
+vault_my_essentials_network_domain_name: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
+vault_my_essentials_network_domain_search: "{{ vault_local_fqdn }}" # group_vars/all/vault.yml
+vault_my_essentials_network_dns_1:
 
 # Role: my.wireguard-client
 vault_my_wireguard_client_wg_private_key:

@@ -2,7 +2,7 @@ my_wireguard_client_wg_interface: wg0
 
 my_wireguard_client_wg_listen_port: 51820
 my_wireguard_client_wg_address_ipv4:
-my_wireguard_client_wg_private_key:
+my_wireguard_client_wg_private_key: "{{ vault_my_wireguard_client_wg_private_key | default(vault_wg_private_key) }}"
 
 my_wireguard_client_wg_peers:
   - name:

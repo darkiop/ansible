@@ -2,16 +2,16 @@
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/bin/docker
 
 # Setup static ip address
-dhcpcd_static_ip_address: "{{ vault_dhcpcd_static_ip_address }}"
-dhcpcd_static_routers: "{{ vault_dhcpcd_static_routers }}"
-dhcpcd_static_domain_name: "{{ vault_dhcpcd_static_domain_name }}"
-dhcpcd_static_domain_search: "{{ vault_dhcpcd_static_domain_search }}"
-dhcpcd_static_domain_name_servers: "{{ vault_dhcpcd_static_domain_name_servers }}"
+my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 | default(vault_dhcpcd_static_ip_address) }}"
+my_essentials_network_gateway: "{{ vault_my_essentials_network_gateway | default(vault_dhcpcd_static_routers) }}"
+my_essentials_network_domain_name: "{{ vault_my_essentials_network_domain_name | default(vault_dhcpcd_static_domain_name) }}"
+my_essentials_network_domain_search: "{{ vault_my_essentials_network_domain_search | default(vault_dhcpcd_static_domain_search) }}"
+my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 | default(vault_dhcpcd_static_domain_name_servers) }}"
 
 # Role: r_pufky.pihole
-pihole_ipv4_address: "{{ vault_dhcpcd_static_ip_address }}/24"
+pihole_ipv4_address: "{{ my_essentials_network_static_ip_1 }}/24"
 pihole_ipv6_address: ""
-pihole_pihole_dns_1: "{{ vault_dhcpcd_static_routers }}#53"
+pihole_pihole_dns_1: "{{ my_essentials_network_gateway }}#53"
 pihole_pihole_dns_2: ""
 pihole_pihole_interface: eth0
 pihole_update_enable: true
@@ -47,7 +47,7 @@ my_essentials_apt_additional_packages:
 # Role: geerlingguy.ntp
 # https://github.com/geerlingguy/ansible-role-ntp
 ntp_servers:
-  - "{{ vault_dhcpcd_static_routers }}"
+  - "{{ my_essentials_network_gateway }}"
 
 # Role: my.wireguard-client
 my_wireguard_client_wg_interface: wg0

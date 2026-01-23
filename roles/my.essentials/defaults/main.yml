@@ -25,18 +25,18 @@ my_essentials_user_timezone: Europe/Berlin
 my_essentials_user_locale: en_US.UTF-8
 my_essentials_user_keyboard_layout: de
 my_essentials_user_email:
-my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password }}"
+my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password | default(vault_user_email_password) }}"
 
 # Network Configuration
 # setup_network: false
 my_essentials_network_mode: dhcp # static/dhcp - default = dhcp
 my_essentials_network_interface_name:
-my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 }}"
-my_essentials_network_static_ip_2: "{{ vault_my_essentials_network_static_ip_2 }}"
-my_essentials_network_gateway: "{{ vault_my_essentials_network_gateway }}"
-my_essentials_network_domain_name: "{{ vault_my_essentials_network_domain_name }}"
-my_essentials_network_domain_search: "{{ vault_my_essentials_network_domain_search }}"
-my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 }}"
+my_essentials_network_static_ip_1: "{{ vault_my_essentials_network_static_ip_1 | default(vault_network_static_ip_address) | default(vault_dhcpcd_static_ip_address) }}"
+my_essentials_network_static_ip_2: "{{ vault_my_essentials_network_static_ip_2 | default(vault_network_static_ip_address_2) }}"
+my_essentials_network_gateway: "{{ vault_my_essentials_network_gateway | default(vault_network_static_routers) | default(vault_dhcpcd_static_routers) }}"
+my_essentials_network_domain_name: "{{ vault_my_essentials_network_domain_name | default(vault_network_static_domain_name) | default(vault_dhcpcd_static_domain_name) }}"
+my_essentials_network_domain_search: "{{ vault_my_essentials_network_domain_search | default(vault_network_static_domain_search) | default(vault_dhcpcd_static_domain_search) }}"
+my_essentials_network_dns_1: "{{ vault_my_essentials_network_dns_1 | default(vault_network_static_domain_name_servers) | default(vault_dhcpcd_static_domain_name_servers) }}"
 my_essentials_network_dns_2:
 
 # Sudo

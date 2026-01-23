@@ -29,10 +29,10 @@
         conn_name: Wired connection 1
         ifname: eth0
         type: ethernet
-        ip4: "{{ dhcpcd_static_ip_address }}"
-        gw4: "{{ dhcpcd_static_routers }}"
-        dns4: "{{ vault_dhcpcd_static_domain_name_servers }}"
-        dns4_search: "{{ dhcpcd_static_domain_search }}"
+        ip4: "{{ my_essentials_network_static_ip_1 | default(dhcpcd_static_ip_address) }}"
+        gw4: "{{ my_essentials_network_gateway | default(dhcpcd_static_routers) }}"
+        dns4: "{{ my_essentials_network_dns_1 | default(dhcpcd_static_domain_name_servers) }}"
+        dns4_search: "{{ my_essentials_network_domain_search | default(dhcpcd_static_domain_search) }}"
         dns6_ignore_auto: false
         state: present
       notify: Restart NetworkManager
