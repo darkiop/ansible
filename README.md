@@ -33,7 +33,7 @@ my_essentials_user_timezone: Europe/Berlin
 my_essentials_user_locale: en_US.UTF-8
 my_essentials_user_keyboard_layout: de
 my_essentials_user_email:
-my_essentials_user_email_password: "{{ vault_user_email_password }}"
+my_essentials_user_email_password: "{{ vault_my_essentials_user_email_password }}"
 ```
 
 #### sudo
@@ -176,7 +176,7 @@ my_ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
 ```yaml
 vault_my_essentials_user_password: <password>
 vault_my_essentials_user_email_password: <password>
-vault_user_samba_password: <password>
+vault_samba_password: <password>
 ansible_sudo_pass: <password>
 ```
 

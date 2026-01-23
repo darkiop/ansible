@@ -34,3 +34,9 @@ BUG-004
 - Bei paralleler Ausfuehrung sind Race-Conditions moeglich.
 - Ergebnis: gemischte/teilweise ueberschriebene Log-Blocks.
 - Fix: serial: 1, throttle: 1 oder run_once mit loop und delegate_to. (behoben)
+
+
+---
+
+TASK [my.essentials : Role: my.essentails - pip-install.yml - pip-install] ******************************************************************************************************************************************************************************************
+[WARNING]: No valid name or requirements file found.
