@@ -1,4 +1,8 @@
 .DS_Store
+._.DS_Store
+group_vars/pihole/data/
+.ansible/collections
+.venv
 vault.yml
 roles/my.pihole/files/generate_*
 .trunk

@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check docker directory exists
+      ansible.builtin.stat:
+        path: /home/molecule/docker
+      register: docker_dir
+
+    - name: Assert docker directory present
+      ansible.builtin.assert:
+        that:
+          - docker_dir.stat.exists
+          - docker_dir.stat.isdir

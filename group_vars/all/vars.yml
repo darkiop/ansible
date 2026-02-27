@@ -65,7 +65,6 @@ my_essentials_apt_default_packages:
   - tmux
   - atop
   - mtr
-  # - fzf better install by dotfiles module
   - sqlite3
   - neofetch
   - dategrep

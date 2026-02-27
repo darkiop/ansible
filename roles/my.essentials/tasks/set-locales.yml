@@ -25,7 +25,16 @@
 # setting deprecation_warnings=False in ansible.cfg.
 # changed: [test]
 
+- name: "Role: my.essentials - set-locales.yml - Ensure locales package is installed"
+  ansible.builtin.apt:
+    name: locales
+    state: present
+    update_cache: yes
+  become: true
+  when: ansible_os_family == "Debian"
+
 - name: "Role: my.essentials - set-locales.yml - Ensure a locale exists"
   community.general.locale_gen:
-    name: de_CH.UTF-8
+    name: "{{ my_essentials_user_locale }}"
     state: present
+  become: true

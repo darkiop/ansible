@@ -1,5 +1,9 @@
 # IDEAS.md - Vorschlaege fuer Erweiterungen und Optimierungen
 
+## Teil 0: Eigene Notizen
+
+- Mehr molecule tests implementieren
+
 ## Teil 1: Übersichtstabelle
 
 *Hinweis: Prioritaet nach erster Einschaetzung (P0 hoch, P1 mittel, P2 niedrig).*

@@ -18,6 +18,7 @@
     path: "{{ role_path }}/files/sudoers.d/{{ inventory_hostname }}"
   register: file
   delegate_to: localhost
+  become: false
 
 - name: "Role: my.essentials - Copy host specifig sudoers.d file"
   become: true

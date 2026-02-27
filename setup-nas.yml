@@ -1,7 +1,6 @@
 - name: Setup for Synology NAS
 
-  hosts:
-    - nas
+  hosts: nas
 
   # become: true
 

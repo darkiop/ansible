@@ -9,19 +9,23 @@ my_keepalived_router_id: 1
 my_keepalived_priority: 254
 my_keepalived_virtual_ipv4: 192.168.1.53/24
 
-# Role: r_pufky.pihole
+# Role: r_pufky.pihole (v6 TOML config)
+pihole_srv_update_enable: false
+
 pihole_update_enable: false
-pihole_webpassword: "{{ vault_pihole_webpassword }}"
-pihole_pihole_interface: eth0
+
+pihole_srv_api_config_enable: false
+pihole_cfg_webserver_api_app_pwhash: ''
+pihole_cfg_dns_interface: eth0
 
 # Upstream DNS Servers
-pihole_pihole_dns_1: 1.1.1.1#53
-pihole_pihole_dns_2: 8.8.8.8#53
-# pihole_pihole_dns_3:
-# pihole_pihole_dns_4:
+pihole_cfg_dns_upstreams:
+  - '1.1.1.1#53'
+  - '8.8.8.8#53'
 
 # Conditional forwarding
-pihole_rev_server: true
-pihole_rev_server_cidr: 10.4.0.0/24
-pihole_rev_server_target: 10.4.0.9
-pihole_rev_server_domain: "{{ vault_local_fqdn }}"
+pihole_cfg_dns_rev_servers:
+  - enabled: true
+    ip: '10.4.0.0/24'
+    server: '10.4.0.9'
+    domain: "{{ vault_local_fqdn }}"

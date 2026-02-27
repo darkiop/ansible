@@ -169,6 +169,26 @@ my_ssh_authorized_keys_root: "{{ vault_ssh_public_keys_root }}"
 
 ```
 
+## Testing
+
+### Molecule (role tests)
+
+Run from the role directory.
+
+```bash
+cd roles/my.essentials && molecule test -s default
+cd roles/my.docker && molecule test -s default
+cd roles/my.pihole && molecule test -s default
+cd roles/my.named && molecule test -s default
+```
+
+### Lint (optional)
+
+```bash
+ansible-lint .
+yamllint .
+```
+
 ## Vault
 
 ### group_vars/all/vault

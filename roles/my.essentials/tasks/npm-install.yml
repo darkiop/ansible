@@ -5,7 +5,7 @@
 #     name: "{{ my_essentials_npm_packages }}"
 #     state: present
 
-- name: Ensure node and npm are installed (Beispiel über apt)
+- name: Ensure node and npm are installed
   ansible.builtin.apt:
     name:
       - nodejs
@@ -13,10 +13,4 @@
     state: present
     update_cache: yes
   become: true
-
-- name: Install npm package openai globally
-  community.general.npm:
-    name: openai          # oder @openai/codex falls existiert
-    global: true
-    state: present
-  become: true
+  when: my_essentials_install_node | default(true)

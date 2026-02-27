@@ -17,6 +17,7 @@ my_named_transfers_allowed_by: []
 my_named_resolv_conf_search_domain: "{{ local_fqdn }}"
 my_named_resolv_conf_nameservers:
   - 192.168.1.53
+my_named_manage_resolv_conf: true
 
 # ── Logging ──────────────────────────────────────────────────────────────
 my_named_logging_channels:

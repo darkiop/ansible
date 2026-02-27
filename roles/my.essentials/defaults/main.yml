@@ -15,6 +15,7 @@ my_essentials_apt_default_packages:
 my_essentials_apt_additional_packages:
 my_essentials_pip_packages:
 my_essentials_npm_packages:
+my_essentials_install_node: true
 
 # User Setup
 my_essentials_user_username:
@@ -41,6 +42,9 @@ my_essentials_network_dns_2:
 
 # Sudo
 # TODO change name of variable
+sudo_sudoersd_dir: /etc/sudoers.d
+sudo_sudoersd_owner: root
+sudo_sudoersd_group: root
 sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/poweroff
 sudo_defaults:
   - env_reset

@@ -1,0 +1,10 @@
+- name: Setup Samba
+
+  hosts: samba
+
+  become: true
+
+  roles:
+    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
+    - role: my.samba
+      tags: role-samba

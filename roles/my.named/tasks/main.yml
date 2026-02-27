@@ -24,6 +24,8 @@
 # ── Post-deployment health check ─────────────────────────────────────────────────────────────────
 - name: Reboot all hosts
   ansible.builtin.reboot:
+  tags:
+    - named-reboot
 
 - name: Wait until TCP 53 answers
   ansible.builtin.wait_for:
@@ -32,3 +34,5 @@
     state: started
     timeout: 60
   delegate_to: localhost
+  tags:
+    - named-healthcheck

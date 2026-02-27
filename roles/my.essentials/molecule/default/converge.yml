@@ -1,0 +1,19 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    my_essentials_user_username: molecule
+    my_essentials_user_password: ChangeMe123!
+    my_essentials_install_dotfiles: false
+    my_essentials_install_navi: false
+    my_essentials_install_chtsh: false
+    my_essentials_install_vimrc: false
+    my_essentials_install_dysk: false
+    my_essentials_apt_default_packages: []
+    my_essentials_apt_additional_packages: []
+    my_essentials_pip_packages: []
+    my_essentials_npm_packages: []
+    my_essentials_install_node: false
+  roles:
+    - role: my.essentials

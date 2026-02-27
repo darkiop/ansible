@@ -61,7 +61,6 @@ homebrew_installed_packages:
   - tree
   - htop
   - vim
-  # - fzf better install by dotfiles module
   - lsd
 
 # Role: geerlingguy.mac.mas

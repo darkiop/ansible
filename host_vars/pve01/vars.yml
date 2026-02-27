@@ -1,1 +1,3 @@
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/sbin/pct, /usr/sbin/qm
+
 my_proxmox_wol_iface: 1c:69:7a:02:5e:3f

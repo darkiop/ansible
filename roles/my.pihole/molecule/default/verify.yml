@@ -1,0 +1,14 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Check pihole directory exists
+      ansible.builtin.stat:
+        path: /etc/pihole
+      register: pihole_dir
+
+    - name: Assert pihole directory present
+      ansible.builtin.assert:
+        that:
+          - pihole_dir.stat.exists

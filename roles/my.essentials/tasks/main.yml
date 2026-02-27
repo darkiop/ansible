@@ -1,3 +1,12 @@
+# gather facts (support when gathering is explicit or disabled)
+- name: "Role my.essentials: gather minimal facts"
+  ansible.builtin.setup:
+    gather_subset:
+      - distribution
+  tags:
+    - always
+    - role-my.essentials
+
 # apt-update
 - name: "Role my.essentials: apt-update"
   ansible.builtin.include_tasks: apt-update.yml

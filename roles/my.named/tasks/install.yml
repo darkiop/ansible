@@ -1,11 +1,21 @@
+- name: Ensure apt-utils is installed (Debian/Ubuntu)
+  ansible.builtin.apt:
+    name: apt-utils
+    state: present
+    update_cache: true
+  when: ansible_os_family == "Debian"
+
 - name: Install named/bind9
   ansible.builtin.apt:
     update_cache: true
+    install_recommends: false
     pkg:
       - bind9
       - bind9-utils
       - python3-dnspython
     state: present
+  environment:
+    DEBIAN_FRONTEND: noninteractive
 
 - name: Ensure zone directory exists and is writable by bind
   ansible.builtin.file:
@@ -30,3 +40,4 @@
     owner: "{{ my_named_bind_user }}"
     group: "{{ my_named_bind_user }}"
     mode: "0755"
+  when: my_named_zone_dir != my_named_base_dir

@@ -18,11 +18,14 @@ roles:
   - name: lae.proxmox # https://galaxy.ansible.com/ui/standalone/roles/lae/proxmox/
   - name: djarbz.proxmox_backup_client # https://galaxy.ansible.com/ui/standalone/roles/djarbz/proxmox_backup_client/
   - name: sbaerlocher.snmp # https://galaxy.ansible.com/ui/standalone/roles/sbaerlocher/snmp/
-  - name: r_pufky.pihole # https://galaxy.ansible.com/ui/standalone/roles/r_pufky/pihole/
+  - name: r_pufky.pihole # https://github.com/r-pufky/ansible_pihole
+    src: https://github.com/r-pufky/ansible_pihole.git
+    version: 13-6.4.1-1.0.0
   - name: githubixx.ansible_role_wireguard # https://galaxy.ansible.com/ui/standalone/roles/githubixx/ansible_role_wireguard/
   - name: elliotweiser.osx-command-line-tools # needed for collection geerlingguy.mac
 
 collections:
+  - name: ansible.posix # https://docs.ansible.com/ansible/latest/collections/ansible/posix/
   - name: community.general # https://galaxy.ansible.com/ui/repo/published/community/general/
   - name: community.docker # https://docs.ansible.com/ansible/latest/collections/community/docker/index.html
   - name: geerlingguy.mac # https://galaxy.ansible.com/ui/repo/published/geerlingguy/mac/

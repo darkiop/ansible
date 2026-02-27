@@ -1,14 +1,6 @@
 - name: Essential Setup
 
-  hosts:
-    # GROUPS
-    - pve_hosts
-    - pve_lxc
-    - pve_vm
-    - vpn_gw_ext
-    - pve_test_hosts
-    # CLIENTS
-    - loki-new
+  hosts: essentials
 
   become: true
 

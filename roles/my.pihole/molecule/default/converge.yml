@@ -1,0 +1,16 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    my_pihole_setup_keepalived: false
+    pihole_webpassword: molecule
+    pihole_pihole_interface: eth0
+    pihole_update_enable: false
+    pihole_rev_server: false
+    pihole_pihole_dns_1: 1.1.1.1#53
+    pihole_pihole_dns_2: 8.8.8.8#53
+    pihole_custom_list_use: false
+    pihole_custom_list: []
+  roles:
+    - role: my.pihole

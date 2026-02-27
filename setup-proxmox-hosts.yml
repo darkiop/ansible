@@ -1,7 +1,6 @@
 - name: Setup for Proxmox Hosts
 
-  hosts:
-    - pve_hosts
+  hosts: pve_hosts
 
   become: true
 
@@ -13,9 +12,6 @@
       register: nvme0n1_stat
 
   roles:
-    ## SAMBA (https://github.com/bertvv/ansible-role-samba)
-    - role: my.samba
-      tags: role-samba
 
     ## PROXMOX (https://github.com/lae/ansible-role-proxmox)
     - role: my.proxmox

@@ -1,0 +1,19 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure molecule user exists
+      ansible.builtin.getent:
+        database: passwd
+        key: molecule
+
+    - name: Check sudoers drop-in exists
+      ansible.builtin.stat:
+        path: /etc/sudoers.d/molecule
+      register: sudoers_file
+
+    - name: Assert sudoers drop-in is present
+      ansible.builtin.assert:
+        that:
+          - sudoers_file.stat.exists

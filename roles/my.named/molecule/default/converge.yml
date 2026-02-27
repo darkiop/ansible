@@ -1,0 +1,15 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  vars:
+    my_named_mode: slave
+    my_named_master_ip: 127.0.0.1
+    my_named_zones: []
+    my_named_zone_definitions: []
+    my_named_resolv_conf_search_domain: example.local
+    my_named_resolv_conf_nameservers:
+      - 1.1.1.1
+    my_named_manage_resolv_conf: false
+  roles:
+    - role: my.named

@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  become: true
+  tasks:
+    - name: Gather package facts
+      ansible.builtin.package_facts:
+        manager: auto
+
+    - name: Assert bind9 installed
+      ansible.builtin.assert:
+        that:
+          - "'bind9' in ansible_facts.packages"

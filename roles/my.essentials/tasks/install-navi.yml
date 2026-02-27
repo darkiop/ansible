@@ -23,13 +23,6 @@
     state: present
   when: pip_show_result.rc != 0
 
-- name: "Role: my.essentials - install-navi.yml - install fzf"
-  become: true
-  become_user: root
-  ansible.builtin.apt:
-    name: fzf
-    state: present
-
 - name: "Role: my.essentials - install-navi.yml - get the latest release version"
   community.general.github_release:
     user: denisidoro

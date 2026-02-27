@@ -1,3 +1,5 @@
+sudoers_bin_nopasswd: /usr/bin/apt-get, /usr/bin/apt, /usr/sbin/reboot, /usr/bin/docker
+
 # Role: my.essentials - apt install aditional_software task
 my_essentials_apt_additional_packages:
   - sshpass

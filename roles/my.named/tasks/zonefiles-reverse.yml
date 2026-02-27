@@ -1,3 +1,7 @@
+- name: Initialize reverse records list
+  ansible.builtin.set_fact:
+    all_reverse_records: []
+
 - name: Collect all A records with source zone
   ansible.builtin.set_fact:
     all_reverse_records: >-

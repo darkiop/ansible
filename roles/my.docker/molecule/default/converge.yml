@@ -1,0 +1,14 @@
+---
+- name: Converge
+  hosts: all
+  become: true
+  pre_tasks:
+    - name: Ensure molecule user exists
+      ansible.builtin.user:
+        name: molecule
+        state: present
+        shell: /bin/bash
+  vars:
+    my_essentials_user_username: molecule
+  roles:
+    - role: my.docker
