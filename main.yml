@@ -12,9 +12,9 @@
 
 # GENERAL CONFIGURATIONS
 # ────────────────────────────────────────────────────────── #
-- name: Import setup-essentials.yml
-  import_playbook: setup-essentials.yml
-  tags: [setup-essentials, sudo]
+#- name: Import setup-essentials.yml
+#  import_playbook: setup-essentials.yml
+#  tags: [setup-essentials, sudo]
 
 # GROUP SPECIFIC SETUP
 # ────────────────────────────────────────────────────────── #
