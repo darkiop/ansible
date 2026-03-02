@@ -1,6 +1,19 @@
-- name: Essential Setup
+---
+# Bootstrap playbook - applies standard roles to selected host groups
+#
+# Usage:
+#   ansible-playbook bootstrap.yml -l <host-or-group>
+#   ansible-playbook bootstrap.yml -l test-host-debian
+#   ansible-playbook bootstrap.yml -l pve_lxc --tags role-essentials
 
-  hosts: essentials
+- name: Bootstrap - essentials
+
+  hosts:
+    - pve_hosts
+    - pve_lxc
+    - pve_vm
+    - vpn_gw_ext
+    - test_hosts
 
   become: true
 
@@ -22,7 +35,6 @@
       tags: role-ntp
 
   tasks:
-    # TODO move to my.essentials
     - name: Create bin directory
       become: true
       become_user: "{{ my_essentials_user_username }}"
