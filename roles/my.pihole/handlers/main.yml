@@ -4,7 +4,7 @@
   changed_when: false
 
 - name: Reload sysctl config
-  ansible.builtin.command: sysctl -p
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/99-keepalived.conf
   register: output
   changed_when: output.rc != 0
 

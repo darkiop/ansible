@@ -10,11 +10,14 @@
     - check_pihole
 
 - name: Enable nonlocal IP binding for keepalived
-  ansible.builtin.blockinfile:
-    path: /etc/sysctl.conf
-    block: |
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/99-keepalived.conf
+    content: |
       net.ipv4.ip_nonlocal_bind = 1
       net.ipv6.ip_nonlocal_bind = 1
+    owner: root
+    group: root
+    mode: "0644"
   notify: Reload sysctl config
 
 - name: Force install keepalived package
@@ -28,3 +31,9 @@
     src: keepalived.j2
     mode: "0644"
   notify: Restart keepalived
+
+- name: Ensure keepalived is enabled and running
+  ansible.builtin.service:
+    name: keepalived
+    state: started
+    enabled: true
