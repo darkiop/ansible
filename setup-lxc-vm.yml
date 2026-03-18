@@ -3,7 +3,6 @@
   hosts:
     - pve_lxc
     - pve_vm
-    - pve_test_hosts
 
   become: true
 
