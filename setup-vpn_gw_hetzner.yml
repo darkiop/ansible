@@ -9,5 +9,5 @@
 
     - role: my.tailscale
       tags: role-tailscale
-      
+
       # TODO role: my.wireguard-server
