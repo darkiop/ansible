@@ -10,45 +10,34 @@
 # --ask-pass
 # --ask-become-pass
 
-# GENERAL CONFIGURATIONS
-# ────────────────────────────────────────────────────────── #
-#- name: Import setup-essentials.yml
-#  import_playbook: setup-essentials.yml
-#  tags: [setup-essentials, sudo]
-#
-# --> Bootstrap playbook: bootstrap.yml
-
-# GROUP SPECIFIC SETUP
-# ────────────────────────────────────────────────────────── #
-
-#    PROXMOX: HOSTS
+# PROXMOX: HOSTS
 - name: Import setup-proxmox-hosts.yml
   import_playbook: setup-proxmox-hosts.yml
 
-#    PROXMOX: CT & VMs
+# PROXMOX: CT & VMs
 - name: Import setup-lxc-vm.yml
   import_playbook: setup-lxc-vm.yml
 
-#    ADBLOCK
+# ADBLOCK
 - name: Import setup-adblock.yml
   import_playbook: setup-adblock.yml
 
-#    DOCKER
+# DOCKER
 - name: Import setup-docker.yml
   import_playbook: setup-docker.yml
 
-#    VPN-GATEWAYS
+# VPN-GATEWAYS
 - name: Import setup-vpn_gw_ext.yml
   import_playbook: setup-vpn_gw_ext.yml
 
 - name: Import setup-vpn_gw_hetzner.yml
   import_playbook: setup-vpn_gw_hetzner.yml
 
-#    NAS
+# NAS
 - name: Import setup-nas.yml
   import_playbook: setup-nas.yml
 
-#    MacOS
+# MacOS
 - name: Improt setup-macos.yml
   import_playbook: setup-macos.yml
 
@@ -110,19 +99,6 @@
         hour: "10"
         job: /home/darkiop/bin/rsync-backups.sh >/dev/null 2>&1
       tags: crontab, crontab-rsync-backups, rsync-backups
-
-- name: Setup for pve-ct-pihole
-
-  hosts:
-    - pve-ct-pihole
-
-  become: true
-
-  roles:
-
-    ## Pi-hole
-    - role: my.pihole
-      tags: role-pihole
 
 - name: Setup for loki-new
   hosts: loki-new
