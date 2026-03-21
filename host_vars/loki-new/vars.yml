@@ -33,30 +33,14 @@ my_smartmeter_ser2net_install: true
 my_smartmeter_restart_smartmeter_install: true
 my_smartmeter_socat_install: false
 
-# Role: my.keepalived
-my_keepalived_instance: pihole
-my_keepalived_state: MASTER
-my_keepalived_interface: eth0
-my_keepalived_router_id: 1
-my_keepalived_priority: 255
-my_keepalived_virtual_ipv4: 192.168.1.53/24
-
-# Role: r_pufky.pihole
-pihole_update_enable: false
-pihole_webpassword: "{{ vault_pihole_webpassword }}"
-pihole_pihole_interface: eth0
-
-# Upstream DNS Servers
-pihole_pihole_dns_1: 1.1.1.1#53
-pihole_pihole_dns_2: 8.8.8.8#53
-# pihole_pihole_dns_3:
-# pihole_pihole_dns_4:
-
-# Conditional forwarding
-pihole_rev_server: true
-pihole_rev_server_cidr: 10.4.0.0/24
-pihole_rev_server_target: 10.4.0.9
-pihole_rev_server_domain: "{{ vault_local_fqdn }}"
+# Role: my.pihole
+my_pihole_keepalived_setup: false
+my_pihole_keepalived_instance: pihole
+my_pihole_keepalived_state: MASTER
+my_pihole_keepalived_interface: eth0
+my_pihole_keepalived_router_id: 1
+my_pihole_keepalived_priority: 255
+my_pihole_keepalived_virtual_ipv4: 192.168.1.53/24
 
 # Role: my.tailscale
 my_tailscale_auth_key: "{{ vault_my_tailscale_auth_key }}"

@@ -18,4 +18,4 @@
 
 - name: Include keepalived tasks
   ansible.builtin.include_tasks: keepalived.yml
-  when: my_pihole_setup_keepalived | default(true)
+  when: my_pihole_keepalived_setup | default(true)

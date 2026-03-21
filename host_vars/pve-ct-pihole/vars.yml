@@ -1,31 +1,8 @@
-# Role: my.essentials - apt install aditional_software task
-my_essentials_apt_additional_packages:
-
-# Role: my.keepalived
-my_keepalived_instance: pihole
-my_keepalived_state: BACKUP
-my_keepalived_interface: eth0
-my_keepalived_router_id: 1
-my_keepalived_priority: 254
-my_keepalived_virtual_ipv4: 192.168.1.53/24
-
-# Role: r_pufky.pihole (v6 TOML config)
-pihole_srv_update_enable: false
-
-pihole_update_enable: false
-
-pihole_srv_api_config_enable: false
-pihole_cfg_webserver_api_app_pwhash: ''
-pihole_cfg_dns_interface: eth0
-
-# Upstream DNS Servers
-pihole_cfg_dns_upstreams:
-  - '1.1.1.1#53'
-  - '8.8.8.8#53'
-
-# Conditional forwarding
-pihole_cfg_dns_rev_servers:
-  - enabled: true
-    ip: '10.4.0.0/24'
-    server: '10.4.0.9'
-    domain: "{{ vault_local_fqdn }}"
+# Role: my.pihole
+my_pihole_keepalived_setup: true
+my_pihole_keepalived_instance: pihole
+my_pihole_keepalived_state: BACKUP
+my_pihole_keepalived_interface: eth0
+my_pihole_keepalived_router_id: 1
+my_pihole_keepalived_priority: 254
+my_pihole_keepalived_virtual_ipv4: 192.168.1.53/24

@@ -1,1165 +1,1488 @@
-pihole_ad_sources:
-  - id: 1
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/child-protection
-    enabled: true
+# Role: my.pihole
+pihole_cfg_webserver_api_pwhash: "{{ vault_pihole_cfg_webserver_api_pwhash }}"
+pihole_cfg_webserver_api_totp_secret: "{{ vault_pihole_cfg_webserver_api_totp_secret }}"
+pihole_cfg_webserver_api_app_pwhash: "{{ vault_pihole_cfg_webserver_api_app_pwhash }}"
+pihole_srv_backup_post_enable: true
+
+# Conditional forwarding
+pihole_cfg_dns_rev_servers:
+  - enabled: true
+    ip: '10.4.0.0/24'
+    server: '10.4.0.9'
+    domain: "{{ vault_local_fqdn }}"
+
+# Upstream DNS Servers
+pihole_cfg_dns_upstreams:
+  - '1.1.1.1#53'
+  - '8.8.8.8#53'
+
+pihole_cfg_mgmt_lists:
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/child-protection
+    type: 'block'
     comment: ansible adlist
-  - id: 2
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Corona-Blocklist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Corona-Blocklist
+    type: 'block'
     comment: ansible adlist
-  - id: 3
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/crypto
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/crypto
+    type: 'block'
     comment: ansible adlist
-  - id: 4
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DatingSites
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DatingSites
+    type: 'block'
     comment: ansible adlist
-  - id: 5
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting1
+    type: 'block'
     comment: ansible adlist
-  - id: 6
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting2
+    type: 'block'
     comment: ansible adlist
-  - id: 7
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting3
+    type: 'block'
     comment: ansible adlist
-  - id: 8
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting4
+    type: 'block'
     comment: ansible adlist
-  - id: 9
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
+    type: 'block'
     comment: ansible adlist
-  - id: 10
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Fake-Science
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Fake-Science
+    type: 'block'
     comment: ansible adlist
-  - id: 11
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/gambling
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/gambling
+    type: 'block'
     comment: ansible adlist
-  - id: 12
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/malware
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/malware
+    type: 'block'
     comment: ansible adlist
-  - id: 13
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/MS-Office-Telemetry
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/MS-Office-Telemetry
+    type: 'block'
     comment: ansible adlist
-  - id: 14
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/notserious
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/notserious
+    type: 'block'
     comment: ansible adlist
-  - id: 15
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    type: 'block'
     comment: ansible adlist
-  - id: 16
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock1
+    type: 'block'
     comment: ansible adlist
-  - id: 17
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock2
+    type: 'block'
     comment: ansible adlist
-  - id: 18
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock3
+    type: 'block'
     comment: ansible adlist
-  - id: 19
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock4
+    type: 'block'
     comment: ansible adlist
-  - id: 20
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock5
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock5
+    type: 'block'
     comment: ansible adlist
-  - id: 21
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock6
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock6
+    type: 'block'
     comment: ansible adlist
-  - id: 22
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/proxies
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/proxies
+    type: 'block'
     comment: ansible adlist
-  - id: 23
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/samsung
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/samsung
+    type: 'block'
     comment: ansible adlist
-  - id: 24
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
+    type: 'block'
     comment: ansible adlist
-  - id: 25
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Streaming
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Streaming
+    type: 'block'
     comment: ansible adlist
-  - id: 26
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/SupportingRussia
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/SupportingRussia
+    type: 'block'
     comment: ansible adlist
-  - id: 27
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    type: 'block'
     comment: ansible adlist
-  - id: 28
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/AddikoBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/AddikoBank
+    type: 'block'
     comment: ansible adlist
-  - id: 29
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/AnadiBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/AnadiBank
+    type: 'block'
     comment: ansible adlist
-  - id: 30
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Bank99
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Bank99
+    type: 'block'
     comment: ansible adlist
-  - id: 31
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/BankBurgenland
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/BankBurgenland
+    type: 'block'
     comment: ansible adlist
-  - id: 32
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Bawag
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Bawag
+    type: 'block'
     comment: ansible adlist
-  - id: 33
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/BKSBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/BKSBank
+    type: 'block'
     comment: ansible adlist
-  - id: 34
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/ConsorsFinanz
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/ConsorsFinanz
+    type: 'block'
     comment: ansible adlist
-  - id: 35
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Denizbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Denizbank
+    type: 'block'
     comment: ansible adlist
-  - id: 36
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Easybank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Easybank
+    type: 'block'
     comment: ansible adlist
-  - id: 37
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Eurambank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Eurambank
+    type: 'block'
     comment: ansible adlist
-  - id: 38
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Hypotirol
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Hypotirol
+    type: 'block'
     comment: ansible adlist
-  - id: 39
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Kommunalkreditinvest
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Kommunalkreditinvest
+    type: 'block'
     comment: ansible adlist
-  - id: 40
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/LichtensteinischeLandesbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/LichtensteinischeLandesbank
+    type: 'block'
     comment: ansible adlist
-  - id: 41
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/N26
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/N26
+    type: 'block'
     comment: ansible adlist
-  - id: 42
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/OberBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/OberBank
+    type: 'block'
     comment: ansible adlist
-  - id: 43
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/PrivatBankRaiffeisenlandesbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/PrivatBankRaiffeisenlandesbank
+    type: 'block'
     comment: ansible adlist
-  - id: 44
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/RaiffeisenBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/RaiffeisenBank
+    type: 'block'
     comment: ansible adlist
-  - id: 45
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Raiffeisenzertifikate
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Raiffeisenzertifikate
+    type: 'block'
     comment: ansible adlist
-  - id: 46
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/RenaultBankdirekt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/RenaultBankdirekt
+    type: 'block'
     comment: ansible adlist
-  - id: 47
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SantanderBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SantanderBank
+    type: 'block'
     comment: ansible adlist
-  - id: 48
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SchelhammerCapitalBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SchelhammerCapitalBank
+    type: 'block'
     comment: ansible adlist
-  - id: 49
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Schoellerbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Schoellerbank
+    type: 'block'
     comment: ansible adlist
-  - id: 50
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SpardaBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SpardaBank
+    type: 'block'
     comment: ansible adlist
-  - id: 51
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SparkasseBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SparkasseBank
+    type: 'block'
     comment: ansible adlist
-  - id: 52
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SWKBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/SWKBank
+    type: 'block'
     comment: ansible adlist
-  - id: 53
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Teambank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/Teambank
+    type: 'block'
     comment: ansible adlist
-  - id: 54
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/TFBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/TFBank
+    type: 'block'
     comment: ansible adlist
-  - id: 55
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/UniCreditBankAustria
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/UniCreditBankAustria
+    type: 'block'
     comment: ansible adlist
-  - id: 56
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankKaernten
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankKaernten
+    type: 'block'
     comment: ansible adlist
-  - id: 57
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankNiederoesterreich
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankNiederoesterreich
+    type: 'block'
     comment: ansible adlist
-  - id: 58
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankOberoesterreich
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankOberoesterreich
+    type: 'block'
     comment: ansible adlist
-  - id: 59
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankSalzburg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankSalzburg
+    type: 'block'
     comment: ansible adlist
-  - id: 60
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankSteiermark
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankSteiermark
+    type: 'block'
     comment: ansible adlist
-  - id: 61
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankTirol
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankTirol
+    type: 'block'
     comment: ansible adlist
-  - id: 62
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankVorarlberg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankVorarlberg
+    type: 'block'
     comment: ansible adlist
-  - id: 63
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankWien
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/VolksbankWien
+    type: 'block'
     comment: ansible adlist
-  - id: 64
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/ZuercherKantonalbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/AT/ZuercherKantonalbank
+    type: 'block'
     comment: ansible adlist
-  - id: 65
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/AargauischeKantonalbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/AargauischeKantonalbank
+    type: 'block'
     comment: ansible adlist
-  - id: 66
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/AlternativeBankSchweiz
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/AlternativeBankSchweiz
+    type: 'block'
     comment: ansible adlist
-  - id: 67
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Arabbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Arabbank
+    type: 'block'
     comment: ansible adlist
-  - id: 68
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BankCler
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BankCler
+    type: 'block'
     comment: ansible adlist
-  - id: 69
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCJ-BanqueCantonaleduJura
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCJ-BanqueCantonaleduJura
+    type: 'block'
     comment: ansible adlist
-  - id: 70
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCN-BanqueCantonaleNeuchateloise
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCN-BanqueCantonaleNeuchateloise
+    type: 'block'
     comment: ansible adlist
-  - id: 71
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCVS-BanqueCantonaleduValais
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BCVS-BanqueCantonaleduValais
+    type: 'block'
     comment: ansible adlist
-  - id: 72
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BNP-Paribas
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/BNP-Paribas
+    type: 'block'
     comment: ansible adlist
-  - id: 73
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Ca-Indosuez
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Ca-Indosuez
+    type: 'block'
     comment: ansible adlist
-  - id: 74
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Cash
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Cash
+    type: 'block'
     comment: ansible adlist
-  - id: 75
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/CIC
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/CIC
+    type: 'block'
     comment: ansible adlist
-  - id: 76
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Citi
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Citi
+    type: 'block'
     comment: ansible adlist
-  - id: 77
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Credit-Suisse-AG
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Credit-Suisse-AG
+    type: 'block'
     comment: ansible adlist
-  - id: 78
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/DZ-Privatbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/DZ-Privatbank
+    type: 'block'
     comment: ansible adlist
-  - id: 79
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Gemeinschaftsbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Gemeinschaftsbank
+    type: 'block'
     comment: ansible adlist
-  - id: 80
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/HelvetischeBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/HelvetischeBank
+    type: 'block'
     comment: ansible adlist
-  - id: 81
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Heritage
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Heritage
+    type: 'block'
     comment: ansible adlist
-  - id: 82
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Hypobank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Hypobank
+    type: 'block'
     comment: ansible adlist
-  - id: 83
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/HypoVoralberg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/HypoVoralberg
+    type: 'block'
     comment: ansible adlist
-  - id: 84
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/JSafraSarasin
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/JSafraSarasin
+    type: 'block'
     comment: ansible adlist
-  - id: 85
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/LGTBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/LGTBank
+    type: 'block'
     comment: ansible adlist
-  - id: 86
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Mbaerbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Mbaerbank
+    type: 'block'
     comment: ansible adlist
-  - id: 87
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Migrosbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Migrosbank
+    type: 'block'
     comment: ansible adlist
-  - id: 88
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Monyland
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Monyland
+    type: 'block'
     comment: ansible adlist
-  - id: 89
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/NeonSchwitzerlandAG
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/NeonSchwitzerlandAG
+    type: 'block'
     comment: ansible adlist
-  - id: 90
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/ObwaldnerKantonalbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/ObwaldnerKantonalbank
+    type: 'block'
     comment: ansible adlist
-  - id: 91
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/OneSwissBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/OneSwissBank
+    type: 'block'
     comment: ansible adlist
-  - id: 92
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PKB
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PKB
+    type: 'block'
     comment: ansible adlist
-  - id: 93
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PostFinance
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PostFinance
+    type: 'block'
     comment: ansible adlist
-  - id: 94
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PPI-Schweiz
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/PPI-Schweiz
+    type: 'block'
     comment: ansible adlist
-  - id: 95
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Raiffeisen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Raiffeisen
+    type: 'block'
     comment: ansible adlist
-  - id: 96
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SaxoBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SaxoBank
+    type: 'block'
     comment: ansible adlist
-  - id: 97
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SchwyzerKantonalbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SchwyzerKantonalbank
+    type: 'block'
     comment: ansible adlist
-  - id: 98
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SNB-SchweizerischeNationalbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SNB-SchweizerischeNationalbank
+    type: 'block'
     comment: ansible adlist
-  - id: 99
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Swissbanking
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Swissbanking
+    type: 'block'
     comment: ansible adlist
-  - id: 100
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SyzGroup
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/SyzGroup
+    type: 'block'
     comment: ansible adlist
-  - id: 101
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/UBS
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/UBS
+    type: 'block'
     comment: ansible adlist
-  - id: 102
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Vontobel
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/Vontobel
+    type: 'block'
     comment: ansible adlist
-  - id: 103
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/VPBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/VPBank
+    type: 'block'
     comment: ansible adlist
-  - id: 104
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/ZKB
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/CH/ZKB
+    type: 'block'
     comment: ansible adlist
-  - id: 105
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Commerzbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Commerzbank
+    type: 'block'
     comment: ansible adlist
-  - id: 106
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Consorsbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Consorsbank
+    type: 'block'
     comment: ansible adlist
-  - id: 107
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Deka
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Deka
+    type: 'block'
     comment: ansible adlist
-  - id: 108
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/DeutscheBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/DeutscheBank
+    type: 'block'
     comment: ansible adlist
-  - id: 109
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/DKB
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/DKB
+    type: 'block'
     comment: ansible adlist
-  - id: 110
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/HamburgCommercialBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/HamburgCommercialBank
+    type: 'block'
     comment: ansible adlist
-  - id: 111
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/HelebaBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/HelebaBank
+    type: 'block'
     comment: ansible adlist
-  - id: 112
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Hypovereinsbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Hypovereinsbank
+    type: 'block'
     comment: ansible adlist
-  - id: 113
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/ING
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/ING
+    type: 'block'
     comment: ansible adlist
-  - id: 114
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/KFWBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/KFWBank
+    type: 'block'
     comment: ansible adlist
-  - id: 115
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/LandesbankBadenWuerttemberg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/LandesbankBadenWuerttemberg
+    type: 'block'
     comment: ansible adlist
-  - id: 116
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/NorddeutscheLandesbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/NorddeutscheLandesbank
+    type: 'block'
     comment: ansible adlist
-  - id: 117
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/NRWBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/NRWBank
+    type: 'block'
     comment: ansible adlist
-  - id: 118
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Pfandbriefbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Pfandbriefbank
+    type: 'block'
     comment: ansible adlist
-  - id: 119
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Postbank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Postbank
+    type: 'block'
     comment: ansible adlist
-  - id: 120
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/PSD-Bank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/PSD-Bank
+    type: 'block'
     comment: ansible adlist
-  - id: 121
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/SantanderBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/SantanderBank
+    type: 'block'
     comment: ansible adlist
-  - id: 122
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Sparda-Bank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Sparda-Bank
+    type: 'block'
     comment: ansible adlist
-  - id: 123
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/StaatsbankBadenWuerttemberg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/StaatsbankBadenWuerttemberg
+    type: 'block'
     comment: ansible adlist
-  - id: 124
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Targobank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/Targobank
+    type: 'block'
     comment: ansible adlist
-  - id: 125
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/VolkswagenBank
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/sonstige_Banken/VolkswagenBank
+    type: 'block'
     comment: ansible adlist
-  - id: 126
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg1
+    type: 'block'
     comment: ansible adlist
-  - id: 127
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg2
+    type: 'block'
     comment: ansible adlist
-  - id: 128
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern1
+    type: 'block'
     comment: ansible adlist
-  - id: 129
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern2
+    type: 'block'
     comment: ansible adlist
-  - id: 130
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Berlin
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Berlin
+    type: 'block'
     comment: ansible adlist
-  - id: 131
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Brandenburg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Brandenburg
+    type: 'block'
     comment: ansible adlist
-  - id: 132
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bremen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bremen
+    type: 'block'
     comment: ansible adlist
-  - id: 133
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hamburg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hamburg
+    type: 'block'
     comment: ansible adlist
-  - id: 134
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen1
+    type: 'block'
     comment: ansible adlist
-  - id: 135
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen2
+    type: 'block'
     comment: ansible adlist
-  - id: 136
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/MecklenburgVorpommern
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/MecklenburgVorpommern
+    type: 'block'
     comment: ansible adlist
-  - id: 137
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen1
+    type: 'block'
     comment: ansible adlist
-  - id: 138
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen2
+    type: 'block'
     comment: ansible adlist
-  - id: 139
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW1
+    type: 'block'
     comment: ansible adlist
-  - id: 140
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW2
+    type: 'block'
     comment: ansible adlist
-  - id: 141
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW3
+    type: 'block'
     comment: ansible adlist
-  - id: 142
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW4
+    type: 'block'
     comment: ansible adlist
-  - id: 143
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/RheinlandPfalz
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/RheinlandPfalz
+    type: 'block'
     comment: ansible adlist
-  - id: 144
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Saarland
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Saarland
+    type: 'block'
     comment: ansible adlist
-  - id: 145
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Sachsen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Sachsen
+    type: 'block'
     comment: ansible adlist
-  - id: 146
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SachsenAnhalt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SachsenAnhalt
+    type: 'block'
     comment: ansible adlist
-  - id: 147
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SchleswigHolstein
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SchleswigHolstein
+    type: 'block'
     comment: ansible adlist
-  - id: 148
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Thueringen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Thueringen
+    type: 'block'
     comment: ansible adlist
-  - id: 149
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-0
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-0
+    type: 'block'
     comment: ansible adlist
-  - id: 150
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 151
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 152
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-2
+    type: 'block'
     comment: ansible adlist
-  - id: 153
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 154
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 155
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-4
+    type: 'block'
     comment: ansible adlist
-  - id: 156
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 157
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 158
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-6
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-6
+    type: 'block'
     comment: ansible adlist
-  - id: 159
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 160
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 161
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 162
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 163
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 164
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 165
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-3
+    type: 'block'
     comment: ansible adlist
-  - id: 166
-    address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+    type: 'block'
     comment: ansible adlist
-  - id: 167
-    address: https://raw.githubusercontent.com/notracking/hosts-blocklists/master/adblock/adblock.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/notracking/hosts-blocklists/master/adblock/adblock.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 168
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 169
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 170
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 171
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    type: 'block'
     comment: ansible adlist
-  - id: 172
-    address: https://raw.githubusercontent.com/wlqY8gkVb9w1Ck5MVD4lBre9nWJez8/W10TelemetryBlocklist/master/W10TelemetryBlocklist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/wlqY8gkVb9w1Ck5MVD4lBre9nWJez8/W10TelemetryBlocklist/master/W10TelemetryBlocklist
+    type: 'block'
     comment: ansible adlist
-  - id: 173
-    address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 174
-    address: https://v.firebog.net/hosts/Easyprivacy.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/Easyprivacy.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 175
-    address: https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+    groups: ['Default']
     enabled: true
+  - address: https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 176
-    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt
+    groups: ['Default']
     enabled: true
+  - address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-blocklist.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 177
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/samsung
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/samsung
+    type: 'block'
     comment: ansible adlist
-  - id: 178
-    address: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+    groups: ['Default']
     enabled: true
+  - address: https://www.github.developerdan.com/hosts/lists/ads-and-tracking-extended.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 179
-    address: https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+    groups: ['Default']
     enabled: true
+  - address: https://hostfiles.frogeye.fr/firstparty-trackers-hosts.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 180
-    address: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_trackers.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_trackers.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 181
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock1
+    type: 'block'
     comment: ansible adlist
-  - id: 182
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock2
+    type: 'block'
     comment: ansible adlist
-  - id: 183
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock3
+    type: 'block'
     comment: ansible adlist
-  - id: 184
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock4
+    type: 'block'
     comment: ansible adlist
-  - id: 185
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock5
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock5
+    type: 'block'
     comment: ansible adlist
-  - id: 186
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock6
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/pornblock6
+    type: 'block'
     comment: ansible adlist
-  - id: 187
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/gambling
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/gambling
+    type: 'block'
     comment: ansible adlist
-  - id: 188
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/child-protection
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/child-protection
+    type: 'block'
     comment: ansible adlist
-  - id: 189
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DatingSites
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DatingSites
+    type: 'block'
     comment: ansible adlist
-  - id: 190
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/proxies
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/proxies
+    type: 'block'
     comment: ansible adlist
-  - id: 191
-    address: https://nsfw.oisd.nl
+    groups: ['Default']
     enabled: true
+  - address: https://nsfw.oisd.nl
+    type: 'block'
     comment: ansible adlist
-  - id: 192
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Streaming
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Streaming
+    type: 'block'
     comment: ansible adlist
-  - id: 193
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/notserious
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/notserious
+    type: 'block'
     comment: ansible adlist
-  - id: 194
-    address: https://raw.githubusercontent.com/Monstanner/DuckDuckGo-Fakeshops-Blocklist/main/Blockliste
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Monstanner/DuckDuckGo-Fakeshops-Blocklist/main/Blockliste
+    type: 'block'
     comment: ansible adlist
-  - id: 195
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/easylist
+    type: 'block'
     comment: ansible adlist
-  - id: 196
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
+    type: 'block'
     comment: ansible adlist
-  - id: 197
-    address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/anudeepND/blacklist/master/adservers.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 198
-    address: https://v.firebog.net/hosts/Easyprivacy.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/Easyprivacy.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 199
-    address: https://v.firebog.net/hosts/Easylist.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/Easylist.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 200
-    address: https://v.firebog.net/hosts/Prigent-Ads.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/Prigent-Ads.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 201
-    address: https://v.firebog.net/hosts/AdguardDNS.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/AdguardDNS.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 202
-    address: https://adaway.org/hosts.txt
+    groups: ['Default']
     enabled: true
+  - address: https://adaway.org/hosts.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 203
-    address: https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+    groups: ['Default']
     enabled: true
+  - address: https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 204
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+    type: 'block'
     comment: ansible adlist
-  - id: 205
-    address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/adblock/pro.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 206
-    address: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_ads.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/AdguardTeam/cname-trackers/master/data/combined_disguised_ads.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 207
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/malware
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/malware
+    type: 'block'
     comment: ansible adlist
-  - id: 208
-    address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+    groups: ['Default']
     enabled: true
+  - address: https://gitlab.com/quidsup/notrack-blocklists/raw/master/notrack-malware.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 209
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/crypto
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/crypto
+    type: 'block'
     comment: ansible adlist
-  - id: 210
-    address: https://v.firebog.net/hosts/Prigent-Malware.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/Prigent-Malware.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 211
-    address: https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+    groups: ['Default']
     enabled: true
+  - address: https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 212
-    address: https://raw.githubusercontent.com/Spam404/lists/master/adblock-list.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Spam404/lists/master/adblock-list.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 213
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+    type: 'block'
     comment: ansible adlist
-  - id: 214
-    address: https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+    groups: ['Default']
     enabled: true
+  - address: https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 215
-    address: https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADomains.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADomains.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 216
-    address: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 217
-    address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+    type: 'block'
     comment: ansible adlist
-  - id: 218
-    address: https://urlhaus.abuse.ch/downloads/hostfile/
+    groups: ['Default']
     enabled: true
+  - address: https://urlhaus.abuse.ch/downloads/hostfile/
+    type: 'block'
     comment: ansible adlist
-  - id: 219
-    address: https://raw.githubusercontent.com/AmnestyTech/investigations/master/2021-07-18_nso/domains.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/AmnestyTech/investigations/master/2021-07-18_nso/domains.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 220
-    address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/tif.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 221
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+    type: 'block'
     comment: ansible adlist
-  - id: 222
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting1
+    type: 'block'
     comment: ansible adlist
-  - id: 223
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting2
+    type: 'block'
     comment: ansible adlist
-  - id: 224
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting3
+    type: 'block'
     comment: ansible adlist
-  - id: 225
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting4
+    type: 'block'
     comment: ansible adlist
-  - id: 226
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-0
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-0
+    type: 'block'
     comment: ansible adlist
-  - id: 227
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 228
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-1-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 229
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-2
+    type: 'block'
     comment: ansible adlist
-  - id: 230
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 231
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-3-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 232
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-4
+    type: 'block'
     comment: ansible adlist
-  - id: 233
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 234
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-5-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 235
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-6
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-6
+    type: 'block'
     comment: ansible adlist
-  - id: 236
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 237
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-7-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 238
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 239
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-8-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 240
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-1
+    type: 'block'
     comment: ansible adlist
-  - id: 241
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-2
+    type: 'block'
     comment: ansible adlist
-  - id: 242
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Volks-und-Raiffeisenbank/VR-PLZ-9-Teil-3
+    type: 'block'
     comment: ansible adlist
-  - id: 243
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg1
+    type: 'block'
     comment: ansible adlist
-  - id: 244
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/BadenWuerttemberg2
+    type: 'block'
     comment: ansible adlist
-  - id: 245
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern1
+    type: 'block'
     comment: ansible adlist
-  - id: 246
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bayern2
+    type: 'block'
     comment: ansible adlist
-  - id: 247
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Berlin
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Berlin
+    type: 'block'
     comment: ansible adlist
-  - id: 248
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Brandenburg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Brandenburg
+    type: 'block'
     comment: ansible adlist
-  - id: 249
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bremen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Bremen
+    type: 'block'
     comment: ansible adlist
-  - id: 250
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hamburg
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hamburg
+    type: 'block'
     comment: ansible adlist
-  - id: 251
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen1
+    type: 'block'
     comment: ansible adlist
-  - id: 252
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Hessen2
+    type: 'block'
     comment: ansible adlist
-  - id: 253
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/MecklenburgVorpommern
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/MecklenburgVorpommern
+    type: 'block'
     comment: ansible adlist
-  - id: 254
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW1
+    type: 'block'
     comment: ansible adlist
-  - id: 255
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW2
+    type: 'block'
     comment: ansible adlist
-  - id: 256
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW3
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW3
+    type: 'block'
     comment: ansible adlist
-  - id: 257
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW4
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/NRW4
+    type: 'block'
     comment: ansible adlist
-  - id: 258
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen1
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen1
+    type: 'block'
     comment: ansible adlist
-  - id: 259
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen2
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Niedersachsen2
+    type: 'block'
     comment: ansible adlist
-  - id: 260
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/RheinlandPfalz
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/RheinlandPfalz
+    type: 'block'
     comment: ansible adlist
-  - id: 261
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Saarland
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Saarland
+    type: 'block'
     comment: ansible adlist
-  - id: 262
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Sachsen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Sachsen
+    type: 'block'
     comment: ansible adlist
-  - id: 263
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SachsenAnhalt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SachsenAnhalt
+    type: 'block'
     comment: ansible adlist
-  - id: 264
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SchleswigHolstein
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/SchleswigHolstein
+    type: 'block'
     comment: ansible adlist
-  - id: 265
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Thueringen
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/DomainSquatting/DE/Sparkasse/Thueringen
+    type: 'block'
     comment: ansible adlist
-  - id: 266
-    address: https://raw.githubusercontent.com/namePlayer/dhl-scamlist/main/dns-blocklists/pihole-blacklist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/namePlayer/dhl-scamlist/main/dns-blocklists/pihole-blacklist
+    type: 'block'
     comment: ansible adlist
-  - id: 267
-    address: https://www.einmalzahlungzweihundert.de/bl-einmalzahlung.txt
+    groups: ['Default']
     enabled: true
+  - address: https://www.einmalzahlungzweihundert.de/bl-einmalzahlung.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 268
-    address: https://big.oisd.nl
+    groups: ['Default']
     enabled: true
+  - address: https://big.oisd.nl
+    type: 'block'
     comment: ansible adlist
-  - id: 269
-    address: https://v.firebog.net/hosts/static/w3kbl.txt
+    groups: ['Default']
     enabled: true
+  - address: https://v.firebog.net/hosts/static/w3kbl.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 270
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Fake-Science
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Fake-Science
+    type: 'block'
     comment: ansible adlist
-  - id: 271
-    address: https://raw.githubusercontent.com/SoftCreatR/fakerando-domains/main/all.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/SoftCreatR/fakerando-domains/main/all.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 272
-    address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/multi.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/hagezi/dns-blocklists/main/domains/multi.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 273
-    address: https://raw.githubusercontent.com/elliotwutingfeng/Inversion-DNSBL-Blocklists/main/Google_hostnames_ABP.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/elliotwutingfeng/Inversion-DNSBL-Blocklists/main/Google_hostnames_ABP.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 274
-    address: https://raw.githubusercontent.com/autinerd/anti-axelspringer-hosts/master/axelspringer-hosts
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/autinerd/anti-axelspringer-hosts/master/axelspringer-hosts
+    type: 'block'
     comment: ansible adlist
-  - id: 275
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Amazon.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Amazon.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 276
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Baidu.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Baidu.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 277
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Google.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Google.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 278
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/HP.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/HP.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 279
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/LG.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/LG.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 280
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Samsung.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Samsung.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 281
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Synology.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Synology.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 282
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Twitch.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Twitch.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 283
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Ubisoft.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Ubisoft.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 284
-    address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Xiaomi.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/bloodhunterd/pi-hole-blocklists/master/Xiaomi.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 285
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/SmartTV.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 286
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/android-tracking.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 287
-    address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/Perflyst/PiHoleBlocklist/master/AmazonFireTV.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 288
-    address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Win10Telemetry
+    type: 'block'
     comment: ansible adlist
-  - id: 289
-    address: https://raw.githubusercontent.com/wlqY8gkVb9w1Ck5MVD4lBre9nWJez8/W10TelemetryBlocklist/master/W10TelemetryBlocklist
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/wlqY8gkVb9w1Ck5MVD4lBre9nWJez8/W10TelemetryBlocklist/master/W10TelemetryBlocklist
+    type: 'block'
     comment: ansible adlist
-  - id: 290
-    address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt
+    type: 'block'
     comment: ansible adlist
-  - id: 291
-    address: https://raw.githubusercontent.com/jmdugan/blocklists/master/corporations/facebook/all
+    groups: ['Default']
     enabled: true
+  - address: https://raw.githubusercontent.com/jmdugan/blocklists/master/corporations/facebook/all
+    type: 'block'
     comment: ansible adlist
+    groups: ['Default']
+    enabled: true
+
+pihole_cfg_mgmt_domains:
+  - domain: 'choice.microsoft.com'
+    type: 'deny'
+    kind: 'exact'
+    comment: 'ansible blacklist'
+    groups: ['Default']
+    enabled: true
+  - domain: 'events.gfe.nvidia.com'
+    type: 'deny'
+    kind: 'exact'
+    comment: 'ansible blacklist'
+    groups: ['Default']
+    enabled: true

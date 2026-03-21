@@ -1,0 +1,4 @@
+# Role: my.pihole
+vault_pihole_cfg_webserver_api_pwhash: ''
+vault_pihole_cfg_webserver_api_totp_secret: ''
+vault_pihole_cfg_webserver_api_app_pwhash: ''

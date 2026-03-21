@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    my_pihole_setup_keepalived: false
+    my_pihole_keepalived_setup: false
     pihole_webpassword: molecule
     pihole_pihole_interface: eth0
     pihole_update_enable: false

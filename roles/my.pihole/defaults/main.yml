@@ -1,15 +1,12 @@
-# TODO: why defaults/main.yml is not used?
-
-# Role: my.keepalived
-my_keepalived_instance:
-my_keepalived_state: MASTER # MASTER/BACKUP
-my_keepalived_interface: eth0
-my_keepalived_router_id: 1
-my_keepalived_priority: 255
-my_keepalived_virtual_ipv4:
-
 # Role: my.pihole
-my_pihole_setup_keepalived: true
+my_pihole_keepalived_setup: true
+my_pihole_keepalived_instance:
+my_pihole_keepalived_state: MASTER # MASTER/BACKUP
+my_pihole_keepalived_interface: eth0
+my_pihole_keepalived_router_id: 1
+my_pihole_keepalived_priority: 255
+my_pihole_keepalived_virtual_ipv4:
+
 my_pihole_webserver_api_app_pwhash: ''
 my_pihole_custom_list:
   - 192.168.1.30 odin.{{ local_fqdn }}
@@ -21,6 +18,8 @@ pihole_srv_update_enable: false
 pihole_srv_api_config_enable: false
 pihole_cfg_webserver_api_app_pwhash: "{{ my_pihole_webserver_api_app_pwhash }}"
 pihole_cfg_dns_interface: eth0
+pihole_cfg_dns_listening_mode: ALL
+pihole_cfg_dns_bogus_priv: false
 
 # Upstream DNS Servers
 pihole_cfg_dns_upstreams:

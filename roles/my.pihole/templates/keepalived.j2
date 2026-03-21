@@ -8,18 +8,18 @@ vrrp_script check_pihole {
     fall 2          # Number of failures before considering it unhealthy
 }
 
-vrrp_instance {{ my_keepalived_instance }} {
+vrrp_instance {{ my_pihole_keepalived_instance }} {
 
-  state {{ my_keepalived_state }}
+  state {{ my_pihole_keepalived_state }}
 
-  interface {{ my_keepalived_interface }}
+  interface {{ my_pihole_keepalived_interface }}
 
-  virtual_router_id {{ my_keepalived_router_id }}
+  virtual_router_id {{ my_pihole_keepalived_router_id }}
 
-  priority {{ my_keepalived_priority }}
+  priority {{ my_pihole_keepalived_priority }}
 
   virtual_ipaddress {
-    {{ my_keepalived_virtual_ipv4 }}
+    {{ my_pihole_keepalived_virtual_ipv4 }}
   }
 
   track_script {

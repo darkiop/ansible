@@ -39,7 +39,7 @@ pihole_ad_sources:
     comment: ansible adlist
 
 # Role: my.pihole
-my_pihole_setup_keepalived: false
+my_pihole_keepalived_setup: false
 
 # Role: my.essentials - apt install aditional_software task
 my_essentials_apt_additional_packages:
