@@ -1,7 +1,7 @@
 - name: "Import ip-forwarding.yml"
   ansible.builtin.import_tasks: ip-forwarding.yml
 
-- name: Ensure curl is present (needed for install script path)
+- name: Ensure curl is present
   ansible.builtin.package:
     name: curl
     state: present
@@ -12,7 +12,7 @@
   failed_when: false
   changed_when: false
 
-- name: Install Tailscale using official script (only if not installed)
+- name: Install Tailscale using official script
   ansible.builtin.shell: |
     set -euo pipefail
     curl -fsSL https://tailscale.com/install.sh | sh
