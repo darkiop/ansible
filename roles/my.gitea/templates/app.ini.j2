@@ -1,0 +1,17 @@
+{{ ansible_managed | comment }}
+
+[server]
+DOMAIN           = {{ my_gitea_domain }}
+HTTP_ADDR        = 0.0.0.0
+HTTP_PORT        = {{ my_gitea_http_port }}
+ROOT_URL         = {{ my_gitea_root_url }}
+SSH_DOMAIN       = {{ my_gitea_ssh_domain }}
+SSH_PORT         = {{ my_gitea_ssh_port }}
+
+[database]
+DB_TYPE  = sqlite3
+PATH     = {{ my_gitea_db_path }}
+
+[security]
+INSTALL_LOCK = true
+SECRET_KEY   = {{ my_gitea_secret_slurp.content | b64decode | trim }}

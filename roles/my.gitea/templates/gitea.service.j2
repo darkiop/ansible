@@ -1,0 +1,19 @@
+{{ ansible_managed | comment }}
+[Unit]
+Description=Gitea
+After=syslog.target rsyslog.service
+After=network-online.target postgresql.service mariadb.service
+
+[Service]
+Type=simple
+User={{ my_gitea_user }}
+Group={{ my_gitea_group }}
+WorkingDirectory={{ my_gitea_work_dir }}/
+Environment=USER={{ my_gitea_user }} HOME={{ my_gitea_home }} GITEA_WORK_DIR={{ my_gitea_work_dir }}
+ExecStart=/usr/local/bin/gitea web --config {{ my_gitea_config_dir }}/app.ini
+Restart=always
+RestartSec=2s
+StartupTimeout=20s
+
+[Install]
+WantedBy=multi-user.target

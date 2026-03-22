@@ -1,0 +1,6 @@
+---
+- name: Enable and start Gitea
+  ansible.builtin.systemd:
+    name: gitea
+    enabled: true
+    state: started

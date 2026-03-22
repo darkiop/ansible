@@ -1,0 +1,37 @@
+---
+# Gitea binary
+my_gitea_version: "1.25.3"
+my_gitea_arch: "linux-amd64"
+my_gitea_download_url: "https://dl.gitea.com/gitea/{{ my_gitea_version }}/gitea-{{ my_gitea_version }}-{{ my_gitea_arch }}"
+
+# System user/group
+my_gitea_user: git
+my_gitea_group: git
+my_gitea_home: /home/git
+
+# Paths
+my_gitea_work_dir: /var/lib/gitea
+my_gitea_config_dir: /etc/gitea
+my_gitea_db_path: "{{ my_gitea_work_dir }}/data/gitea.db"
+my_gitea_secret_file: "{{ my_gitea_config_dir }}/secret_key"
+
+# Network
+my_gitea_http_port: 3000
+my_gitea_domain: ""
+my_gitea_root_url: "http://{{ my_gitea_domain }}:{{ my_gitea_http_port }}/"
+my_gitea_ssh_domain: "{{ my_gitea_domain }}"
+my_gitea_ssh_port: 2222
+
+# Admin user
+my_gitea_admin_username: ""
+my_gitea_admin_email: ""
+my_gitea_admin_password: "{{ vault_my_gitea_admin_password }}"
+
+# Packages
+my_gitea_packages:
+  - wget
+  - git
+  - sqlite3
+  - ca-certificates
+  - openssl
+  - curl

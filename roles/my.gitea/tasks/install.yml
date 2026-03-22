@@ -1,0 +1,66 @@
+---
+- name: Install required packages
+  ansible.builtin.apt:
+    name: "{{ my_gitea_packages }}"
+    state: present
+    update_cache: true
+
+- name: Ensure Gitea system group exists
+  ansible.builtin.group:
+    name: "{{ my_gitea_group }}"
+    system: true
+
+- name: Ensure Gitea system user exists
+  ansible.builtin.user:
+    name: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    shell: /bin/bash
+    home: "{{ my_gitea_home }}"
+    system: true
+    create_home: true
+
+- name: Create Gitea directories in home
+  ansible.builtin.file:
+    path: "{{ my_gitea_home }}/{{ item }}"
+    state: directory
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    mode: "0755"
+  loop:
+    - custom
+    - data
+    - log
+
+- name: Create Gitea working directories
+  ansible.builtin.file:
+    path: "{{ my_gitea_work_dir }}/{{ item }}"
+    state: directory
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    mode: "0755"
+  loop:
+    - .
+    - custom
+    - data
+    - log
+
+- name: Download Gitea binary
+  ansible.builtin.get_url:
+    url: "{{ my_gitea_download_url }}"
+    dest: "{{ my_gitea_home }}/gitea"
+    mode: "0755"
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+
+- name: Symlink Gitea into /usr/local/bin
+  ansible.builtin.file:
+    src: "{{ my_gitea_home }}/gitea"
+    dest: /usr/local/bin/gitea
+    state: link
+
+- name: Install Gitea systemd service
+  ansible.builtin.template:
+    src: gitea.service.j2
+    dest: /etc/systemd/system/gitea.service
+    mode: "0644"
+  notify: Reload systemd

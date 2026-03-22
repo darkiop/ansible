@@ -1,0 +1,62 @@
+---
+- name: Ensure Gitea config directory exists
+  ansible.builtin.file:
+    path: "{{ my_gitea_config_dir }}"
+    state: directory
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    mode: "0755"
+
+- name: Generate secret key if missing
+  ansible.builtin.shell: "openssl rand -base64 48 > {{ my_gitea_secret_file }}"
+  args:
+    creates: "{{ my_gitea_secret_file }}"
+  # shell used because no built-in module can write command output to a file atomically
+
+- name: Ensure secret key permissions
+  ansible.builtin.file:
+    path: "{{ my_gitea_secret_file }}"
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    mode: "0600"
+
+- name: Load secret key
+  ansible.builtin.slurp:
+    src: "{{ my_gitea_secret_file }}"
+  register: my_gitea_secret_slurp
+
+- name: Write Gitea config
+  ansible.builtin.template:
+    src: app.ini.j2
+    dest: "{{ my_gitea_config_dir }}/app.ini"
+    owner: "{{ my_gitea_user }}"
+    group: "{{ my_gitea_group }}"
+    mode: "0640"
+  notify: Restart gitea
+
+- name: Ensure Gitea admin user exists
+  ansible.builtin.command:
+    argv:
+      - runuser
+      - -u
+      - "{{ my_gitea_user }}"
+      - --
+      - /usr/local/bin/gitea
+      - admin
+      - user
+      - create
+      - --admin
+      - --username
+      - "{{ my_gitea_admin_username }}"
+      - --password
+      - "{{ my_gitea_admin_password }}"
+      - --email
+      - "{{ my_gitea_admin_email }}"
+      - --config
+      - "{{ my_gitea_config_dir }}/app.ini"
+  register: my_gitea_admin_create
+  changed_when: my_gitea_admin_create.rc == 0
+  failed_when:
+    - my_gitea_admin_create.rc != 0
+    - "'user already exists' not in (my_gitea_admin_create.stderr | lower)"
+  no_log: true
