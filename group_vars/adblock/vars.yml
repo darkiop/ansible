@@ -3,10 +3,12 @@ pihole_cfg_webserver_api_pwhash: "{{ vault_pihole_cfg_webserver_api_pwhash }}"
 pihole_cfg_webserver_api_totp_secret: "{{ vault_pihole_cfg_webserver_api_totp_secret }}"
 pihole_cfg_webserver_api_app_pwhash: "{{ vault_pihole_cfg_webserver_api_app_pwhash }}"
 pihole_srv_backup_post_enable: true
+pihole_cfg_dns_listening_mode: ALL
+pihole_cfg_dns_bogus_priv: false
 
 # Conditional forwarding
 pihole_cfg_dns_rev_servers:
-  - enabled: true
+  - enabled: "true"
     ip: '10.4.0.0/24'
     server: '10.4.0.9'
     domain: "{{ vault_local_fqdn }}"
